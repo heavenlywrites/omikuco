@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>omiku ✿</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700&family=Plus+Jakarta+Sans:wght@400;500&family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFF5F8;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.shape { position: fixed; pointer-events: none; border-radius: 50%; }
+.s1 { width: 320px; height: 320px; background: #FFD6E7; top: -80px; left: -80px; opacity: 0.6; animation: float1 9s ease-in-out infinite; }
+.s2 { width: 220px; height: 220px; background: #FFE4B5; bottom: -60px; right: 20px; opacity: 0.5; animation: float2 11s ease-in-out infinite; }
+.s3 { width: 160px; height: 160px; background: #C9F5F0; top: 40%; right: -50px; opacity: 0.55; animation: float1 13s ease-in-out infinite reverse; }
+.s4 { width: 100px; height: 100px; background: #E8D5FF; bottom: 20%; left: -20px; opacity: 0.5; animation: float2 8s ease-in-out infinite; }
+
+@keyframes float1 {
+  0%, 100% { transform: translate(0,0) rotate(0deg); }
+  50% { transform: translate(18px,-18px) rotate(8deg); }
+}
+@keyframes float2 {
+  0%, 100% { transform: translate(0,0) rotate(0deg); }
+  50% { transform: translate(-15px,15px) rotate(-6deg); }
+}
+
+.sparkles { position: fixed; inset: 0; pointer-events: none; }
+.sp { position: absolute; font-size: 18px; animation: twinkle 4s ease-in-out infinite; opacity: 0; }
+.sp:nth-child(1) { top: 12%; left: 15%; animation-delay: 0s; }
+.sp:nth-child(2) { top: 20%; right: 18%; animation-delay: 1.2s; }
+.sp:nth-child(3) { bottom: 28%; left: 12%; animation-delay: 2.1s; }
+.sp:nth-child(4) { bottom: 18%; right: 14%; animation-delay: 0.7s; }
+.sp:nth-child(5) { top: 55%; left: 6%; animation-delay: 3s; }
+.sp:nth-child(6) { top: 35%; right: 6%; animation-delay: 1.8s; }
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.6) rotate(0deg); }
+  50% { opacity: 0.55; transform: scale(1) rotate(20deg); }
+}
+
+.card {
+  position: relative; z-index: 1; text-align: center;
+  padding: 50px 44px 44px;
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(255,255,255,0.95);
+  border-radius: 32px;
+  max-width: 340px; width: 90vw;
+  box-shadow: 0 8px 40px rgba(255,160,200,0.18), 0 2px 8px rgba(0,0,0,0.04);
+  animation: popIn 0.7s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.85) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.avatar {
+  width: 82px; height: 82px; border-radius: 50%;
+  margin: 0 auto 18px;
+  
+  display: flex; align-items: center; justify-content: center;
+  
+  position: relative;
+  animation: popIn 0.7s 0.08s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.avatar-flower {
+  position: absolute; bottom: -2px; right: -2px;
+  width: 26px; height: 26px; background: #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); line-height: 1;
+}
+
+h1 {
+  font-family: 'Hachi Maru Pop', cursive; font-size: 2.4rem; font-weight: 400;
+  color: #1A1A2E; letter-spacing: 1px; line-height: 1;
+  animation: popIn 0.7s 0.13s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+.role {
+  margin-top: 9px; font-size: 0.72rem; font-weight: 500;
+  color: #B07CA0; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.6;
+  animation: popIn 0.7s 0.18s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+.wavy { margin: 22px auto; width: 80px; height: 10px; animation: popIn 0.7s 0.22s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+.socials { display: flex; gap: 16px; justify-content: center; align-items: center; }
+
+.social-btn {
+  position: relative; width: 68px; height: 68px; border-radius: 22px;
+  display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px;
+  text-decoration: none;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;
+}
+.social-btn:nth-child(1):hover { transform: translateY(-8px) rotate(-3deg) scale(1.1); }
+.social-btn:nth-child(2):hover { transform: translateY(-8px) rotate(3deg) scale(1.1); }
+.social-btn:nth-child(3):hover { transform: translateY(-8px) rotate(-2deg) scale(1.1); }
+
+/* All buttons share the same soft theme palette */
+.btn-ig {
+  background: #FFE0EF;
+  border: 1.5px solid #FFC2DA;
+  box-shadow: 0 6px 20px rgba(255,182,219,0.45);
+  animation: popIn 0.7s 0.28s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.btn-ig:hover { background: #FFD0E7; box-shadow: 0 12px 28px rgba(255,160,210,0.5); }
+
+.btn-tt {
+  background: #EDE0FF;
+  border: 1.5px solid #D4BBFF;
+  box-shadow: 0 6px 20px rgba(216,185,255,0.45);
+  animation: popIn 0.7s 0.34s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.btn-tt:hover { background: #E2D0FF; box-shadow: 0 12px 28px rgba(196,155,255,0.5); }
+
+.btn-em {
+  background: #FFECD6;
+  border: 1.5px solid #FFCF9E;
+  box-shadow: 0 6px 20px rgba(255,210,160,0.45);
+  animation: popIn 0.7s 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.btn-em:hover { background: #FFE0C0; box-shadow: 0 12px 28px rgba(255,195,130,0.5); }
+
+.label {
+  font-size: 0.58rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.btn-ig .label { color: #D4608A; }
+.btn-tt .label { color: #8B5CC8; }
+.btn-em .label { color: #C47B30; }
+
+.footer-tag {
+  display: inline-flex; align-items: center; gap: 5px; margin-top: 28px;
+  background: #E6FAF7; border: 1px solid #A8EDE0; border-radius: 50px; padding: 5px 14px;
+  font-size: 0.65rem; letter-spacing: 0.1em; color: #3BBFAA; text-transform: uppercase;
+  animation: popIn 0.7s 0.46s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+</style>
+</head>
+<body>
+
+<div class="shape s1"></div>
+<div class="shape s2"></div>
+<div class="shape s3"></div>
+<div class="shape s4"></div>
+
+<div class="sparkles">
+  <div class="sp">✦</div><div class="sp">✿</div><div class="sp">✦</div>
+  <div class="sp">✿</div><div class="sp">✦</div><div class="sp">✿</div>
+</div>
+
+<div class="card">
+
+  <div class="avatar">
+    <img src="avatar.gif" alt="omiku" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+    <div class="avatar-flower">✿</div>
+  </div>
+
+  <h1>omiku</h1>
+  <p class="role">Social Media Manager<br>&amp; General Marketer</p>
+
+  <svg class="wavy" viewBox="0 0 80 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 5 C10 1, 20 9, 30 5 S50 1, 60 5 S70 9, 80 5" stroke="#F5BEDD" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  </svg>
+
+  <div class="socials">
+
+    <!-- Instagram – pink -->
+    <a href="https://instagram.com/omiku" target="_blank" rel="noopener" class="social-btn btn-ig" aria-label="Instagram">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="#D4608A" stroke-width="1.8"/>
+        <circle cx="12" cy="12" r="4.5" stroke="#D4608A" stroke-width="1.8"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="#D4608A"/>
+      </svg>
+      <span class="label">Insta</span>
+    </a>
+
+    <!-- TikTok – lavender -->
+    <a href="https://tiktok.com/@ika" target="_blank" rel="noopener" class="social-btn btn-tt" aria-label="TikTok">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#8B5CC8">
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.98a8.17 8.17 0 0 0 4.78 1.52V7.06a4.85 4.85 0 0 1-1.01-.37z"/>
+      </svg>
+      <span class="label">TikTok</span>
+    </a>
+
+    <!-- Email – peach -->
+    <a href="/cdn-cgi/l/email-protection#cea7a38ea1a3a7a5bbe0ada1" class="social-btn btn-em" aria-label="Email">
+      <svg width="26" height="20" viewBox="0 0 26 20" fill="none">
+        <rect x="1" y="1" width="24" height="18" rx="3" stroke="#C47B30" stroke-width="1.8"/>
+        <path d="M1 4.5l12 7.5L25 4.5" stroke="#C47B30" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="label">Email</span>
+    </a>
+
+  </div>
+
+  <div class="footer-tag">omiku.co
+  </div>
+
+</div>
+
+<!-- Music Player -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicBtn" aria-label="Toggle music">
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+</button>
+
+<style>
+#musicBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid #EDD5E8;
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(176,124,160,0.25);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;
+  z-index: 100;
+  animation: popIn 0.7s 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+#musicBtn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 8px 28px rgba(176,124,160,0.4);
+}
+.wave-bar {
+  width: 3px;
+  border-radius: 2px;
+  background: #B07CA0;
+  animation: waveBar 0.8s ease-in-out infinite alternate;
+}
+.wave-bar:nth-child(1) { height: 8px;  animation-delay: 0s; }
+.wave-bar:nth-child(2) { height: 16px; animation-delay: 0.15s; }
+.wave-bar:nth-child(3) { height: 22px; animation-delay: 0.05s; }
+.wave-bar:nth-child(4) { height: 14px; animation-delay: 0.2s; }
+.wave-bar:nth-child(5) { height: 8px;  animation-delay: 0.1s; }
+@keyframes waveBar {
+  from { transform: scaleY(0.3); opacity: 0.5; }
+  to   { transform: scaleY(1);   opacity: 1; }
+}
+#musicBtn.paused .wave-bar {
+  animation: none;
+  transform: scaleY(0.3);
+  opacity: 0.4;
+}
+</style>
+
+<script>
+  const audio = document.getElementById('bgMusic');
+  const btn   = document.getElementById('musicBtn');
+  let playing = false;
+
+  window.addEventListener('load', () => {
+    audio.volume = 0.5;
+    audio.play().then(() => {
+      playing = true;
+    }).catch(() => {
+      btn.classList.add('paused');
+      const start = () => { audio.play(); playing = true; btn.classList.remove('paused'); document.removeEventListener('click', start); };
+      document.addEventListener('click', start);
+    });
+  });
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (playing) { audio.pause(); playing = false; btn.classList.add('paused'); }
+    else { audio.play(); playing = true; btn.classList.remove('paused'); }
+  });
+</script>
+
+</body>
+</html>
