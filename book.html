@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>book with omiku ✿</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600&family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --pink:#FFD6E7; --pink-mid:#FFC2DA; --pink-dk:#D4608A;
+  --lav:#EDE0FF; --lav-dk:#8B5CC8;
+  --mint:#C9F5F0; --mint-dk:#3BBFAA;
+  --bg:#FFF5F8; --text:#1A1A2E; --muted:#B07CA0; --border:#F0DAEA;
+}
+
+body { min-height:100vh; background:var(--bg); font-family:'Plus Jakarta Sans',sans-serif; overflow-x:hidden; color:var(--text); }
+
+/* BG shapes */
+.shape{position:fixed;pointer-events:none;border-radius:50%;z-index:0}
+.s1{width:320px;height:320px;background:#FFD6E7;top:-80px;left:-80px;opacity:.6;animation:float1 9s ease-in-out infinite}
+.s2{width:220px;height:220px;background:#FFE4B5;bottom:-60px;right:20px;opacity:.5;animation:float2 11s ease-in-out infinite}
+.s3{width:160px;height:160px;background:#C9F5F0;top:40%;right:-50px;opacity:.55;animation:float1 13s ease-in-out infinite reverse}
+.s4{width:100px;height:100px;background:#E8D5FF;bottom:20%;left:-20px;opacity:.5;animation:float2 8s ease-in-out infinite}
+@keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(18px,-18px)}}
+@keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-15px,15px)}}
+
+.sparkles{position:fixed;inset:0;pointer-events:none;z-index:0}
+.sp{position:absolute;font-size:18px;animation:twinkle 4s ease-in-out infinite;opacity:0}
+.sp:nth-child(1){top:12%;left:15%;animation-delay:0s}
+.sp:nth-child(2){top:20%;right:18%;animation-delay:1.2s}
+.sp:nth-child(3){bottom:28%;left:12%;animation-delay:2.1s}
+.sp:nth-child(4){bottom:18%;right:14%;animation-delay:.7s}
+.sp:nth-child(5){top:55%;left:6%;animation-delay:3s}
+.sp:nth-child(6){top:35%;right:6%;animation-delay:1.8s}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.6)}50%{opacity:.55;transform:scale(1)}}
+
+@keyframes popIn{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+/* Layout */
+.page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:36px 20px 80px}
+
+/* Header */
+.header{text-align:center;margin-bottom:24px;animation:popIn .7s cubic-bezier(.34,1.56,.64,1) both}
+.logo{font-family:'Hachi Maru Pop',cursive;font-size:1.9rem;color:var(--text);letter-spacing:1px}
+.logo span{color:var(--pink-dk)}
+.logo-sub{font-size:.7rem;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-top:5px}
+
+/* Card */
+.card{background:rgba(255,255,255,.84);backdrop-filter:blur(22px);border:1.5px solid rgba(255,255,255,.96);border-radius:32px;box-shadow:0 8px 48px rgba(255,160,200,.18);width:100%;max-width:700px;overflow:hidden;animation:popIn .7s .1s cubic-bezier(.34,1.56,.64,1) both}
+
+/* Steps */
+.steps{display:flex;align-items:center;gap:6px;padding:16px 24px;background:linear-gradient(135deg,#FFF0F6,#F5EDFF);border-bottom:1px solid var(--border)}
+.step{display:flex;align-items:center;gap:7px;flex:1;font-size:.67rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#C9A4BE;transition:color .3s}
+.step.active{color:var(--pink-dk)}
+.step.done{color:var(--mint-dk)}
+.step-num{width:22px;height:22px;border-radius:50%;background:#F0DAEA;color:#C9A4BE;font-size:.62rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s}
+.step.active .step-num{background:var(--pink);color:var(--pink-dk)}
+.step.done .step-num{background:#D5F5EF;color:var(--mint-dk)}
+.step-arrow{color:#E0C8D8;font-size:.75rem;flex-shrink:0}
+
+/* Content */
+.content{padding:28px}
+
+/* Section label */
+.slabel{font-size:.67rem;font-weight:700;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px}
+
+/* Calendar */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cal-month{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:300;color:var(--text)}
+.cal-arr{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s}
+.cal-arr:hover{background:var(--pink);border-color:var(--pink-mid);color:var(--pink-dk)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.dname{text-align:center;font-size:.58rem;font-weight:700;color:#C9A4BE;letter-spacing:.08em;text-transform:uppercase;padding:6px 0}
+.day{aspect-ratio:1;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:.78rem;cursor:pointer;transition:all .2s;position:relative}
+.day:hover:not(.empty):not(.past):not(.bday){background:var(--pink);color:var(--pink-dk)}
+.day.empty{cursor:default}
+.day.past{color:#D5C5D0;cursor:not-allowed}
+.day.today{font-weight:700}
+.day.today::after{content:'';position:absolute;bottom:3px;width:4px;height:4px;border-radius:50%;background:var(--pink-dk)}
+.day.selected{background:linear-gradient(135deg,#FFD6E7,#E8C8FF);color:var(--pink-dk);font-weight:700;box-shadow:0 4px 14px rgba(212,96,138,.25)}
+.day.bday{background:#F8F0F5;color:#D5C5D0;cursor:not-allowed;text-decoration:line-through;font-size:.7rem}
+
+/* Time slots */
+.tgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.slot{padding:11px 4px;border-radius:14px;border:1.5px solid var(--border);background:var(--bg);text-align:center;font-size:.73rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all .25s cubic-bezier(.34,1.56,.64,1);line-height:1.4}
+.slot:hover:not(.taken):not(.bslot){background:var(--pink);border-color:var(--pink-mid);color:var(--pink-dk);transform:translateY(-2px);box-shadow:0 4px 12px rgba(212,96,138,.2)}
+.slot.selected{background:linear-gradient(135deg,#FFD6E7,#E8C8FF);border-color:var(--pink-mid);color:var(--pink-dk);font-weight:700;box-shadow:0 4px 18px rgba(212,96,138,.3);transform:translateY(-2px)}
+.slot.taken,.slot.bslot{background:#F5F0F5;border-color:#EDE0EA;color:#CDB8C8;cursor:not-allowed;font-size:.62rem}
+
+/* Booking pill */
+.pill{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#FFF0F6,#F5EDFF);border:1.5px solid var(--border);border-radius:18px;padding:14px 18px;margin-bottom:20px}
+.pill-ico{font-size:1.7rem;flex-shrink:0}
+.pill-date{font-family:'Fraunces',serif;font-size:1rem;color:var(--text)}
+.pill-time{font-size:.77rem;color:var(--muted);margin-top:2px}
+
+/* Form */
+.frow{margin-bottom:14px}
+.frow2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-size:.65rem;font-weight:700;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+input,textarea{width:100%;padding:11px 15px;border-radius:14px;border:1.5px solid var(--border);background:var(--bg);font-family:'Plus Jakarta Sans',sans-serif;font-size:.86rem;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s}
+input:focus,textarea:focus{border-color:var(--pink-mid);box-shadow:0 0 0 3px rgba(255,194,218,.22)}
+textarea{resize:none}
+
+/* Buttons */
+.btn-primary{width:100%;padding:14px;border-radius:18px;border:none;background:linear-gradient(135deg,#FFB3D1,#C8A0F8);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:700;letter-spacing:.04em;cursor:pointer;box-shadow:0 6px 22px rgba(212,96,138,.35);transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(212,96,138,.45)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-ghost{padding:10px 20px;border-radius:14px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:500;cursor:pointer;transition:all .2s}
+.btn-ghost:hover{background:var(--pink);border-color:var(--pink-mid);color:var(--pink-dk)}
+
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-top:18px;border-top:1px solid var(--border)}
+
+/* Error */
+.err{display:none;margin-top:8px;padding:10px 14px;background:#FFF0F6;border:1px solid var(--pink);border-radius:12px;font-size:.77rem;color:var(--pink-dk)}
+
+/* OTP */
+.otp-wrap{display:flex;gap:10px;justify-content:center;margin:20px 0}
+.otp-box{width:48px;height:58px;border-radius:14px;border:1.5px solid var(--border);background:var(--bg);font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--text);text-align:center;outline:none;transition:border-color .2s,box-shadow .2s;-moz-appearance:textfield}
+.otp-box::-webkit-outer-spin-button,.otp-box::-webkit-inner-spin-button{-webkit-appearance:none}
+.otp-box:focus{border-color:var(--pink-mid);box-shadow:0 0 0 3px rgba(255,194,218,.22)}
+.otp-box.filled{border-color:var(--pink-mid);background:linear-gradient(135deg,#FFF5F8,#F5EDFF)}
+.v-title{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:400;color:var(--text);text-align:center;margin-bottom:6px}
+.v-sub{font-size:.78rem;color:var(--muted);text-align:center;line-height:1.7;margin-bottom:4px}
+.resend-row{text-align:center;margin-top:10px;font-size:.72rem;color:var(--muted)}
+.resend-btn{background:none;border:none;color:var(--pink-dk);font-family:'Plus Jakarta Sans',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;padding:0}
+.resend-btn:disabled{color:var(--muted);cursor:default}
+
+/* Success */
+.success-wrap{text-align:center;padding:36px 16px}
+.success-bounce{font-size:3.6rem;animation:boing .6s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes boing{from{transform:scale(0)}to{transform:scale(1)}}
+.success-title{font-family:'Hachi Maru Pop',cursive;font-size:1.55rem;color:var(--text);margin:14px 0 6px}
+.success-sub{font-size:.83rem;color:var(--muted);line-height:1.75}
+.success-box{background:linear-gradient(135deg,#FFF0F6,#F5EDFF);border:1.5px solid var(--border);border-radius:18px;padding:18px;margin:20px 0;text-align:left}
+.srow{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:.84rem;color:var(--text)}
+.srow:last-child{margin-bottom:0}
+.srow .ico{font-size:.95rem;flex-shrink:0}
+.cal-link{display:inline-flex;align-items:center;gap:8px;margin-bottom:12px;padding:12px 24px;border-radius:50px;background:#E6FAF7;border:1.5px solid #A8EDE0;color:#3BBFAA;font-size:.82rem;font-weight:600;text-decoration:none;transition:all .2s}
+.cal-link:hover{background:#D0F5EE}
+
+/* Socials */
+.socials-strip{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:18px;animation:popIn .7s .3s cubic-bezier(.34,1.56,.64,1) both}
+.soc-label{font-size:.57rem;color:#C9A4BE;letter-spacing:.1em;text-transform:uppercase}
+.soc{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:transform .2s}
+.soc:hover{transform:translateY(-2px) scale(1.12)}
+.soc.ig{background:#FFE0EF}.soc.tt{background:#EDE0FF}.soc.em{background:#FFECD6}
+
+.pfooter{margin-top:12px;text-align:center;font-size:.58rem;color:#C9A4BE;letter-spacing:.08em}
+.pfooter a{color:#C9A4BE;text-decoration:none}
+.pfooter a:hover{color:var(--pink-dk)}
+
+/* Modal */
+.overlay{position:fixed;inset:0;z-index:999;background:rgba(26,26,46,.38);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:rgba(255,255,255,.97);border:1.5px solid rgba(255,255,255,.96);border-radius:28px;padding:30px;width:100%;max-width:500px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(212,96,138,.2);animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both;position:relative}
+.modal-x{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.75rem}
+.modal-title{font-family:'Hachi Maru Pop',cursive;font-size:1.25rem;color:var(--text);margin-bottom:3px}
+.modal-sub{font-size:.68rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+
+/* Admin */
+.bi{background:linear-gradient(135deg,#FFF0F6,#F5EDFF);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:8px;font-size:.79rem}
+.bi-name{font-weight:700;color:var(--text)}
+.bi-meta{color:var(--muted);margin-top:2px}
+.bi-email{color:var(--lav-dk);font-size:.73rem;margin-top:2px}
+.bi-note{font-size:.7rem;color:var(--lav-dk);margin-top:4px}
+.block-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:10px}
+.block-row input[type=date],.block-row select{padding:8px 11px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;color:var(--text);outline:none}
+.btn-sm{padding:8px 16px;border-radius:11px;border:none;background:linear-gradient(135deg,#FFB3D1,#C8A0F8);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:.74rem;font-weight:700;cursor:pointer}
+.btn-danger{padding:4px 10px;border-radius:8px;border:1px solid var(--pink);background:#FFF0F6;color:var(--pink-dk);font-size:.64rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
+.chip-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:#F5EDFF;border:1px solid #D4BBFF;border-radius:8px;padding:4px 10px;font-size:.67rem;color:var(--lav-dk);display:flex;align-items:center;gap:6px}
+.chip button{border:none;background:none;color:#C9A4BE;cursor:pointer;font-size:.7rem;padding:0;line-height:1}
+.si{background:linear-gradient(135deg,#FFF0F6,#F5EDFF);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:8px;font-size:.79rem;transition:opacity .2s}
+.si.done{opacity:.45}
+.si-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.si-tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:.6rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px;background:var(--pink);color:var(--pink-dk)}
+.si-tag.questions{background:var(--lav);color:var(--lav-dk)}
+.si-tag.advice{background:var(--mint);color:var(--mint-dk)}
+.si-name{font-weight:700;color:var(--text)}
+.si-msg{color:var(--muted);margin-top:3px;line-height:1.55}
+.si-ts{font-size:.62rem;color:#C9A4BE;margin-top:5px}
+.si-actions{display:flex;gap:6px;flex-shrink:0}
+.si-done{padding:4px 10px;border-radius:8px;border:1px solid var(--mint-dk);background:#E6FAF7;color:var(--mint-dk);font-size:.62rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap}
+.si-done.undo{background:#F5EDFF;border-color:var(--lav-dk);color:var(--lav-dk)}
+.si-del{padding:4px 8px;border-radius:8px;border:1px solid var(--pink);background:#FFF0F6;color:var(--pink-dk);font-size:.62rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
+.sug-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.sug-tab{padding:5px 13px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-size:.7rem;font-weight:600;cursor:pointer;transition:all .18s}
+.sug-tab.active{background:linear-gradient(135deg,var(--pink),var(--lav));border-color:transparent;color:var(--pink-dk)}
+
+
+@media(max-width:540px){.tgrid{grid-template-columns:repeat(3,1fr)}.frow2{grid-template-columns:1fr}.steps{padding:12px 14px}.step span{display:none}.content{padding:20px 14px}}
+</style>
+</head>
+<body>
+
+<div class="shape s1"></div>
+<div class="shape s2"></div>
+<div class="shape s3"></div>
+<div class="shape s4"></div>
+<div class="sparkles">
+  <div class="sp">✦</div><div class="sp">✿</div><div class="sp">✦</div>
+  <div class="sp">✿</div><div class="sp">✦</div><div class="sp">✿</div>
+</div>
+
+<div class="page">
+  <div class="header" id="logoArea">
+    <div class="logo">omiku <span>✿</span></div>
+    <div class="logo-sub">book a 30-min session with me</div>
+  </div>
+
+  <div class="card" id="mainCard">
+    <div class="steps" id="stepsBar">
+      <div class="step active" id="s1"><div class="step-num">1</div><span>Date</span></div>
+      <div class="step-arrow">›</div>
+      <div class="step" id="s2"><div class="step-num">2</div><span>Time</span></div>
+      <div class="step-arrow">›</div>
+      <div class="step" id="s3"><div class="step-num">3</div><span>Details</span></div>
+    </div>
+    <div class="content" id="content"></div>
+  </div>
+
+  <div class="socials-strip">
+    <span class="soc-label">find me</span>
+    <a href="https://instagram.com/omiku" target="_blank" rel="noopener" class="soc ig" aria-label="Instagram">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5.5" stroke="#D4608A" stroke-width="2"/><circle cx="12" cy="12" r="4.5" stroke="#D4608A" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="#D4608A"/></svg>
+    </a>
+    <a href="https://tiktok.com/@ika" target="_blank" rel="noopener" class="soc tt" aria-label="TikTok">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="#8B5CC8"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.98a8.17 8.17 0 0 0 4.78 1.52V7.06a4.85 4.85 0 0 1-1.01-.37z"/></svg>
+    </a>
+    <a href="#" id="emailSocLink" class="soc em" aria-label="Email">
+      <svg width="15" height="12" viewBox="0 0 26 20" fill="none"><rect x="1" y="1" width="24" height="18" rx="3" stroke="#C47B30" stroke-width="2"/><path d="M1 4.5l12 7.5L25 4.5" stroke="#C47B30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <span class="soc-label">omiku.co</span>
+  </div>
+
+  <div class="pfooter"><a href="#" id="adminLink">admin</a></div>
+</div>
+
+<div class="overlay" id="overlay" style="display:none;">
+  <div class="modal">
+    <button class="modal-x" id="overlayClose">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────
+const CFG = {
+  emailjs_public_key:  'FSw8KbC3UOzz4MoRG',
+  emailjs_service_id:  'service_g1akr5m',
+  emailjs_template_id: 'template_w51badb',
+  emailjs_notify_id:   'template_ot3nzmr',
+  owner_email:         'heavenlybtc'+'@'+'gmail.com',
+  admin_password:      'Loving21!',
+  day_start: 9,
+  day_end:   18,
+  blocked_weekdays: [0, 6],
+};
+
+// Safe EmailJS init
+window.addEventListener('load', function() {
+  try {
+    if (typeof emailjs !== 'undefined') {
+      emailjs.init(CFG.emailjs_public_key);
+    }
+  } catch(e) {}
+});
+
+// ── STATE ─────────────────────────────────────────────────
+var state = {
+  step: 1,
+  selDate: null,
+  selTime: null,
+  curMonth: new Date().getMonth(),
+  curYear:  new Date().getFullYear(),
+  bookings: [],
+  blocked:  [],
+  pending:  null,
+  otp:      null,
+  otpExp:   null,
+  resendAt: 0,
+};
+
+// ── STORAGE ───────────────────────────────────────────────
+function loadData() {
+  try { var b = localStorage.getItem('omiku_bookings'); if(b) state.bookings = JSON.parse(b); } catch(e) {}
+  try { var b = localStorage.getItem('omiku_blocked');  if(b) state.blocked  = JSON.parse(b); } catch(e) {}
+}
+function saveBookings() { try { localStorage.setItem('omiku_bookings', JSON.stringify(state.bookings)); } catch(e) {} }
+function saveBlocked()  { try { localStorage.setItem('omiku_blocked',  JSON.stringify(state.blocked));  } catch(e) {} }
+
+function loadSuggestions()  { try { return JSON.parse(localStorage.getItem('omiku_suggestions') || '[]'); } catch(e) { return []; } }
+function saveSuggestions(s) { try { localStorage.setItem('omiku_suggestions', JSON.stringify(s)); } catch(e) {} }
+function doneSuggestion(id) {
+  var s=loadSuggestions(); var i=s.findIndex(function(x){return x.id===id;});
+  if(i>=0){s[i].done=!s[i].done; saveSuggestions(s); renderAdmin();}
+}
+function deleteSuggestion(id) {
+  if(!confirm('Delete this entry?')) return;
+  saveSuggestions(loadSuggestions().filter(function(x){return x.id!==id;})); renderAdmin();
+}
+var sugFilter='all';
+function setSugFilter(f){sugFilter=f;renderAdmin();}
+
+
+// ── HELPERS ───────────────────────────────────────────────
+function pad(n) { return String(n).padStart(2,'0'); }
+function makeDate(y,m,d) { return y+'-'+pad(m+1)+'-'+pad(d); }
+function todayStr() { var t=new Date(); return makeDate(t.getFullYear(),t.getMonth(),t.getDate()); }
+
+function fmtDate(s) {
+  var p=s.split('-').map(Number);
+  return new Date(p[0],p[1]-1,p[2]).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+}
+function fmtTime(t) {
+  var p=t.split(':').map(Number), h=p[0], m=p[1];
+  return (h>12?h-12:(h===0?12:h))+':'+pad(m)+' '+(h>=12?'PM':'AM');
+}
+function fmtRange(t) {
+  var p=t.split(':').map(Number), h=p[0], m=p[1];
+  var e = m===30 ? pad(h+1)+':00' : pad(h)+':30';
+  return fmtTime(t)+' – '+fmtTime(e);
+}
+function getSlots() {
+  var out=[];
+  for(var h=CFG.day_start; h<CFG.day_end; h++) { out.push(pad(h)+':00'); out.push(pad(h)+':30'); }
+  return out;
+}
+function isTaken(date,time)   { return state.bookings.some(function(b){return b.date===date&&b.time===time;}); }
+function isBlocked(date,time) { return state.blocked.some(function(b){return b.date===date&&(b.time==='ALL'||b.time===time);}); }
+function isDayBlocked(date)   { return state.blocked.some(function(b){return b.date===date&&b.time==='ALL';}); }
+function isWeekend(s)         { var p=s.split('-').map(Number); return CFG.blocked_weekdays.indexOf(new Date(p[0],p[1]-1,p[2]).getDay())>=0; }
+function genId()              { return Date.now().toString(36)+Math.random().toString(36).slice(2,5); }
+
+function calLink(b) {
+  var p=b.date.split('-').map(Number), q=b.time.split(':').map(Number);
+  var e=new Date(p[0],p[1]-1,p[2],q[0],q[1]+30);
+  var fmt=function(d){return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00';};
+  var start=p[0]+pad(p[1])+pad(p[2])+'T'+pad(q[0])+pad(q[1])+'00';
+  var end=fmt(e);
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent('Meeting with omiku')+'&dates='+start+'/'+end+'&details='+encodeURIComponent('Booked via omiku.co/book');
+}
+
+// ── STEPS BAR ─────────────────────────────────────────────
+function syncSteps() {
+  [1,2,3].forEach(function(n) {
+    var el=document.getElementById('s'+n);
+    el.className='step'+(n<state.step?' done':n===state.step?' active':'');
+  });
+}
+
+// ── STEP 1: CALENDAR ──────────────────────────────────────
+function renderStep1() {
+  var today=todayStr();
+  var firstDow=new Date(state.curYear,state.curMonth,1).getDay();
+  var dim=new Date(state.curYear,state.curMonth+1,0).getDate();
+  var mName=new Date(state.curYear,state.curMonth).toLocaleDateString('en-US',{month:'long',year:'numeric'});
+
+  var days='';
+  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(function(d){days+='<div class="dname">'+d+'</div>';});
+  for(var i=0;i<firstDow;i++) days+='<div class="day empty"></div>';
+
+  for(var d=1;d<=dim;d++) {
+    var s=makeDate(state.curYear,state.curMonth,d);
+    var past=s<today, wknd=!past&&isWeekend(s), blk=!past&&isDayBlocked(s), sel=s===state.selDate;
+    var cls='day'+(past||wknd?' past':blk?' bday':'')+(s===todayStr()?' today':'')+(sel?' selected':'');
+    var click=(past||wknd||blk)?'':'onclick="pickDate(\''+s+'\')"';
+    days+='<div class="'+cls+'" '+click+'>'+d+'</div>';
+  }
+
+  document.getElementById('content').innerHTML=
+    '<p class="slabel">📅 choose a date</p>'+
+    '<div class="cal-nav">'+
+      '<button class="cal-arr" onclick="prevMo()">‹</button>'+
+      '<span class="cal-month">'+mName+'</span>'+
+      '<button class="cal-arr" onclick="nextMo()">›</button>'+
+    '</div>'+
+    '<div class="cal-grid">'+days+'</div>'+
+    (state.selDate?'<div class="nav-row"><span></span><button class="btn-primary" style="width:auto;padding:12px 30px" onclick="goStep(2)">Next →</button></div>':'');
+}
+
+function prevMo(){if(state.curMonth===0){state.curMonth=11;state.curYear--;}else state.curMonth--;renderStep1();}
+function nextMo(){if(state.curMonth===11){state.curMonth=0;state.curYear++;}else state.curMonth++;renderStep1();}
+function pickDate(s){state.selDate=s;state.selTime=null;renderStep1();}
+
+// ── STEP 2: TIME SLOTS ────────────────────────────────────
+function renderStep2() {
+  var sl=getSlots(), grid='';
+  sl.forEach(function(t) {
+    var taken=isTaken(state.selDate,t), blk=isBlocked(state.selDate,t), sel=t===state.selTime;
+    var cls='slot'+(taken?' taken':blk?' bslot':sel?' selected':'');
+    var inner=taken?fmtTime(t)+'<br><small>booked</small>':blk?fmtTime(t)+'<br><small>unavail.</small>':fmtTime(t);
+    grid+='<div class="'+cls+'" '+(!taken&&!blk?'onclick="pickTime(\''+t+'\')"':'')+'>'+inner+'</div>';
+  });
+
+  document.getElementById('content').innerHTML=
+    '<p class="slabel">🕐 pick a 30-min slot</p>'+
+    '<p style="font-size:.78rem;color:var(--muted);margin-bottom:14px">'+fmtDate(state.selDate)+'</p>'+
+    '<div class="tgrid">'+grid+'</div>'+
+    '<div class="nav-row">'+
+      '<button class="btn-ghost" onclick="goStep(1)">← Back</button>'+
+      (state.selTime
+        ? '<button class="btn-primary" style="width:auto;padding:12px 30px" onclick="goStep(3)">Next →</button>'
+        : '<span style="font-size:.72rem;color:#C9A4BE">select a slot to continue</span>')+
+    '</div>';
+}
+function pickTime(t){state.selTime=t;renderStep2();}
+
+// ── STEP 3: DETAILS FORM ──────────────────────────────────
+function renderStep3() {
+  var pb=state.pending||{};
+  document.getElementById('content').innerHTML=
+    '<div class="pill"><div class="pill-ico">✿</div><div>'+
+      '<div class="pill-date">'+fmtDate(state.selDate)+'</div>'+
+      '<div class="pill-time">⏱ '+fmtRange(state.selTime)+' · 30 min</div>'+
+    '</div></div>'+
+    '<p class="slabel">💌 your details</p>'+
+    '<div class="frow2">'+
+      '<div class="frow"><label>Your name</label><input id="inp-name" type="text" placeholder="e.g. Jamie Lee" value="'+(pb.name||'')+'"></div>'+
+      '<div class="frow"><label>Phone number</label><input id="inp-phone" type="tel" placeholder="e.g. +1 555 000 1234" value="'+(pb.phone||'')+'"></div>'+
+    '</div>'+
+    '<div class="frow"><label>Your email</label><input id="inp-email" type="email" placeholder="you@example.com" value="'+(pb.email||'')+'"></div>'+
+    '<div class="frow">'+
+      '<label>What would you like to discuss? <span style="color:#D5C5D0;font-weight:400">(optional)</span></label>'+
+      '<textarea id="inp-note" rows="3" placeholder="Give me a heads-up — totally optional!">'+(pb.note||'')+'</textarea>'+
+    '</div>'+
+    '<div class="err" id="err"></div>'+
+    '<button class="btn-primary" id="sendBtn" onclick="sendCode()" style="margin-top:6px">✉ send verification code</button>'+
+    '<div class="nav-row"><button class="btn-ghost" onclick="goStep(2)">← Back</button><span></span></div>';
+}
+
+// ── SEND VERIFICATION CODE ────────────────────────────────
+function sendCode() {
+  var name  = document.getElementById('inp-name').value.trim();
+  var phone = document.getElementById('inp-phone').value.trim();
+  var email = document.getElementById('inp-email').value.trim();
+  var note  = document.getElementById('inp-note').value.trim();
+
+  if(!name)  return showErr('Please enter your name.');
+  if(!phone) return showErr('Please enter your phone number.');
+  if(!email||email.indexOf('@')<0) return showErr('Please enter a valid email address.');
+  if(isTaken(state.selDate,state.selTime)) return showErr('This slot was just taken! Please go back and choose another time.');
+
+  var btn=document.getElementById('sendBtn');
+  btn.textContent='⏳ sending...'; btn.disabled=true;
+
+  var code=String(Math.floor(100000+Math.random()*900000));
+  state.otp=code; state.otpExp=Date.now()+10*60*1000; state.resendAt=Date.now()+60*1000;
+  state.pending={name:name,phone:phone,email:email,note:note};
+
+  var ready = typeof emailjs !== 'undefined';
+  if(ready) {
+    try {
+      emailjs.send(CFG.emailjs_service_id, CFG.emailjs_template_id, {
+        to_email: email, name: name, code: code
+      }).then(function(){renderVerify(true);}, function(e){
+        console.error(e);
+        showErr('Failed to send email. Please try again.');
+        btn.textContent='✉ send verification code'; btn.disabled=false;
+      });
+    } catch(e) {
+      console.error(e);
+      renderVerify(false);
+    }
+  } else {
+    console.log('%c🔑 DEV — code: '+code,'font-size:1.2rem;color:#D4608A;font-weight:bold');
+    renderVerify(false);
+  }
+}
+
+// ── VERIFY SCREEN ─────────────────────────────────────────
+function renderVerify(sent) {
+  var email=state.pending.email;
+  document.getElementById('content').innerHTML=
+    '<div style="font-size:2.8rem;text-align:center;margin-bottom:10px">📬</div>'+
+    '<div class="v-title">check your inbox</div>'+
+    '<p class="v-sub">We sent a 6-digit code to<br><strong>'+email+'</strong><br>Enter it below to confirm your booking.'+(sent?'':'<br><span style="color:var(--pink-dk)">(dev mode: check browser console)</span>')+'</p>'+
+    '<div class="otp-wrap" id="otpWrap">'+
+      '<input class="otp-box" type="number" maxlength="1" id="o0" oninput="otpIn(this,0)" onkeydown="otpKey(event,0)">'+
+      '<input class="otp-box" type="number" maxlength="1" id="o1" oninput="otpIn(this,1)" onkeydown="otpKey(event,1)">'+
+      '<input class="otp-box" type="number" maxlength="1" id="o2" oninput="otpIn(this,2)" onkeydown="otpKey(event,2)">'+
+      '<input class="otp-box" type="number" maxlength="1" id="o3" oninput="otpIn(this,3)" onkeydown="otpKey(event,3)">'+
+      '<input class="otp-box" type="number" maxlength="1" id="o4" oninput="otpIn(this,4)" onkeydown="otpKey(event,4)">'+
+      '<input class="otp-box" type="number" maxlength="1" id="o5" oninput="otpIn(this,5)" onkeydown="otpKey(event,5)">'+
+    '</div>'+
+    '<div class="err" id="err"></div>'+
+    '<button class="btn-primary" id="verifyBtn" onclick="verifyAndBook()" style="margin-top:4px">✦ confirm booking</button>'+
+    '<div class="resend-row">Didn\'t get it? <button class="resend-btn" id="resendBtn" onclick="resend()">Resend code</button><span id="resendTimer"></span></div>'+
+    '<div class="nav-row"><button class="btn-ghost" onclick="renderStep3()">← Edit details</button><span></span></div>';
+  document.getElementById('o0').focus();
+  tickResend();
+}
+
+function otpIn(el,i) {
+  el.value=el.value.replace(/[^0-9]/g,'').slice(-1);
+  el.classList.toggle('filled',el.value!=='');
+  if(el.value&&i<5) document.getElementById('o'+(i+1)).focus();
+  if(getOtp().length===6) verifyAndBook();
+}
+function otpKey(e,i) { if(e.key==='Backspace'&&!e.target.value&&i>0) document.getElementById('o'+(i-1)).focus(); }
+function getOtp() { return [0,1,2,3,4,5].map(function(i){var el=document.getElementById('o'+i);return el?el.value:'';}).join(''); }
+
+function tickResend() {
+  var btn=document.getElementById('resendBtn'), sp=document.getElementById('resendTimer');
+  if(!btn||!sp) return;
+  var left=Math.ceil((state.resendAt-Date.now())/1000);
+  if(left>0){btn.disabled=true;sp.textContent=' ('+left+'s)';setTimeout(tickResend,1000);}
+  else{btn.disabled=false;sp.textContent='';}
+}
+function resend() {
+  if(Date.now()<state.resendAt) return;
+  var code=String(Math.floor(100000+Math.random()*900000));
+  state.otp=code; state.otpExp=Date.now()+10*60*1000; state.resendAt=Date.now()+60*1000;
+  if(typeof emailjs!=='undefined') {
+    emailjs.send(CFG.emailjs_service_id,CFG.emailjs_template_id,{to_email:state.pending.email,name:state.pending.name,code:code});
+  } else {
+    console.log('%c🔑 DEV — new code: '+code,'font-size:1.2rem;color:#D4608A;font-weight:bold');
+  }
+  var btn=document.getElementById('resendBtn');
+  if(btn){btn.textContent='Resend code';}
+  tickResend();
+}
+
+// ── VERIFY + BOOK ─────────────────────────────────────────
+function verifyAndBook() {
+  var entered=getOtp();
+  if(entered.length<6) return showErr('Please enter the full 6-digit code.');
+  if(Date.now()>state.otpExp) return showErr('This code has expired. Please request a new one.');
+  if(entered!==state.otp) {
+    showErr('Incorrect code — please try again.');
+    var wrap=document.getElementById('otpWrap');
+    if(wrap) wrap.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(-4px)'},{transform:'translateX(4px)'},{transform:'translateX(0)'}],{duration:300,easing:'ease-out'});
+    return;
+  }
+  if(isTaken(state.selDate,state.selTime)) return showErr('This slot was just taken! Please go back and choose another time.');
+
+  var btn=document.getElementById('verifyBtn');
+  if(btn){btn.textContent='⏳ confirming...';btn.disabled=true;}
+
+  var b={id:genId(),name:state.pending.name,phone:state.pending.phone,email:state.pending.email,note:state.pending.note,date:state.selDate,time:state.selTime,bookedAt:new Date().toISOString()};
+  state.bookings.push(b);
+  saveBookings();
+
+  // Notify owner
+  if(typeof emailjs!=='undefined') {
+    try {
+      emailjs.send(CFG.emailjs_service_id,CFG.emailjs_notify_id,{
+        booker_name:b.name,booker_email:b.email,booker_phone:b.phone,
+        booking_date:fmtDate(b.date),booking_time:fmtRange(b.time),
+        note:b.note||'(none)',calendar_link:calLink(b)
+      });
+    } catch(e){}
+  }
+
+  state.pending=null; state.otp=null;
+  renderSuccess(b);
+}
+
+function showErr(msg) { var el=document.getElementById('err'); if(el){el.textContent=msg;el.style.display='block';} }
+
+// ── SUCCESS ───────────────────────────────────────────────
+function renderSuccess(b) {
+  document.getElementById('stepsBar').style.display='none';
+  document.getElementById('content').innerHTML=
+    '<div class="success-wrap">'+
+      '<div class="success-bounce">🌸</div>'+
+      '<div class="success-title">you\'re booked!</div>'+
+      '<p class="success-sub">Can\'t wait to chat with you, '+b.name.split(' ')[0]+'!</p>'+
+      '<div class="success-box">'+
+        '<div class="srow"><span class="ico">📅</span><span>'+fmtDate(b.date)+'</span></div>'+
+        '<div class="srow"><span class="ico">⏱</span><span>'+fmtRange(b.time)+' (30 min)</span></div>'+
+        '<div class="srow"><span class="ico">👤</span><span>'+b.name+'</span></div>'+
+        '<div class="srow"><span class="ico">📱</span><span>'+b.phone+'</span></div>'+
+        (b.note?'<div class="srow"><span class="ico">💬</span><span>'+b.note+'</span></div>':'')+
+      '</div>'+
+      '<a href="'+calLink(b)+'" target="_blank" rel="noopener" class="cal-link">📅 add to google calendar</a><br>'+
+      '<button class="btn-primary" onclick="resetFlow()" style="margin-top:12px">book another time</button>'+
+    '</div>';
+}
+
+function resetFlow() {
+  state.step=1; state.selDate=null; state.selTime=null;
+  document.getElementById('stepsBar').style.display='flex';
+  goStep(1);
+}
+
+// ── NAVIGATION ────────────────────────────────────────────
+function goStep(n) {
+  state.step=n; syncSteps();
+  if(n===1) renderStep1();
+  else if(n===2) renderStep2();
+  else if(n===3) renderStep3();
+}
+
+// ── ADMIN ─────────────────────────────────────────────────
+var authed=false, logoTaps=0;
+
+document.getElementById('logoArea').addEventListener('click',function(){if(++logoTaps>=5){logoTaps=0;openAdmin();}});
+document.getElementById('adminLink').addEventListener('click',function(e){e.preventDefault();openAdmin();});
+document.getElementById('overlayClose').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',function(e){if(e.target===document.getElementById('overlay'))closeModal();});
+
+function openAdmin(){document.getElementById('overlay').style.display='flex';authed?renderAdmin():renderPwd();}
+function closeModal(){document.getElementById('overlay').style.display='none';}
+
+function renderPwd() {
+  document.getElementById('modalContent').innerHTML=
+    '<div class="modal-title">admin ✿</div>'+
+    '<div class="modal-sub">enter your password</div>'+
+    '<div class="frow"><label>Password</label><input type="password" id="pwd" placeholder="••••••" onkeydown="if(event.key===\'Enter\')chkPwd()"></div>'+
+    '<div id="pwd-err" style="display:none;margin:6px 0;font-size:.74rem;color:var(--pink-dk)"></div>'+
+    '<button class="btn-primary" style="margin-top:10px" onclick="chkPwd()">enter →</button>';
+  setTimeout(function(){var el=document.getElementById('pwd');if(el)el.focus();},80);
+}
+function chkPwd() {
+  var el=document.getElementById('pwd');
+  if(el&&el.value===CFG.admin_password){authed=true;renderAdmin();}
+  else{var e=document.getElementById('pwd-err');if(e){e.textContent='Incorrect password.';e.style.display='block';}}
+}
+
+function renderAdmin() {
+  var today=todayStr();
+  var upcoming=state.bookings.filter(function(b){return b.date>=today;}).sort(function(a,b){return a.date.localeCompare(b.date)||a.time.localeCompare(b.time);});
+  var past=state.bookings.filter(function(b){return b.date<today;}).sort(function(a,b){return b.date.localeCompare(a.date);});
+  var sl=getSlots();
+
+  var upHTML=upcoming.length?upcoming.map(function(b){
+    return '<div class="bi">'+
+      '<div class="bi-name">'+b.name+'</div>'+
+      '<div class="bi-meta">📅 '+fmtDate(b.date)+' · '+fmtRange(b.time)+'</div>'+
+      '<div class="bi-email">✉ '+b.email+' · 📱 '+(b.phone||'—')+'</div>'+
+      (b.note?'<div class="bi-note">💬 '+b.note+'</div>':'')+
+      '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">'+
+        '<a href="'+calLink(b)+'" target="_blank" rel="noopener" style="padding:4px 10px;border-radius:8px;border:1px solid #A8EDE0;background:#E6FAF7;color:#3BBFAA;font-size:.64rem;font-weight:600;text-decoration:none">📅 add to calendar</a>'+
+        '<button class="btn-danger" onclick="cancelBooking(\''+b.id+'\')">cancel booking</button>'+
+      '</div>'+
+    '</div>';
+  }).join(''):'<p style="font-size:.78rem;color:#C9A4BE;text-align:center;padding:14px 0">No upcoming bookings 🌸</p>';
+
+  var blkHTML=state.blocked.length
+    ?'<div class="chip-list">'+state.blocked.map(function(b,i){return '<div class="chip">'+(b.time==='ALL'?'🚫 '+b.date+' (all day)':'🕐 '+b.date+' '+fmtTime(b.time))+'<button onclick="unblock('+i+')">✕</button></div>';}).join('')+'</div>'
+    :'<p style="font-size:.76rem;color:#C9A4BE">Nothing blocked yet.</p>';
+
+  document.getElementById('modalContent').innerHTML=
+    '<div class="modal-title">admin ✿</div>'+
+    '<div class="modal-sub">upcoming ('+upcoming.length+')</div>'+
+    upHTML+
+    (past.length?'<details style="margin-bottom:16px"><summary style="font-size:.66rem;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-bottom:8px">past bookings ('+past.length+')</summary>'+past.map(function(b){return '<div class="bi" style="opacity:.65"><div class="bi-name">'+b.name+'</div><div class="bi-meta">📅 '+fmtDate(b.date)+' · '+fmtRange(b.time)+'</div><div class="bi-email">✉ '+b.email+'</div></div>';}).join('')+'</details>':'')+
+    '<div class="divider"></div>'+
+    '<div class="modal-sub" style="margin-bottom:8px">omiku talks — inbox ('+loadSuggestions().filter(function(x){return !x.done;}).length+' unread)</div>'+
+    renderSuggestions()+
+    '<div class="divider"></div>'+
+    '<p style="font-size:.72rem;color:var(--muted);margin-bottom:10px;line-height:1.6">Block a specific time slot or entire day.</p>'+
+    '<div class="block-row">'+
+      '<div><label style="margin-bottom:4px">Date</label><input type="date" id="bl-date" min="'+today+'" value="'+today+'"></div>'+
+      '<div><label style="margin-bottom:4px">Time</label><select id="bl-time"><option value="ALL">All Day</option>'+sl.map(function(t){return '<option value="'+t+'">'+fmtTime(t)+'</option>';}).join('')+'</select></div>'+
+      '<button class="btn-sm" onclick="blockSlot()">Block</button>'+
+    '</div>'+
+    '<div style="margin-top:14px">'+blkHTML+'</div>'+
+    '<div class="divider"></div>'+
+    '<button class="btn-ghost" style="width:100%;text-align:center" onclick="logout()">log out</button>';
+}
+
+function renderSuggestions() {
+  var all = loadSuggestions();
+  var filtered = sugFilter==='all' ? all : all.filter(function(x){return x.type===sugFilter;});
+  var labels = {ideas:'💡 video idea', questions:'🤔 ask me', advice:'🌸 advice'};
+  var counts = {
+    all: all.length,
+    ideas: all.filter(function(x){return x.type==='ideas';}).length,
+    questions: all.filter(function(x){return x.type==='questions';}).length,
+    advice: all.filter(function(x){return x.type==='advice';}).length
+  };
+  var tabs = ['all','ideas','questions','advice'].map(function(t){
+    return '<button class="sug-tab'+(sugFilter===t?' active':'')+'" onclick="setSugFilter(\''+t+'\')">'+
+      (t==='all'?'all':'')+(t==='ideas'?'💡 ideas':'')+(t==='questions'?'🤔 questions':'')+(t==='advice'?'🌸 advice':'')+
+      ' <span style="opacity:.6">('+counts[t]+')</span></button>';
+  }).join('');
+
+  if(!all.length) return '<div class="sug-tabs">'+tabs+'</div><p style="font-size:.78rem;color:#C9A4BE;text-align:center;padding:14px 0">No submissions yet 🌸</p>';
+
+  var items = filtered.length ? filtered.map(function(x){
+    var d = new Date(x.ts);
+    var ts = d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' at '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+    return '<div class="si'+(x.done?' done':'')+'" id="si-'+x.id+'">'+
+      '<div class="si-top">'+
+        '<div>'+
+          '<span class="si-tag '+x.type+'">'+labels[x.type]+'</span>'+
+          '<div class="si-name">'+escHtml(x.name)+'</div>'+
+          '<div class="si-msg">'+escHtml(x.message)+'</div>'+
+          '<div class="si-ts">'+ts+'</div>'+
+        '</div>'+
+        '<div class="si-actions">'+
+          '<button class="si-done'+(x.done?' undo':'')+'" onclick="doneSuggestion(\''+x.id+'\')">'+(x.done?'↩ undo':'✓ done')+'</button>'+
+          '<button class="si-del" onclick="deleteSuggestion(\''+x.id+'\')">✕</button>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }).join('') : '<p style="font-size:.78rem;color:#C9A4BE;text-align:center;padding:14px 0">Nothing in this category yet.</p>';
+
+  return '<div class="sug-tabs">'+tabs+'</div>'+items;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function cancelBooking(id) {
+  if(!confirm('Cancel this booking?')) return;
+  state.bookings=state.bookings.filter(function(b){return b.id!==id;});
+  saveBookings(); renderAdmin();
+}
+function blockSlot() {
+  var date=document.getElementById('bl-date').value;
+  var time=document.getElementById('bl-time').value;
+  if(!date) return;
+  if(state.blocked.some(function(b){return b.date===date&&b.time===time;})) return;
+  state.blocked.push({date:date,time:time});
+  saveBlocked(); renderAdmin();
+}
+function unblock(i) { state.blocked.splice(i,1); saveBlocked(); renderAdmin(); }
+function logout() { authed=false; closeModal(); }
+
+
+// Set email social link safely
+document.addEventListener('DOMContentLoaded', function() {
+  var el = document.getElementById('emailSocLink');
+  if(el) el.href = 'mail'+'to:'+'hello'+'@'+'omiku.co';
+});
+
+// ── INIT ──────────────────
+loadData();
+goStep(1);
+</script>
+</body>
+</html>
