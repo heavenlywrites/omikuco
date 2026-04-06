@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>omiku ✿</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:     #0e0e0f;
+    --bg2:    #161618;
+    --bg3:    #1e1e21;
+    --border: rgba(255,255,255,0.07);
+    --text:   #f0eef5;
+    --muted:  #7a7585;
+    --accent: #d4a8c7;
+    --accent2:#a98fc7;
+    --pink:   #e8b4cc;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* subtle noise texture */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; opacity: 0.6;
+  }
+
+  /* ambient glow shapes */
+  .glow {
+    position: fixed; border-radius: 50%; pointer-events: none; filter: blur(80px); opacity: 0.12;
+  }
+  .glow-1 { width: 400px; height: 400px; background: #d4a8c7; top: -100px; left: -100px; animation: drift1 14s ease-in-out infinite; }
+  .glow-2 { width: 300px; height: 300px; background: #a98fc7; bottom: -80px; right: -60px; animation: drift2 17s ease-in-out infinite; }
+  .glow-3 { width: 200px; height: 200px; background: #d4a8c7; top: 45%; right: -60px; animation: drift1 11s ease-in-out infinite reverse; }
+
+  @keyframes drift1 {
+    0%, 100% { transform: translate(0, 0); }
+    50%       { transform: translate(20px, -25px); }
+  }
+  @keyframes drift2 {
+    0%, 100% { transform: translate(0, 0); }
+    50%       { transform: translate(-18px, 18px); }
+  }
+
+  /* cherry blossom canvas */
+  #blossoms { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+
+  /* card */
+  .card {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 44px 40px 40px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    max-width: 340px; width: 90vw;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.04) inset;
+    animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* avatar */
+  .avatar-wrap {
+    position: relative; width: 80px; height: 80px;
+    margin: 0 auto 20px;
+    animation: fadeUp 0.6s 0.08s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .avatar-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid rgba(212,168,199,0.25);
+    display: block;
+  }
+  .avatar-badge {
+    position: absolute; bottom: -2px; right: -2px;
+    width: 24px; height: 24px; background: var(--bg3);
+    border: 1px solid var(--border); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--accent);
+  }
+
+  /* name */
+  h1 {
+    font-family: 'Hachi Maru Pop', cursive;
+    font-size: 2.2rem; font-weight: 400;
+    letter-spacing: 0.01em; line-height: 1;
+    color: var(--text);
+    animation: fadeUp 0.6s 0.12s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* role tag */
+  .role-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 10px;
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: lowercase; color: var(--muted);
+    animation: fadeUp 0.6s 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .role-tag::before, .role-tag::after {
+    content: ''; flex: 1; height: 1px; background: var(--border); display: block; width: 24px;
+  }
+
+  /* divider */
+  .divider {
+    width: 40px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin: 20px auto;
+    animation: fadeUp 0.6s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+    opacity: 0.5;
+  }
+
+  /* social buttons */
+  .socials {
+    display: flex; gap: 10px; justify-content: center; align-items: center;
+    animation: fadeUp 0.6s 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .social-btn {
+    display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px;
+    width: 72px; height: 72px; border-radius: 10px;
+    text-decoration: none;
+    background: var(--bg3); border: 1px solid var(--border);
+    transition: border-color 0.2s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+    font-size: 0.58rem; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: lowercase; color: var(--muted);
+  }
+  .social-btn:hover {
+    border-color: rgba(212,168,199,0.35);
+    background: #1e1e21;
+    color: var(--accent);
+    transform: translateY(-5px);
+  }
+  .social-btn svg { opacity: 0.65; transition: opacity 0.2s; }
+  .social-btn:hover svg { opacity: 1; }
+
+  /* action buttons */
+  .actions {
+    display: flex; flex-direction: column; gap: 8px;
+    margin-top: 14px;
+    animation: fadeUp 0.6s 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .btn-action {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 11px 20px; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 400;
+    letter-spacing: 0.03em; text-decoration: none; border: 1px solid var(--border);
+    cursor: pointer; transition: all 0.2s;
+    background: var(--bg3); color: var(--text);
+  }
+  .btn-action:hover { border-color: rgba(212,168,199,0.35); background: #1e1e21; color: var(--accent); }
+  .btn-action svg { opacity: 0.6; flex-shrink: 0; transition: opacity 0.2s; }
+  .btn-action:hover svg { opacity: 1; }
+
+  /* footer */
+  .card-footer {
+    margin-top: 20px;
+    font-size: 0.65rem; letter-spacing: 0.12em;
+    color: var(--muted); text-transform: lowercase;
+    animation: fadeUp 0.6s 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .card-footer span { color: var(--accent); }
+
+  /* music button */
+  #musicBtn {
+    position: fixed; bottom: 20px; right: 20px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--bg2); border: 1px solid rgba(212,168,199,0.25);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 2.5px;
+    transition: border-color 0.2s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 100;
+    animation: fadeUp 0.6s 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  #musicBtn:hover {
+    border-color: rgba(212,168,199,0.5);
+    transform: scale(1.12);
+  }
+  .wave-bar {
+    width: 2.5px; border-radius: 2px;
+    background: var(--accent);
+    animation: waveBar 0.9s ease-in-out infinite alternate;
+  }
+  .wave-bar:nth-child(1) { height: 7px;  animation-delay: 0s; }
+  .wave-bar:nth-child(2) { height: 14px; animation-delay: 0.15s; }
+  .wave-bar:nth-child(3) { height: 20px; animation-delay: 0.05s; }
+  .wave-bar:nth-child(4) { height: 12px; animation-delay: 0.22s; }
+  .wave-bar:nth-child(5) { height: 7px;  animation-delay: 0.1s; }
+  @keyframes waveBar {
+    from { transform: scaleY(0.3); opacity: 0.4; }
+    to   { transform: scaleY(1);   opacity: 1; }
+  }
+  #musicBtn.paused .wave-bar {
+    animation: none; transform: scaleY(0.3); opacity: 0.3;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+<div class="glow glow-3"></div>
+
+<canvas id="blossoms"></canvas>
+
+<div class="card">
+
+  <div class="avatar-wrap">
+    <img src="avatar.gif" alt="omiku"/>
+    <div class="avatar-badge">✿</div>
+  </div>
+
+  <h1>omiku</h1>
+  <br><div class="role-tag">social media manager &amp; marketer</div>
+
+  <div style="height: 20px;"></div>
+
+<div class="socials">
+
+    <!-- Instagram -->
+    <a href="https://instagram.com/omiku" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" stroke-width="1.7"/>
+        <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.7"/>
+        <circle cx="17.5" cy="6.5" r="0.9" fill="currentColor"/>
+      </svg>
+      insta
+    </a>
+
+    <!-- TikTok -->
+    <a href="https://tiktok.com/@ika" target="_blank" rel="noopener" class="social-btn" aria-label="TikTok">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.98a8.17 8.17 0 0 0 4.78 1.52V7.06a4.85 4.85 0 0 1-1.01-.37z"/>
+      </svg>
+      tiktok
+    </a>
+
+    <!-- Email -->
+    <a href="/cdn-cgi/l/email-protection#cea7a38ea1a3a7a5bbe0ada1" class="social-btn" aria-label="Email">
+      <svg width="22" height="17" viewBox="0 0 26 20" fill="none">
+        <rect x="1" y="1" width="24" height="18" rx="3" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M1 4.5l12 7.5L25 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      email
+    </a>
+
+  </div>
+
+  <div class="actions">
+    <a href="https://omiku.co/omikutalks" class="btn-action">
+      <svg width="15" height="11" viewBox="0 0 26 18" fill="none">
+        <path d="M25 4.6C24.7 2.7 23.9 1.9 23.9 1.9 22.9.8 21.8.8 21.3.7 17.8.5 13 .5 13 .5S8.2.5 4.7.7C4.2.8 3.1.8 2.1 1.9 1.3 2.7 1 4.6 1 4.6 .7 6.8.7 9 .7 9V10.1C.7 12.3 1 14.5 1 14.5 1.3 16.4 2.1 17.2 2.1 17.2 3.1 18.3 4.4 18.2 5 18.3 7.1 18.5 13 18.5 13 18.5S17.8 18.5 21.3 18.3C21.8 18.2 22.9 18.3 23.9 17.2 24.7 16.4 25 14.5 25 14.5 25.3 12.3 25.3 10.1 25.3 10.1V9C25.3 6.8 25 4.6 25 4.6Z" fill="currentColor"/>
+        <polygon points="10.4,12.9 10.4,5.6 17.4,9.25" fill="var(--bg)"/>
+      </svg>
+      omiku talks: the podcast
+    </a>
+
+    <a href="/book" class="btn-action">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      book a meeting
+    </a>
+  </div>
+
+  <div class="card-footer">omiku.co</div>
+
+</div>
+
+<!-- Music Player -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicBtn" aria-label="Toggle music">
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+  <div class="wave-bar"></div>
+</button>
+
+<script>
+  // Falling hearts animation
+  const canvas = document.getElementById('blossoms');
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function drawHeart(ctx, x, y, size, opacity) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.globalAlpha = opacity;
+    ctx.beginPath();
+    ctx.moveTo(0, size * 0.3);
+    ctx.bezierCurveTo(-size * 0.1,  size * 0.1, -size * 0.5, -size * 0.2, -size * 0.5, -size * 0.1);
+    ctx.bezierCurveTo(-size * 0.5, -size * 0.5,  0,          -size * 0.4,  0,            size * 0.1);
+    ctx.bezierCurveTo( 0,          -size * 0.4,  size * 0.5, -size * 0.5,  size * 0.5, -size * 0.1);
+    ctx.bezierCurveTo( size * 0.5, -size * 0.2,  size * 0.1,  size * 0.1,  0,            size * 0.3);
+    ctx.closePath();
+    ctx.fillStyle = '#e8a0c0';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  const hearts = [];
+  const COUNT = 30;
+
+  for (let i = 0; i < COUNT; i++) {
+    hearts.push({
+      x:         Math.random() * window.innerWidth,
+      y:         Math.random() * window.innerHeight,
+      size:      5 + Math.random() * 9,
+      speedY:    0.3 + Math.random() * 0.6,
+      sway:      Math.random() * Math.PI * 2,
+      swaySpeed: 0.006 + Math.random() * 0.01,
+      swayAmp:   0.6 + Math.random() * 1.4,
+      opacity:   0,
+      targetOpacity: 0.12 + Math.random() * 0.25,
+      fadeSpeed: 0.003 + Math.random() * 0.005,
+      fadeIn:    true,
+    });
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const h of hearts) {
+      // Fade in/out
+      if (h.fadeIn) {
+        h.opacity += h.fadeSpeed;
+        if (h.opacity >= h.targetOpacity) { h.opacity = h.targetOpacity; h.fadeIn = false; }
+      } else {
+        h.opacity -= h.fadeSpeed * 0.6;
+        if (h.opacity <= 0) {
+          h.opacity = 0; h.fadeIn = true;
+          h.x = Math.random() * canvas.width;
+          h.y = -20;
+          h.targetOpacity = 0.12 + Math.random() * 0.25;
+        }
+      }
+
+      h.sway += h.swaySpeed;
+      h.x    += Math.sin(h.sway) * h.swayAmp;
+      h.y    += h.speedY;
+
+      if (h.y > canvas.height + 20) {
+        h.y = -20;
+        h.x = Math.random() * canvas.width;
+        h.opacity = 0;
+        h.fadeIn  = true;
+      }
+
+      drawHeart(ctx, h.x, h.y, h.size, h.opacity);
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+</script>
+
+<script>
+  const audio = document.getElementById('bgMusic');
+  const btn   = document.getElementById('musicBtn');
+  let playing = false;
+
+  window.addEventListener('load', () => {
+    audio.volume = 0.5;
+    audio.play().then(() => {
+      playing = true;
+    }).catch(() => {
+      btn.classList.add('paused');
+      const start = () => {
+        audio.play(); playing = true;
+        btn.classList.remove('paused');
+        document.removeEventListener('click', start);
+      };
+      document.addEventListener('click', start);
+    });
+  });
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (playing) { audio.pause(); playing = false; btn.classList.add('paused'); }
+    else { audio.play(); playing = true; btn.classList.remove('paused'); }
+  });
+</script>
+
+</body>
+</html>
