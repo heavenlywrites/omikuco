@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>omiku talks ✿</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #0e0e0f;
+      --bg2:    #161618;
+      --bg3:    #1e1e21;
+      --border: rgba(255,255,255,0.07);
+      --text:   #f0eef5;
+      --muted:  #7a7585;
+      --accent: #d4a8c7;
+      --accent2:#a98fc7;
+      --pink:   #e8b4cc;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; opacity: 0.6;
+    }
+
+    .wrap { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 0 28px; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid var(--border);
+      background: rgba(14,14,15,0.85);
+      backdrop-filter: blur(20px);
+      padding: 18px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--text);
+      font-size: 0.95rem; font-weight: 400; letter-spacing: 0.01em;
+    }
+    .nav-logo img {
+      width: 30px; height: 30px; border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid rgba(212,168,199,0.3);
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      font-size: 0.8rem; font-weight: 400; letter-spacing: 0.08em;
+      text-transform: lowercase; color: var(--muted);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero { padding: 110px 0 80px; text-align: center; }
+    .hero-symbol {
+      display: block;
+      font-size: 1rem; color: var(--accent);
+      letter-spacing: 0.6em;
+      margin-bottom: 36px;
+      animation: fadeUp 0.5s ease both;
+    }
+    .hero-avatar {
+      width: 90px; height: 90px; border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid rgba(212,168,199,0.25);
+      margin: 0 auto 28px;
+      display: block;
+      animation: fadeUp 0.5s 0.05s ease both;
+    }
+    .hero h1 {
+      font-size: clamp(2.6rem, 7vw, 4.2rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--text);
+      animation: fadeUp 0.5s 0.1s ease both;
+    }
+    .hero h1 span { color: var(--accent); font-weight: 300; }
+    .hero-sub {
+      margin-top: 14px;
+      font-size: 0.9rem; font-weight: 400;
+      color: var(--muted); letter-spacing: 0.04em;
+      animation: fadeUp 0.5s 0.15s ease both;
+    }
+
+    /* ── CTA BUTTONS ── */
+    .cta-row {
+      display: flex; justify-content: center;
+      flex-wrap: wrap; gap: 12px;
+      margin-top: 36px;
+      animation: fadeUp 0.5s 0.2s ease both;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 11px 24px; border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400; font-size: 0.88rem;
+      letter-spacing: 0.03em;
+      text-decoration: none; border: 1px solid var(--border);
+      cursor: pointer; transition: all 0.2s;
+      background: var(--bg2);
+      color: var(--text);
+    }
+    .btn:hover { border-color: rgba(212,168,199,0.35); background: var(--bg3); color: var(--accent); }
+    .btn svg { opacity: 0.7; flex-shrink: 0; transition: opacity 0.2s; }
+    .btn:hover svg { opacity: 1; }
+
+    /* ── SECTION ── */
+    .section { padding: 80px 0; border-top: 1px solid var(--border); }
+    .section-label {
+      font-size: 0.72rem; font-weight: 500;
+      text-transform: lowercase; letter-spacing: 0.14em;
+      color: var(--accent); margin-bottom: 6px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .section-title {
+      font-size: 1.6rem; font-weight: 300;
+      letter-spacing: -0.01em; margin-bottom: 32px;
+      color: var(--text);
+    }
+
+    /* ── VIDEOS ── */
+    .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 20px; }
+    .video-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .video-card:hover { border-color: rgba(212,168,199,0.2); transform: translateY(-3px); }
+    .video-badge {
+      padding: 14px 16px 8px;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: lowercase; color: var(--muted);
+      display: flex; align-items: center; gap: 7px;
+    }
+    .video-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+    .video-name {
+      padding: 0 16px 14px;
+      font-size: 0.92rem; font-weight: 400; color: var(--text);
+      line-height: 1.45;
+    }
+    .video-embed { aspect-ratio: 16/9; background: var(--bg3); }
+    .video-embed iframe { width: 100%; height: 100%; border: none; display: block; }
+
+    /* ── SUGGEST TABS ── */
+    .tabs { display: flex; gap: 2px; margin-bottom: 28px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 4px; width: fit-content; }
+    .tab-btn {
+      padding: 7px 18px; border-radius: 6px; border: none;
+      background: transparent; color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem; font-weight: 400; letter-spacing: 0.04em;
+      cursor: pointer; transition: all 0.18s;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .tab-btn.active { background: var(--bg3); color: var(--text); }
+    .tab-btn:hover:not(.active) { color: var(--text); }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; animation: fadeUp 0.3s ease; }
+    .tab-pane h3 { font-size: 1rem; font-weight: 400; color: var(--text); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .tab-pane p.hint { font-size: 0.82rem; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; text-transform: lowercase; }
+    .field input, .field textarea {
+      width: 100%;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 11px 14px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+      font-weight: 400; color: var(--text);
+      outline: none; transition: border-color 0.2s; resize: vertical;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: var(--muted); opacity: 0.5; }
+    .field input:focus, .field textarea:focus { border-color: rgba(212,168,199,0.4); }
+    .field textarea { min-height: 110px; }
+
+    .submit-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px; border-radius: 6px;
+      background: rgba(212,168,199,0.1);
+      border: 1px solid rgba(212,168,199,0.2);
+      color: var(--accent); font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem; font-weight: 400; letter-spacing: 0.04em;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .submit-btn:hover { background: rgba(212,168,199,0.18); border-color: rgba(212,168,199,0.4); }
+
+    .success-msg {
+      display: none;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 28px 24px;
+      text-align: center;
+    }
+    .success-msg .sym { font-size: 1.6rem; display: block; margin-bottom: 10px; }
+    .success-msg h3 { font-weight: 300; font-size: 1.1rem; color: var(--accent); margin-bottom: 6px; }
+    .success-msg p { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+      text-align: center;
+    }
+    .footer-sym { display: block; font-size: 0.75rem; letter-spacing: 0.4em; color: var(--accent); margin-bottom: 14px; }
+    footer p { font-size: 0.8rem; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    footer a { color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: color 0.2s; }
+    footer a:hover { color: var(--text); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ════════════════════════════════════════
+       ADMIN OVERLAY
+    ════════════════════════════════════════ */
+    #admin-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--bg);
+      overflow-y: auto;
+    }
+    #admin-overlay.open { display: block; }
+
+    /* Password Gate */
+    #admin-gate {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 100vh; padding: 40px 24px;
+    }
+    .gate-logo {
+      font-size: 1.5rem; font-weight: 300;
+      color: var(--accent); margin-bottom: 6px; letter-spacing: -0.01em;
+    }
+    .gate-sub {
+      font-size: 0.78rem; color: var(--muted);
+      letter-spacing: 0.1em; margin-bottom: 36px;
+    }
+    .gate-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px 28px;
+      width: 100%; max-width: 380px;
+    }
+    .gate-box label {
+      display: block; font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.1em; color: var(--muted);
+      text-transform: lowercase; margin-bottom: 8px;
+    }
+    .gate-box input {
+      width: 100%;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 11px 14px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+      color: var(--text); outline: none;
+      transition: border-color 0.2s; margin-bottom: 16px;
+    }
+    .gate-box input:focus { border-color: rgba(212,168,199,0.4); }
+    .gate-btn {
+      width: 100%; padding: 11px;
+      background: rgba(212,168,199,0.1);
+      border: 1px solid rgba(212,168,199,0.2);
+      border-radius: 8px; color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem; font-weight: 400;
+      cursor: pointer; transition: all 0.2s;
+      letter-spacing: 0.04em;
+    }
+    .gate-btn:hover { background: rgba(212,168,199,0.18); border-color: rgba(212,168,199,0.4); }
+    .gate-err {
+      display: none; margin-top: 10px;
+      font-size: 0.78rem; color: #e8a0a0; text-align: center;
+    }
+
+    /* Dashboard */
+    #admin-dash { display: none; padding: 0 0 80px; }
+
+    .admin-nav {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(14,14,15,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .admin-nav-title {
+      font-size: 0.88rem; font-weight: 400;
+      color: var(--accent); letter-spacing: 0.06em;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .admin-nav-title span {
+      background: rgba(212,168,199,0.12);
+      border: 1px solid rgba(212,168,199,0.18);
+      border-radius: 20px; padding: 2px 10px;
+      font-size: 0.72rem; color: var(--accent);
+    }
+    .admin-close-btn {
+      padding: 7px 16px; border-radius: 6px;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem; cursor: pointer; transition: all 0.2s;
+      letter-spacing: 0.04em;
+    }
+    .admin-close-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+
+    .admin-body { max-width: 780px; margin: 0 auto; padding: 36px 28px 0; }
+
+    .admin-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 14px; margin-bottom: 28px;
+    }
+    .admin-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 6px 14px; border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent; color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.76rem; cursor: pointer; transition: all 0.18s;
+      letter-spacing: 0.04em;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      border-color: rgba(212,168,199,0.35);
+      color: var(--accent);
+      background: rgba(212,168,199,0.07);
+    }
+    .copy-all-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 7px 18px; border-radius: 6px;
+      background: rgba(212,168,199,0.08);
+      border: 1px solid rgba(212,168,199,0.18);
+      color: var(--accent); font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem; cursor: pointer; transition: all 0.2s;
+      letter-spacing: 0.04em; white-space: nowrap;
+    }
+    .copy-all-btn:hover { background: rgba(212,168,199,0.16); border-color: rgba(212,168,199,0.35); }
+
+    .admin-empty {
+      text-align: center; padding: 80px 20px;
+      color: var(--muted); font-size: 0.88rem;
+    }
+    .admin-empty .sym { font-size: 2rem; display: block; margin-bottom: 14px; opacity: 0.4; }
+
+    /* Submission cards */
+    #submissions-list { display: flex; flex-direction: column; gap: 14px; }
+
+    .sub-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      transition: border-color 0.2s;
+      animation: fadeUp 0.3s ease both;
+    }
+    .sub-card:hover { border-color: rgba(212,168,199,0.15); }
+
+    .sub-card-top {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 12px;
+      margin-bottom: 12px;
+    }
+    .sub-meta { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+    .sub-type {
+      padding: 3px 10px; border-radius: 20px;
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: lowercase;
+    }
+    .sub-type.ideas    { background: rgba(212,168,199,0.12); color: var(--accent); border: 1px solid rgba(212,168,199,0.2); }
+    .sub-type.questions{ background: rgba(169,143,199,0.12); color: var(--accent2); border: 1px solid rgba(169,143,199,0.2); }
+    .sub-type.advice   { background: rgba(232,180,204,0.12); color: var(--pink); border: 1px solid rgba(232,180,204,0.2); }
+
+    .sub-name  { font-size: 0.8rem; color: var(--text); font-weight: 400; }
+    .sub-time  { font-size: 0.72rem; color: var(--muted); }
+
+    .sub-actions { display: flex; gap: 7px; flex-shrink: 0; }
+    .action-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 12px; border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.74rem; cursor: pointer; transition: all 0.18s;
+      letter-spacing: 0.03em; border: 1px solid var(--border);
+      background: transparent;
+    }
+    .copy-btn { color: var(--muted); }
+    .copy-btn:hover { color: var(--accent); border-color: rgba(212,168,199,0.3); background: rgba(212,168,199,0.06); }
+    .copy-btn.copied { color: #8ecfa8; border-color: rgba(142,207,168,0.3); background: rgba(142,207,168,0.06); }
+    .delete-btn { color: var(--muted); }
+    .delete-btn:hover { color: #e8a0a0; border-color: rgba(232,160,160,0.3); background: rgba(232,160,160,0.06); }
+
+    .sub-message {
+      font-size: 0.88rem; color: var(--text);
+      line-height: 1.6; word-break: break-word;
+      border-left: 2px solid var(--border);
+      padding-left: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ ADMIN OVERLAY ══ -->
+<div id="admin-overlay">
+
+  <!-- Password Gate -->
+  <div id="admin-gate">
+    <div class="gate-logo">omiku talks</div>
+    <div class="gate-sub">✿ &nbsp;admin access</div>
+    <div class="gate-box">
+      <label>password</label>
+      <input type="password" id="pw-input" placeholder="enter password" autocomplete="current-password"/>
+      <button class="gate-btn" onclick="checkPassword()">unlock dashboard</button>
+      <p class="gate-err" id="gate-err">✦ incorrect password</p>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="admin-dash">
+    <div class="admin-nav">
+      <div class="admin-nav-title">
+        ✿ admin dashboard
+        <span id="count-badge">0</span>
+      </div>
+      <button class="admin-close-btn" onclick="closeAdmin()">✕ &nbsp;close</button>
+    </div>
+
+    <div class="admin-body">
+      <div class="admin-topbar">
+        <div class="admin-filters">
+          <button class="filter-btn active" data-filter="all" onclick="setFilter(this,'all')">all</button>
+          <button class="filter-btn" data-filter="ideas" onclick="setFilter(this,'ideas')">video ideas</button>
+          <button class="filter-btn" data-filter="questions" onclick="setFilter(this,'questions')">questions</button>
+          <button class="filter-btn" data-filter="advice" onclick="setFilter(this,'advice')">advice</button>
+        </div>
+        <button class="copy-all-btn" onclick="copyAll()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          copy all visible
+        </button>
+      </div>
+
+      <div id="submissions-list"></div>
+      <div class="admin-empty" id="admin-empty" style="display:none">
+        <span class="sym">✿</span>
+        no submissions yet — check back later!
+      </div>
+    </div>
+  </div>
+
+</div><!-- /admin-overlay -->
+
+
+<!-- ══ MAIN SITE ══ -->
+<nav>
+  <a class="nav-logo" href="#">
+    <!-- ✏️ swap src with your avatar URL -->
+    <img src="https://i.pravatar.cc/60?img=47" alt="omiku"/>
+    omiku talks
+  </a>
+  <div class="nav-links">
+    <a href="#videos">videos</a>
+    <a href="#suggest">suggest</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <span class="hero-symbol">✦ ✿ ✦</span>
+    <!-- ✏️ swap src with your avatar URL -->
+    <img class="hero-avatar" src="https://i.pravatar.cc/200?img=47" alt="omiku"/>
+    <h1>omiku <span>talks</span></h1>
+    <p class="hero-sub">friends · relationships · life · fun · advice</p>
+
+    <div class="cta-row">
+      <a class="btn" href="https://youtube.com/@omikutalks" target="_blank" rel="noopener">
+        <svg width="18" height="13" viewBox="0 0 26 18" fill="none">
+          <path d="M25 4.6C24.7 2.7 23.9 1.9 23.9 1.9 22.9.8 21.8.8 21.3.7 17.8.5 13 .5 13 .5S8.2.5 4.7.7C4.2.8 3.1.8 2.1 1.9 1.3 2.7 1 4.6 1 4.6 .7 6.8.7 9 .7 9V10.1C.7 12.3 1 14.5 1 14.5 1.3 16.4 2.1 17.2 2.1 17.2 3.1 18.3 4.4 18.2 5 18.3 7.1 18.5 13 18.5 13 18.5S17.8 18.5 21.3 18.3C21.8 18.2 22.9 18.3 23.9 17.2 24.7 16.4 25 14.5 25 14.5 25.3 12.3 25.3 10.1 25.3 10.1V9C25.3 6.8 25 4.6 25 4.6Z" fill="currentColor"/>
+          <polygon points="10.4,12.9 10.4,5.6 17.4,9.25" fill="var(--bg2)"/>
+        </svg>
+        youtube
+      </a>
+      <a class="btn" href="https://discord.gg/omiku" target="_blank" rel="noopener">
+        <svg width="18" height="14" viewBox="0 0 71 55" fill="currentColor">
+          <path d="M60.1 4.9C55.5 2.8 50.6 1.3 45.5.5 44.8 1.7 44 3.3 43.5 4.6 38.1 3.8 32.8 3.8 27.5 4.6 27 3.3 26.2 1.7 25.5.5 20.4 1.3 15.4 2.8 10.8 4.9 1.6 18.6-.9 31.9.3 45c6.1 4.5 12 7.2 17.8 9 1.5-2.1 2.8-4.3 3.9-6.6-2.3-.9-4.5-2-6.5-3.3.5-.4 1.1-.8 1.6-1.2 11.4 5.4 23.9 5.4 35.2 0 .5.4 1.1.8 1.6 1.2-2.1 1.4-4.3 2.5-6.5 3.3 1.1 2.3 2.4 4.5 3.9 6.6 5.8-1.8 11.7-4.5 17.8-9C70.5 29.9 66.6 16.7 60.1 4.9zM23.7 36.9c-3.4 0-6.2-3.1-6.2-6.9s2.7-6.9 6.2-6.9 6.2 3.1 6.1 6.9c0 3.8-2.7 6.9-6.1 6.9zm23 0c-3.4 0-6.2-3.1-6.2-6.9s2.7-6.9 6.2-6.9 6.2 3.1 6.1 6.9c0 3.8-2.7 6.9-6.1 6.9z"/>
+        </svg>
+        discord
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section id="videos" class="section">
+  <div class="wrap">
+    <div class="section-label">✿ &nbsp;videos</div>
+    <div class="section-title">my favourites</div>
+    <div class="video-grid">
+
+      <div class="video-card">
+        <div class="video-badge"><div class="video-badge-dot"></div> fave no. 1</div>
+        <div class="video-name">omiku talks first impressions</div>
+        <div class="video-embed">
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID_1" title="fave 1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-badge"><div class="video-badge-dot"></div> fave no. 2</div>
+        <div class="video-name">omiku talks biggest fears</div>
+        <div class="video-embed">
+          <iframe src="https://www.youtube.com/embed/VIDEO_ID_2" title="fave 2"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SUGGEST -->
+<section id="suggest" class="section">
+  <div class="wrap">
+    <div class="section-label">✿ &nbsp;talk to me</div>
+    <div class="section-title">send something in</div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="ideas">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        video ideas
+      </button>
+      <button class="tab-btn" data-tab="questions">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        ask me
+      </button>
+      <button class="tab-btn" data-tab="advice">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        advice
+      </button>
+    </div>
+
+    <!-- ideas -->
+    <div class="tab-pane active" id="tab-ideas">
+      <h3>got a video idea?</h3>
+      <p class="hint">tell me what you want to see — i read every single one.</p>
+      <div id="form-ideas">
+        <div class="field"><label>name (optional)</label><input type="text" placeholder="e.g. sakura_chan"/></div>
+        <div class="field"><label>your idea</label><textarea placeholder="what should i make a video about?"></textarea></div>
+        <button class="submit-btn" onclick="submitForm('ideas')">send
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="success-msg" id="success-ideas"><span class="sym">✿</span><h3>idea received</h3><p>added to my inspo list — thank you!</p></div>
+    </div>
+
+    <!-- questions -->
+    <div class="tab-pane" id="tab-questions">
+      <h3>ask me anything</h3>
+      <p class="hint">curious about my life, opinions, or anything else? send it in.</p>
+      <div id="form-questions">
+        <div class="field"><label>name (optional)</label><input type="text" placeholder="e.g. moonbeam99"/></div>
+        <div class="field"><label>your question</label><textarea placeholder="what do you want to know?"></textarea></div>
+        <button class="submit-btn" onclick="submitForm('questions')">send
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="success-msg" id="success-questions"><span class="sym">✿</span><h3>question sent</h3><p>i'll answer in a future video or on discord — stay tuned!</p></div>
+    </div>
+
+    <!-- advice -->
+    <div class="tab-pane" id="tab-advice">
+      <h3>need some advice?</h3>
+      <p class="hint">life stuff, creative struggles, anything — i'm here, no judgment.</p>
+      <div id="form-advice">
+        <div class="field"><label>name (optional)</label><input type="text" placeholder="anonymous is totally fine"/></div>
+        <div class="field"><label>what's on your mind?</label><textarea placeholder="share whatever you're going through..."></textarea></div>
+        <button class="submit-btn" onclick="submitForm('advice')">send
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="success-msg" id="success-advice"><span class="sym">✿</span><h3>message received</h3><p>thank you for trusting me — sending good vibes your way.</p></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <span class="footer-sym">✦ ✿ ✦</span>
+    <p>
+      <a href="https://youtube.com/@omikutalks" target="_blank" rel="noopener">
+        <svg width="14" height="10" viewBox="0 0 26 18" fill="currentColor"><path d="M25 4.6C24.7 2.7 23.9 1.9 23.9 1.9 22.9.8 21.8.8 21.3.7 17.8.5 13 .5 13 .5S8.2.5 4.7.7C4.2.8 3.1.8 2.1 1.9 1.3 2.7 1 4.6 1 4.6 .7 6.8.7 9 .7 9V10.1C.7 12.3 1 14.5 1 14.5 1.3 16.4 2.1 17.2 2.1 17.2 3.1 18.3 4.4 18.2 5 18.3 7.1 18.5 13 18.5 13 18.5S17.8 18.5 21.3 18.3C21.8 18.2 22.9 18.3 23.9 17.2 24.7 16.4 25 14.5 25 14.5 25.3 12.3 25.3 10.1 25.3 10.1V9C25.3 6.8 25 4.6 25 4.6Z"/><polygon points="10.4,12.9 10.4,5.6 17.4,9.25" fill="var(--bg)"/></svg>
+        youtube
+      </a>
+      <span style="color:var(--border)">·</span>
+      <a href="https://discord.gg/omiku" target="_blank" rel="noopener">
+        <svg width="14" height="11" viewBox="0 0 71 55" fill="currentColor"><path d="M60.1 4.9C55.5 2.8 50.6 1.3 45.5.5 44.8 1.7 44 3.3 43.5 4.6 38.1 3.8 32.8 3.8 27.5 4.6 27 3.3 26.2 1.7 25.5.5 20.4 1.3 15.4 2.8 10.8 4.9 1.6 18.6-.9 31.9.3 45c6.1 4.5 12 7.2 17.8 9 1.5-2.1 2.8-4.3 3.9-6.6-2.3-.9-4.5-2-6.5-3.3.5-.4 1.1-.8 1.6-1.2 11.4 5.4 23.9 5.4 35.2 0 .5.4 1.1.8 1.6 1.2-2.1 1.4-4.3 2.5-6.5 3.3 1.1 2.3 2.4 4.5 3.9 6.6 5.8-1.8 11.7-4.5 17.8-9C70.5 29.9 66.6 16.7 60.1 4.9zM23.7 36.9c-3.4 0-6.2-3.1-6.2-6.9s2.7-6.9 6.2-6.9 6.2 3.1 6.1 6.9c0 3.8-2.7 6.9-6.1 6.9zm23 0c-3.4 0-6.2-3.1-6.2-6.9s2.7-6.9 6.2-6.9 6.2 3.1 6.1 6.9c0 3.8-2.7 6.9-6.1 6.9z"/></svg>
+        discord
+      </a>
+      <span style="color:var(--border)">·</span>
+      <a href="https://omiku.co" target="_blank" rel="noopener">omiku.co</a>
+    </p>
+    <div style="margin-top: 28px;">
+      <a href="#admin" class="btn" style="font-size:0.75rem; padding: 8px 18px; color: var(--muted); border-color: var(--border); opacity: 0.5; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        admin
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ────────────────────────────────────────
+   MAIN SITE LOGIC
+──────────────────────────────────────── */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+function submitForm(type) {
+  const pane = document.getElementById('tab-' + type);
+  const inputs = pane.querySelectorAll('input, textarea');
+  const name = inputs[0].value.trim();
+  const message = inputs[1].value.trim();
+  if (!message) { inputs[1].style.borderColor = 'rgba(212,168,199,0.6)'; inputs[1].focus(); return; }
+
+  try {
+    const existing = JSON.parse(localStorage.getItem('omiku_suggestions') || '[]');
+    existing.unshift({
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2,5),
+      type: type,
+      name: name || 'anonymous',
+      message: message,
+      ts: new Date().toISOString()
+    });
+    localStorage.setItem('omiku_suggestions', JSON.stringify(existing));
+  } catch(e) {}
+
+  pane.querySelector('[id^="form-"]').style.display = 'none';
+  const msg = document.getElementById('success-' + type);
+  msg.style.display = 'block';
+  setTimeout(() => {
+    pane.querySelector('[id^="form-"]').style.display = 'block';
+    msg.style.display = 'none';
+    inputs.forEach(el => el.value = '');
+  }, 6000);
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.style.opacity = 1; e.target.style.transform = 'translateY(0)'; }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.video-card').forEach(el => {
+  el.style.cssText += 'opacity:0; transform:translateY(20px); transition:opacity 0.5s ease,transform 0.5s ease;';
+  observer.observe(el);
+});
+
+
+/* ────────────────────────────────────────
+   ADMIN LOGIC
+   Access: add  #admin  to the URL
+──────────────────────────────────────── */
+const ADMIN_PASSWORD = 'Loving21!';
+let currentFilter = 'all';
+
+// Open admin if hash is #admin
+function checkHash() {
+  if (window.location.hash === '#admin') {
+    document.getElementById('admin-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+window.addEventListener('hashchange', checkHash);
+checkHash();
+
+function closeAdmin() {
+  document.getElementById('admin-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  // Reset gate
+  document.getElementById('admin-gate').style.display = 'flex';
+  document.getElementById('admin-dash').style.display = 'none';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('gate-err').style.display = 'none';
+  history.replaceState(null, '', window.location.pathname + window.location.search);
+}
+
+function checkPassword() {
+  const val = document.getElementById('pw-input').value;
+  if (val === ADMIN_PASSWORD) {
+    document.getElementById('admin-gate').style.display = 'none';
+    document.getElementById('admin-dash').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    renderSubmissions();
+  } else {
+    const err = document.getElementById('gate-err');
+    err.style.display = 'block';
+    document.getElementById('pw-input').focus();
+    setTimeout(() => err.style.display = 'none', 2500);
+  }
+}
+
+// Allow Enter key on password field
+document.getElementById('pw-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkPassword();
+});
+
+function getSuggestions() {
+  try { return JSON.parse(localStorage.getItem('omiku_suggestions') || '[]'); }
+  catch(e) { return []; }
+}
+
+function saveSuggestions(arr) {
+  localStorage.setItem('omiku_suggestions', JSON.stringify(arr));
+}
+
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
+    + ' · ' + d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+}
+
+function typeLabel(type) {
+  const labels = { ideas: 'video idea', questions: 'question', advice: 'advice' };
+  return labels[type] || type;
+}
+
+function renderSubmissions() {
+  const all = getSuggestions();
+  const filtered = currentFilter === 'all' ? all : all.filter(s => s.type === currentFilter);
+
+  const list = document.getElementById('submissions-list');
+  const empty = document.getElementById('admin-empty');
+  const badge = document.getElementById('count-badge');
+
+  badge.textContent = all.length;
+  list.innerHTML = '';
+
+  if (filtered.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  filtered.forEach(sub => {
+    const card = document.createElement('div');
+    card.className = 'sub-card';
+    card.dataset.id = sub.id;
+    card.innerHTML = `
+      <div class="sub-card-top">
+        <div class="sub-meta">
+          <span class="sub-type ${sub.type}">${typeLabel(sub.type)}</span>
+          <span class="sub-name">${escapeHtml(sub.name)}</span>
+          <span class="sub-time">${formatDate(sub.ts)}</span>
+        </div>
+        <div class="sub-actions">
+          <button class="action-btn copy-btn" onclick="copyEntry('${sub.id}', this)">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            copy
+          </button>
+          <button class="action-btn delete-btn" onclick="deleteEntry('${sub.id}')">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            delete
+          </button>
+        </div>
+      </div>
+      <div class="sub-message">${escapeHtml(sub.message)}</div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function formatForCopy(sub) {
+  return `[${typeLabel(sub.type).toUpperCase()}] from: ${sub.name}  |  ${formatDate(sub.ts)}\n${sub.message}`;
+}
+
+function copyEntry(id, btn) {
+  const all = getSuggestions();
+  const sub = all.find(s => s.id === id);
+  if (!sub) return;
+  navigator.clipboard.writeText(formatForCopy(sub)).then(() => {
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> copied!`;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy`;
+    }, 2000);
+  });
+}
+
+function deleteEntry(id) {
+  const all = getSuggestions().filter(s => s.id !== id);
+  saveSuggestions(all);
+  renderSubmissions();
+}
+
+function setFilter(btn, filter) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = filter;
+  renderSubmissions();
+}
+
+function copyAll() {
+  const all = getSuggestions();
+  const filtered = currentFilter === 'all' ? all : all.filter(s => s.type === currentFilter);
+  if (filtered.length === 0) return;
+  const text = filtered.map(formatForCopy).join('\n\n──────────────────\n\n');
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-all-btn');
+    const orig = btn.innerHTML;
+    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> copied all!`;
+    setTimeout(() => btn.innerHTML = orig, 2000);
+  });
+}
+</script>
+</body>
+</html>
