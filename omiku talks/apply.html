@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>staff application · omiku talks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Lilita+One&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f0f10;
+      --surface:   #1a1a1c;
+      --surface2:  #222224;
+      --border:    #2e2e32;
+      --purple:    #7a7585;
+      --pink:      #d4a8c7;
+      --pink-dim:  rgba(212,168,199,0.12);
+      --green:     #7ec8a0;
+      --green-dim: rgba(126,200,160,0.12);
+      --red:       #c87e8a;
+      --red-dim:   rgba(200,126,138,0.12);
+      --amber:     #c8b07e;
+      --amber-dim: rgba(200,176,126,0.12);
+      --text:      #f0eaed;
+      --text-soft: #8a8490;
+      --font:      'Nunito', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* TOPBAR */
+    .topbar {
+      width: 100%;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar-logo {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-soft);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      transition: color 0.15s;
+    }
+    .topbar-logo:hover { color: var(--pink); }
+    .admin-btn {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-soft);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 12px;
+      cursor: pointer;
+      font-family: var(--font);
+      letter-spacing: 0.04em;
+      transition: all 0.15s;
+    }
+    .admin-btn:hover { border-color: var(--purple); color: var(--text); }
+
+    /* MAIN */
+    .content {
+      width: 100%;
+      max-width: 600px;
+      padding: 0 24px 60px;
+    }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 40px 0 32px;
+      text-align: center;
+    }
+    .page-header h1 {
+      font-family: 'Lilita One', cursive;
+      font-size: clamp(1.7rem, 5vw, 2.4rem);
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .page-header h1 span { color: var(--pink); }
+    .page-header p {
+      font-size: 13.5px;
+      line-height: 1.8;
+      color: var(--text-soft);
+    }
+
+    /* FORM */
+    .form-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    /* SECTION */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .section-label-text {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--pink);
+      white-space: nowrap;
+    }
+    .section-label-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .questions {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .question {
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+    .question:last-child { border-bottom: none; }
+
+    .q-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 8px;
+    }
+    .q-text .num {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--pink);
+      min-width: 20px;
+      padding-top: 2px;
+      opacity: 0.8;
+      flex-shrink: 0;
+    }
+
+    /* INPUTS */
+    input[type="text"],
+    textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input[type="text"]:focus,
+    textarea:focus { border-color: rgba(212,168,199,0.45); }
+    input::placeholder, textarea::placeholder { color: #3a3a3e; }
+    textarea { resize: vertical; min-height: 120px; line-height: 1.65; }
+
+    /* RADIO */
+    .choices { display: flex; flex-direction: column; gap: 6px; }
+    .choice-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-soft);
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .choice-label:hover { border-color: var(--purple); color: var(--text); }
+    .choice-label input[type="radio"] { display: none; }
+    .choice-label.selected {
+      background: var(--pink-dim);
+      border-color: rgba(212,168,199,0.4);
+      color: var(--text);
+      font-weight: 600;
+    }
+    .choice-indicator {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+    .choice-label:hover .choice-indicator { border-color: var(--purple); }
+    .choice-label.selected .choice-indicator {
+      border-color: var(--pink);
+      background: var(--pink);
+    }
+    .choice-label.selected .choice-indicator::after {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #0f0f10;
+    }
+
+    /* AGREEMENT CHECKBOXES */
+    .agreement-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .agreement-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s;
+      user-select: none;
+    }
+    .agreement-item:last-child { border-bottom: none; }
+    .agreement-item:hover { background: rgba(255,255,255,0.02); }
+    .agreement-item input[type="checkbox"] { display: none; }
+    .check-box {
+      width: 18px; height: 18px;
+      border-radius: 5px;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: all 0.15s;
+    }
+    .agreement-item:hover .check-box { border-color: var(--purple); }
+    .agreement-item.checked .check-box {
+      background: var(--pink);
+      border-color: var(--pink);
+    }
+    .agreement-item.checked .check-box::after {
+      content: '✓';
+      font-size: 11px;
+      font-weight: 900;
+      color: #0f0f10;
+      line-height: 1;
+    }
+    .agreement-text {
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: var(--text-soft);
+    }
+    .agreement-text strong { color: var(--text); font-weight: 700; }
+    .agreement-item.checked .agreement-text { color: var(--text); }
+
+    /* SUBMIT */
+    .submit-wrap { display: flex; flex-direction: column; gap: 12px; }
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--pink);
+      color: #0f0f10;
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: opacity 0.15s;
+    }
+    .submit-btn:hover { opacity: 0.85; }
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 14px 18px;
+      color: var(--green);
+      font-size: 13.5px;
+      font-weight: 600;
+      background: var(--green-dim);
+      border: 1px solid rgba(126,200,160,0.25);
+      border-radius: 10px;
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    footer { margin-top: auto; padding: 20px 0 32px; font-size: 12px; }
+    footer a {
+      color: var(--text-soft); text-decoration: none;
+      font-weight: 600; letter-spacing: 0.06em; transition: color 0.15s;
+    }
+    footer a:hover { color: var(--pink); }
+
+    /* OVERLAY */
+    .overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.72); backdrop-filter: blur(6px);
+      z-index: 100; justify-content: center; align-items: flex-start;
+      padding: 20px; overflow-y: auto;
+    }
+    .overlay.open { display: flex; }
+    .modal {
+      background: var(--surface); border-radius: 14px;
+      width: 100%; max-width: 680px; border: 1px solid var(--border);
+      overflow: hidden; animation: slideup 0.2s ease; margin: auto;
+    }
+    @keyframes slideup {
+      from { transform: translateY(12px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+    .modal-hd {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; border-bottom: 1px solid var(--border);
+    }
+    .modal-hd-title { font-family: 'Lilita One', cursive; font-size: 1rem; color: var(--pink); }
+    .modal-close {
+      background: none; border: none; font-size: 18px;
+      color: var(--text-soft); cursor: pointer; line-height: 1; padding: 0;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal-body { padding: 20px; }
+
+    /* LOGIN */
+    .pw-row { display: flex; gap: 8px; margin-bottom: 6px; }
+    .pw-input {
+      flex: 1; border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 10px 13px; font-family: var(--font); font-size: 14px;
+      outline: none; background: var(--bg); color: var(--text); transition: border-color 0.15s;
+    }
+    .pw-input:focus { border-color: rgba(212,168,199,0.45); }
+    .pw-input.err   { border-color: var(--red); }
+    .pw-go {
+      padding: 10px 18px; background: var(--pink); color: #0f0f10;
+      border: none; border-radius: 8px; font-family: var(--font);
+      font-size: 14px; font-weight: 700; cursor: pointer;
+    }
+    .pw-err { font-size: 13px; color: var(--red); display: none; margin-top: 4px; }
+
+    /* DASH */
+    .dash { display: none; }
+    .dash-stats { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .dash-stat {
+      font-size: 12px; font-weight: 700; padding: 5px 12px;
+      border-radius: 6px; background: var(--surface2); color: var(--text-soft);
+    }
+    .dash-stat b { color: var(--pink); }
+
+    .tabs {
+      display: flex; border-bottom: 1px solid var(--border); margin-bottom: 16px;
+    }
+    .tab {
+      padding: 8px 14px; font-size: 12px; font-family: var(--font);
+      font-weight: 700; background: none; border: none; color: var(--text-soft);
+      cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: all 0.15s; letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .tab.active { color: var(--pink); border-bottom-color: var(--pink); }
+
+    .app-list {
+      display: flex; flex-direction: column; gap: 8px;
+      max-height: 55vh; overflow-y: auto;
+    }
+    .app-list:empty::after {
+      content: 'nothing here yet ✿'; display: block; text-align: center;
+      color: var(--text-soft); font-size: 13px; padding: 28px 0;
+    }
+
+    .app-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden; transition: border-color 0.15s;
+    }
+    .app-card:hover { border-color: var(--purple); }
+    .app-card-hd {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px; cursor: pointer; user-select: none;
+    }
+    .app-card-hd:hover { background: rgba(255,255,255,0.02); }
+    .app-name { font-size: 14px; font-weight: 700; color: var(--text); flex: 1; }
+    .app-role {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 3px 8px; border-radius: 4px;
+      background: var(--pink-dim); color: var(--pink); flex-shrink: 0;
+    }
+    .app-date { font-size: 11px; color: var(--text-soft); flex-shrink: 0; }
+    .app-chevron { font-size: 10px; color: var(--text-soft); transition: transform 0.2s; flex-shrink: 0; }
+    .app-card.open .app-chevron { transform: rotate(180deg); }
+
+    .app-body { display: none; padding: 14px; border-top: 1px solid var(--border); }
+    .app-card.open .app-body { display: block; }
+    .app-qa { margin-bottom: 12px; }
+    .app-q {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text-soft); margin-bottom: 3px;
+    }
+    .app-a { font-size: 13.5px; line-height: 1.65; color: var(--text); }
+
+    .app-actions { display: flex; gap: 7px; margin-top: 14px; flex-wrap: wrap; align-items: center; }
+    .act {
+      padding: 6px 14px; border-radius: 6px; border: 1.5px solid;
+      font-family: var(--font); font-size: 12px; font-weight: 700;
+      cursor: pointer; transition: opacity 0.15s; letter-spacing: 0.03em;
+    }
+    .act-accept  { color: var(--green); border-color: rgba(126,200,160,0.35); background: var(--green-dim); }
+    .act-deny    { color: var(--red);   border-color: rgba(200,126,138,0.35); background: var(--red-dim); }
+    .act-archive { color: var(--amber); border-color: rgba(200,176,126,0.35); background: var(--amber-dim); }
+    .act-delete  { color: var(--text-soft); border-color: var(--border); background: transparent; margin-left: auto; }
+    .act:hover   { opacity: 0.7; }
+
+    .badge {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 3px 8px; border-radius: 4px;
+    }
+    .badge-accepted { background: var(--green-dim); color: var(--green); }
+    .badge-denied   { background: var(--red-dim);   color: var(--red); }
+    .badge-archived { background: var(--amber-dim); color: var(--amber); }
+
+    /* INTRO OVERLAY */
+    .intro-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 200;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 24px;
+      overflow-y: auto;
+      transition: opacity 0.5s ease;
+    }
+    .intro-overlay .intro-card {
+      margin: auto 0;
+    }
+    .intro-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .intro-card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    .intro-top {
+      padding: 32px 32px 0;
+      text-align: center;
+    }
+    .intro-kicker {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 16px;
+    }
+    .intro-title {
+      font-family: 'Lilita One', cursive;
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .intro-title span { color: var(--pink); }
+    .intro-divider {
+      width: 40px;
+      height: 2px;
+      background: rgba(212,168,199,0.3);
+      border-radius: 2px;
+      margin: 18px auto;
+    }
+    .intro-body {
+      padding: 0 32px 28px;
+    }
+    .intro-body p {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text-soft);
+      margin-bottom: 14px;
+    }
+    .intro-body p:last-of-type { margin-bottom: 0; }
+    .intro-body strong { color: var(--text); font-weight: 700; }
+    .intro-footer {
+      padding: 20px 32px 28px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .intro-note {
+      font-size: 11px;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+    .intro-continue {
+      flex-shrink: 0;
+      padding: 11px 26px;
+      background: var(--pink);
+      color: #0f0f10;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+    }
+    .intro-continue:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+
+  <!-- INTRO SPLASH -->
+  <div class="intro-overlay" id="introOverlay">
+    <div class="intro-card">
+      <div class="intro-top">
+        <div class="intro-kicker">before you apply</div>
+        <h2 class="intro-title">who are we<br><span>looking for?</span></h2>
+        <div class="intro-divider"></div>
+      </div>
+      <div class="intro-body">
+        <p>We are looking for someone <strong>18 or older</strong> who genuinely gets people. You have lived through real highs and lows, and you carry that experience with wisdom and empathy. You are the person your friends come to when life gets hard, naturally giving advice and helping others find their way.</p>
+        <p>You can <strong>de-escalate a situation, hold space for hard conversations</strong>, and stay grounded when things get tense. But you also know how to have fun and make people feel at ease. <strong>Professional when it matters, real always.</strong></p>
+        <p>If that is you, we would love to hear from you.</p>
+      </div>
+      <div class="intro-footer">
+        <span class="intro-note">Takes approx. 10&ndash;15 min to complete</span>
+        <button class="intro-continue" onclick="dismissIntro()">Continue to Application</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="topbar">
+    <a class="topbar-logo" href="omikutalks.html">omiku.co</a>
+    <button class="admin-btn" onclick="openAdmin()">admin</button>
+  </div>
+
+  <div class="content">
+
+    <div class="page-header">
+      <h1>Podcast &amp; Server<br><span>Staff Application</span></h1>
+      <p>Thank you for your interest in joining our podcast or becoming a staff member on our server. Please answer the questions below honestly and thoughtfully. We're looking for kind, motivated individuals who can give meaningful advice and are open to growth. We will review your application and get back to you within 1–7 business days.</p>
+    </div>
+
+    <div class="form-inner" id="appForm">
+
+      <!-- Section 1 -->
+      <div>
+        <div class="section-label">
+          <span class="section-label-text">Section 1: Basic Information</span>
+          <span class="section-label-line"></span>
+        </div>
+        <div class="questions">
+          <div class="question">
+            <div class="q-text"><span class="num">01</span>What name do you go by?</div>
+            <input type="text" id="q1" placeholder="Your name or nickname…" />
+          </div>
+          <div class="question">
+            <div class="q-text"><span class="num">02</span>How did you hear about this podcast/server?</div>
+            <input type="text" id="q2" placeholder="e.g. a friend, social media, Spotify…" />
+          </div>
+          <div class="question">
+            <div class="q-text"><span class="num">03</span>How old are you?</div>
+            <input type="text" id="qAge" placeholder="e.g. 18" />
+          </div>
+          <div class="question">
+            <div class="q-text"><span class="num">04</span>What are your pronouns?</div>
+            <input type="text" id="qPronoun" placeholder="e.g. she/her, he/him, they/them…" />
+          </div>
+          <div class="question">
+            <div class="q-text"><span class="num">05</span>Which role are you applying for?</div>
+            <div class="choices" id="q3">
+              <label class="choice-label" onclick="selectChoice(this,'q3')"><input type="radio" name="q3" value="Podcast Guest" /><span class="choice-indicator"></span>Podcast Guest</label>
+              <label class="choice-label" onclick="selectChoice(this,'q3')"><input type="radio" name="q3" value="Server Staff" /><span class="choice-indicator"></span>Server Staff</label>
+              <label class="choice-label" onclick="selectChoice(this,'q3')"><input type="radio" name="q3" value="Both" /><span class="choice-indicator"></span>Both</label>
+            </div>
+          </div>
+          <div class="question">
+            <div class="q-text"><span class="num">06</span>How much time can you realistically commit each week?</div>
+            <div class="choices" id="q4">
+              <label class="choice-label" onclick="selectChoice(this,'q4')"><input type="radio" name="q4" value="Less than 2 hours" /><span class="choice-indicator"></span>Less than 2 hours</label>
+              <label class="choice-label" onclick="selectChoice(this,'q4')"><input type="radio" name="q4" value="2–5 hours" /><span class="choice-indicator"></span>2–5 hours</label>
+              <label class="choice-label" onclick="selectChoice(this,'q4')"><input type="radio" name="q4" value="5–10 hours" /><span class="choice-indicator"></span>5–10 hours</label>
+              <label class="choice-label" onclick="selectChoice(this,'q4')"><input type="radio" name="q4" value="10+ hours" /><span class="choice-indicator"></span>10+ hours</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div>
+        <div class="section-label">
+          <span class="section-label-text">Section 2: Personality &amp; Values</span>
+          <span class="section-label-line"></span>
+        </div>
+        <div class="questions">
+          <div class="question">
+            <div class="q-text"><span class="num">07</span>In your own words, what does being a kind person mean?</div>
+            <textarea id="q5" placeholder="Share your thoughts…"></textarea>
+          </div>
+          <div class="question">
+            <div class="q-text"><span class="num">08</span>What motivates you to stay consistent and show up, even on hard days?</div>
+            <textarea id="q6" placeholder="Share your thoughts…"></textarea>
+          </div>
+          <div class="question">
+            <div class="q-text"><span class="num">09</span>What kind of energy do you bring into a group or community?</div>
+            <textarea id="q7" placeholder="Share your thoughts…"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div>
+        <div class="section-label">
+          <span class="section-label-text">Section 3: Advice &amp; Growth</span>
+          <span class="section-label-line"></span>
+        </div>
+        <div class="questions">
+          <div class="question">
+            <div class="q-text"><span class="num">10</span>What is one piece of advice you strongly believe in and why?</div>
+            <textarea id="q8" placeholder="Share your thoughts…"></textarea>
+          </div>
+          <div class="question">
+            <div class="q-text"><span class="num">11</span>If someone felt lost or overwhelmed in life, what would you say to them?</div>
+            <textarea id="q9" placeholder="Share your thoughts…"></textarea>
+          </div>
+          <div class="question">
+            <div class="q-text"><span class="num">12</span>What is something you are currently working on improving about yourself?</div>
+            <textarea id="q10" placeholder="Share your thoughts…"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div>
+        <div class="section-label">
+          <span class="section-label-text">Section 4: Scenario Questions</span>
+          <span class="section-label-line"></span>
+        </div>
+        <div class="questions">
+          <div class="question">
+            <div class="q-text"><span class="num">13</span>Someone in the server feels left out and ignored. What would you do or say?</div>
+            <textarea id="q11" placeholder="Share your thoughts…"></textarea>
+          </div>
+          <div class="question">
+            <div class="q-text"><span class="num">14</span>Two members are arguing and it's affecting the community. How would you handle it?</div>
+            <textarea id="q12" placeholder="Share your thoughts…"></textarea>
+          </div>
+          <div class="question">
+            <div class="q-text"><span class="num">15</span>A guest or member says something offensive or controversial. What would you do?</div>
+            <textarea id="q13" placeholder="Share your thoughts…"></textarea>
+          </div>
+          <div class="question">
+            <div class="q-text"><span class="num">16</span>You made a mistake publicly (on the podcast or in the server). What would you do next?</div>
+            <textarea id="q14" placeholder="Share your thoughts…"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 5 -->
+      <div>
+        <div class="section-label">
+          <span class="section-label-text">Section 5: Final Question</span>
+          <span class="section-label-line"></span>
+        </div>
+        <div class="questions">
+          <div class="question">
+            <div class="q-text"><span class="num">17</span>Why do you want this opportunity, and what impact would you hope to make?</div>
+            <textarea id="q15" placeholder="Share your thoughts…" style="min-height:140px;"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 6 -->
+      <div>
+        <div class="section-label">
+          <span class="section-label-text">Section 6: Agreement &amp; Consent</span>
+          <span class="section-label-line"></span>
+        </div>
+        <div class="agreement-box">
+          <label class="agreement-item" id="agree1" onclick="toggleAgree(this)">
+            <input type="checkbox" id="cb1" />
+            <span class="check-box"></span>
+            <span class="agreement-text">
+              <strong>Recording &amp; Publication Consent</strong>
+              I give omiku talks full permission to record my voice and any information I voluntarily share during podcast recordings or as a server staff member. I understand that this content may be published, shared, or distributed publicly across any platform including but not limited to Spotify, Discord, and social media.
+            </span>
+          </label>
+          <label class="agreement-item" id="agree2" onclick="toggleAgree(this)">
+            <input type="checkbox" id="cb2" />
+            <span class="check-box"></span>
+            <span class="agreement-text">
+              <strong>Conduct Agreement</strong>
+              I understand that omiku talks reserves the right to remove me from the staff team or exclude me from the podcast at any time if my actions, statements, or behaviour (whether on or off the platform) that is deemed harmful, offensive, or damaging to the brand, its community, or its values. I agree to represent omiku talks with honesty, respect, and integrity.
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="submit-wrap">
+        <button class="submit-btn" onclick="submitApp()">Submit Application</button>
+        <div class="success-msg" id="successMsg">✿ Application submitted, thank you! We'll be in touch within 1–7 business days.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer><a href="omikutalks.html">omiku.co</a></footer>
+
+  <!-- ADMIN MODAL -->
+  <div class="overlay" id="adminModal">
+    <div class="modal">
+      <div class="modal-hd">
+        <span class="modal-hd-title">Applications Admin</span>
+        <button class="modal-close" onclick="closeAdmin()">✕</button>
+      </div>
+      <div class="modal-body">
+
+        <div id="loginView">
+          <div class="pw-row">
+            <input type="password" class="pw-input" id="pw" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()" />
+            <button class="pw-go" onclick="checkPw()">Unlock</button>
+          </div>
+          <div class="pw-err" id="pwErr">Incorrect password</div>
+        </div>
+
+        <div class="dash" id="dashView">
+          <div class="dash-stats">
+            <div class="dash-stat"><b id="pendingCount">0</b> pending</div>
+            <div class="dash-stat"><b id="totalCount">0</b> total</div>
+          </div>
+          <div class="tabs">
+            <button class="tab active" data-tab="pending"  onclick="setTab(this)">Pending</button>
+            <button class="tab"        data-tab="accepted" onclick="setTab(this)">Accepted</button>
+            <button class="tab"        data-tab="denied"   onclick="setTab(this)">Denied</button>
+            <button class="tab"        data-tab="archived" onclick="setTab(this)">Archived</button>
+          </div>
+          <div class="app-list" id="appList"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PASS = 'Loving21!';
+    const STORE_KEY = 'omiku_applications';
+    const QUESTIONS = [
+      'What name do you go by?',
+      'How did you hear about this podcast/server?',
+      'How old are you?',
+      'What are your pronouns?',
+      'Which role are you applying for?',
+      'How much time can you realistically commit each week?',
+      'In your own words, what does being a kind person mean?',
+      'What motivates you to stay consistent and show up, even on hard days?',
+      'What kind of energy do you bring into a group or community?',
+      'What is one piece of advice you strongly believe in and why?',
+      'If someone felt lost or overwhelmed in life, what would you say to them?',
+      'What is something you are currently working on improving about yourself?',
+      'Someone in the server feels left out and ignored. What would you do or say?',
+      "Two members are arguing and it's affecting the community. How would you handle it?",
+      'A guest or member says something offensive or controversial. What would you do?',
+      'You made a mistake publicly. What would you do next?',
+      'Why do you want this opportunity, and what impact would you hope to make?'
+    ];
+
+    let apps = JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+    let currentTab = 'pending';
+    function save() { localStorage.setItem(STORE_KEY, JSON.stringify(apps)); }
+
+    function selectChoice(el, group) {
+      document.querySelectorAll(`#${group} .choice-label`).forEach(l => l.classList.remove('selected'));
+      el.classList.add('selected');
+      el.querySelector('input').checked = true;
+    }
+
+    function toggleAgree(label) {
+      const cb = label.querySelector('input[type="checkbox"]');
+      cb.checked = !cb.checked;
+      label.classList.toggle('checked', cb.checked);
+    }
+
+    function submitApp() {
+      // Collect all answers in order matching QUESTIONS array
+      const answers = [
+        document.getElementById('q1').value.trim(),       // 0 name
+        document.getElementById('q2').value.trim(),       // 1 how did you hear
+        document.getElementById('qAge').value.trim(),     // 2 age
+        document.getElementById('qPronoun').value.trim(), // 3 pronouns
+        (document.querySelector('input[name="q3"]:checked')||{}).value||'', // 4 role
+        (document.querySelector('input[name="q4"]:checked')||{}).value||'', // 5 time
+        document.getElementById('q5').value.trim(),       // 6
+        document.getElementById('q6').value.trim(),       // 7
+        document.getElementById('q7').value.trim(),       // 8
+        document.getElementById('q8').value.trim(),       // 9
+        document.getElementById('q9').value.trim(),       // 10
+        document.getElementById('q10').value.trim(),      // 11
+        document.getElementById('q11').value.trim(),      // 12
+        document.getElementById('q12').value.trim(),      // 13
+        document.getElementById('q13').value.trim(),      // 14
+        document.getElementById('q14').value.trim(),      // 15
+        document.getElementById('q15').value.trim(),      // 16
+      ];
+
+      // Validate every single field
+      const fieldLabels = [
+        'your name (Q1)', 'how you heard about us (Q2)', 'your age (Q3)', 'your pronouns (Q4)',
+        null, null, // radios handled below
+        'question 7', 'question 8', 'question 9', 'question 10', 'question 11',
+        'question 12', 'question 13', 'question 14', 'question 15', 'question 16', 'question 17'
+      ];
+
+      if (!answers[0]) { alert('Please enter your name.'); document.getElementById('q1').focus(); return; }
+      if (!answers[1]) { alert('Please answer how you heard about us.'); document.getElementById('q2').focus(); return; }
+      if (!answers[2]) { alert('Please enter your age.'); document.getElementById('qAge').focus(); return; }
+      if (!answers[3]) { alert('Please enter your pronouns.'); document.getElementById('qPronoun').focus(); return; }
+      if (!answers[4]) { alert('Please select a role you are applying for.'); return; }
+      if (!answers[5]) { alert('Please select your weekly time commitment.'); return; }
+
+      const textareaIds = ['q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15'];
+      const textareaNums = [7,8,9,10,11,12,13,14,15,16,17];
+      for (let i = 0; i < textareaIds.length; i++) {
+        const el = document.getElementById(textareaIds[i]);
+        if (!el.value.trim()) {
+          alert('Please answer question ' + textareaNums[i] + '.');
+          el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+      }
+
+      if (!document.getElementById('cb1').checked) {
+        alert('Please check the Recording & Publication Consent box.');
+        document.getElementById('agree1').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      if (!document.getElementById('cb2').checked) {
+        alert('Please check the Conduct Agreement box.');
+        document.getElementById('agree2').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      apps.push({ id: Date.now(), name: answers[0], role: answers[4],
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        status: 'pending', answers });
+      save();
+
+      for (let i = 1; i <= 15; i++) { const el = document.getElementById('q' + i); if (el) el.value = ''; }
+      ['qAge','qPronoun'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+      document.querySelectorAll('.choice-label').forEach(l => l.classList.remove('selected'));
+      document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+      ['cb1','cb2'].forEach(id => { document.getElementById(id).checked = false; });
+      document.querySelectorAll('.agreement-item').forEach(l => l.classList.remove('checked'));
+
+      const msg = document.getElementById('successMsg');
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 6000);
+    }
+
+    function openAdmin() { document.getElementById('adminModal').classList.add('open'); setTimeout(() => document.getElementById('pw').focus(), 100); }
+    function closeAdmin() {
+      document.getElementById('adminModal').classList.remove('open');
+      document.getElementById('loginView').style.display = 'block';
+      document.getElementById('dashView').style.display = 'none';
+      document.getElementById('pw').value = '';
+    }
+
+    function checkPw() {
+      const input = document.getElementById('pw');
+      if (input.value === PASS) {
+        document.getElementById('loginView').style.display = 'none';
+        document.getElementById('dashView').style.display = 'block';
+        renderDash();
+      } else {
+        input.classList.add('err');
+        document.getElementById('pwErr').style.display = 'block';
+        setTimeout(() => { input.classList.remove('err'); document.getElementById('pwErr').style.display = 'none'; }, 2000);
+      }
+    }
+
+    function setTab(btn) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active'); currentTab = btn.dataset.tab; renderDash();
+    }
+
+    function renderDash() {
+      const pending  = apps.filter(a => a.status === 'pending');
+      const filtered = apps.filter(a => a.status === currentTab);
+      document.getElementById('pendingCount').textContent = pending.length;
+      document.getElementById('totalCount').textContent   = apps.length;
+      const list = document.getElementById('appList');
+      if (!filtered.length) { list.innerHTML = ''; return; }
+      list.innerHTML = filtered.slice().reverse().map(a => {
+        const badge = a.status !== 'pending' ? `<span class="badge badge-${a.status}">${a.status}</span>` : '';
+        const qaHtml = QUESTIONS.map((q, i) => `<div class="app-qa"><div class="app-q">${i+1}. ${q}</div><div class="app-a">${esc(a.answers[i]||'n/a')}</div></div>`).join('');
+        const actions = [];
+        if (a.status !== 'accepted') actions.push(`<button class="act act-accept" onclick="setStatus(${a.id},'accepted')">Accept</button>`);
+        if (a.status !== 'denied')   actions.push(`<button class="act act-deny" onclick="setStatus(${a.id},'denied')">Deny</button>`);
+        if (a.status !== 'archived') actions.push(`<button class="act act-archive" onclick="setStatus(${a.id},'archived')">Archive</button>`);
+        actions.push(`<button class="act act-delete" onclick="deleteApp(${a.id})">Delete</button>`);
+        return `<div class="app-card" id="app-${a.id}">
+          <div class="app-card-hd" onclick="toggleApp(${a.id})">
+            <span class="app-name">${esc(a.name)}</span>
+            <span class="app-role">${esc(a.role)}</span>${badge}
+            <span class="app-date">${a.date}</span>
+            <span class="app-chevron">▼</span>
+          </div>
+          <div class="app-body">${qaHtml}<div class="app-actions">${actions.join('')}</div></div>
+        </div>`;
+      }).join('');
+    }
+
+    function toggleApp(id) { document.getElementById('app-'+id).classList.toggle('open'); }
+    function setStatus(id, status) { apps = apps.map(a => a.id===id ? {...a,status} : a); save(); renderDash(); }
+    function deleteApp(id) {
+      if (!confirm('Delete this application? This cannot be undone.')) return;
+      apps = apps.filter(a => a.id!==id); save(); renderDash();
+    }
+    function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+    document.getElementById('adminModal').addEventListener('click', function(e) { if (e.target===this) closeAdmin(); });
+
+    function dismissIntro() {
+      const overlay = document.getElementById('introOverlay');
+      overlay.classList.add('fade-out');
+      setTimeout(() => overlay.style.display = 'none', 500);
+    }
+  </script>
+</body>
+</html>
