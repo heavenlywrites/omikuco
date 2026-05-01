@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>omiku — admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #161616;
+    --surface:  #1e1e1e;
+    --surface2: #252525;
+    --surface3: #2c2c2c;
+    --border:   #303030;
+    --border2:  #3a3a3a;
+    --text:     #efefef;
+    --text2:    #aaaaaa;
+    --text3:    #666666;
+    --pink:     #f5c6d4;
+    --pink-dim: #2b1c22;
+    --pending:  #f5d78a;
+    --pending-bg: #2a2410;
+    --processing: #90caf9;
+    --processing-bg: #0d1e2e;
+    --processed: #a8d8b0;
+    --processed-bg: #0d2014;
+    --red:      #f48a8a;
+    --red-bg:   #2a1010;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── LOGIN ── */
+  .login-wrap {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+
+  .login-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 48px 40px;
+    width: 100%; max-width: 380px; text-align: center;
+  }
+
+  .login-card h2 {
+    font-family: 'Hachi Maru Pop', sans-serif;
+    font-size: 28px; color: var(--text); margin-bottom: 6px;
+  }
+  .login-card p { font-size: 13px; color: var(--text3); font-weight: 600; margin-bottom: 28px; }
+
+  .login-input {
+    width: 100%; background: var(--surface2);
+    border: 1px solid var(--border2); border-radius: 10px;
+    padding: 12px 16px; font-family: 'Nunito', sans-serif;
+    font-size: 14px; font-weight: 600; color: var(--text);
+    outline: none; margin-bottom: 12px; transition: border-color 0.15s;
+  }
+  .login-input:focus { border-color: var(--pink); }
+  .login-input::placeholder { color: var(--text3); }
+
+  .login-btn {
+    width: 100%; background: var(--pink); color: #1a1a1a;
+    border: none; border-radius: 10px; padding: 13px;
+    font-family: 'Hachi Maru Pop', sans-serif; font-size: 16px;
+    cursor: pointer; transition: opacity 0.15s;
+  }
+  .login-btn:hover { opacity: 0.88; }
+
+  .login-error {
+    color: var(--red); font-size: 12px; font-weight: 700;
+    margin-top: 10px; display: none;
+  }
+
+  /* ── ADMIN LAYOUT ── */
+  .admin-wrap { display: none; min-height: 100vh; }
+
+  .topbar {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 14px 28px; display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 10; gap: 12px; flex-wrap: wrap;
+  }
+
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+
+  .topbar-logo {
+    font-family: 'Hachi Maru Pop', sans-serif;
+    font-size: 20px; color: var(--text);
+  }
+  .topbar-logo span { color: var(--pink); }
+
+  .stats { display: flex; gap: 8px; flex-wrap: wrap; }
+  .stat-pill {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 100px; padding: 5px 12px;
+    font-size: 11px; font-weight: 800; color: var(--text2);
+  }
+  .stat-pill.s-pending    { color: var(--pending);    background: var(--pending-bg);    border-color: var(--pending); }
+  .stat-pill.s-processing { color: var(--processing); background: var(--processing-bg); border-color: var(--processing); }
+  .stat-pill.s-processed  { color: var(--processed);  background: var(--processed-bg);  border-color: var(--processed); }
+
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+
+  .orders-toggle {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--processed-bg); border: 1px solid var(--processed);
+    border-radius: 100px; padding: 6px 14px; cursor: pointer; transition: all 0.2s;
+  }
+  .orders-toggle.closed { background: var(--red-bg); border-color: var(--red); }
+  .orders-toggle-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--processed); transition: background 0.2s;
+  }
+  .orders-toggle.closed .orders-toggle-dot { background: var(--red); }
+  .orders-toggle-label { font-size: 11px; font-weight: 800; color: var(--text2); }
+
+  .logout-btn {
+    background: transparent; border: 1px solid var(--border2);
+    color: var(--text3); border-radius: 100px; padding: 6px 14px;
+    font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 800;
+    cursor: pointer; transition: border-color 0.15s, color 0.15s;
+  }
+  .logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+  /* ── MAIN ── */
+  .main { padding: 28px 32px; max-width: 1200px; margin: 0 auto; }
+
+  /* ── STATUS BANNER ── */
+  .status-banner {
+    border-radius: 12px; padding: 16px 22px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 14px; margin-bottom: 24px; flex-wrap: wrap;
+    border: 1px solid var(--border);
+  }
+  .status-banner.open   { background: var(--processed-bg); border-color: var(--processed); }
+  .status-banner.closed { background: var(--red-bg);       border-color: var(--red); }
+
+  .status-banner-text h3 {
+    font-family: 'Hachi Maru Pop', sans-serif; font-size: 16px;
+  }
+  .status-banner.open   .status-banner-text h3 { color: var(--processed); }
+  .status-banner.closed .status-banner-text h3 { color: var(--red); }
+  .status-banner-text p { font-size: 12px; font-weight: 600; color: var(--text3); margin-top: 2px; }
+
+  .status-toggle-btn {
+    font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800;
+    border: none; border-radius: 100px; padding: 9px 20px; cursor: pointer;
+    transition: opacity 0.15s; white-space: nowrap;
+  }
+  .status-toggle-btn:hover { opacity: 0.85; }
+  .status-toggle-btn.btn-close { background: var(--red);       color: #1a1a1a; }
+  .status-toggle-btn.btn-open  { background: var(--processed);  color: #1a1a1a; }
+
+  /* ── FILTERS ── */
+  .filters { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+
+  .filter-btn {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 100px; padding: 7px 18px;
+    font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800;
+    color: var(--text3); cursor: pointer; transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--border2); color: var(--text2); }
+  .filter-btn.active              { border-color: var(--pink);       color: var(--pink);       background: var(--pink-dim); }
+  .filter-btn.f-pending.active    { border-color: var(--pending);    color: var(--pending);    background: var(--pending-bg); }
+  .filter-btn.f-processing.active { border-color: var(--processing); color: var(--processing); background: var(--processing-bg); }
+  .filter-btn.f-processed.active  { border-color: var(--processed);  color: var(--processed);  background: var(--processed-bg); }
+
+  /* ── EMPTY / LOADING ── */
+  .empty-state { text-align: center; padding: 80px 20px; color: var(--text3); }
+  .empty-state p { font-size: 15px; font-weight: 700; }
+
+  .loading { text-align: center; padding: 80px 20px; color: var(--text3); }
+  .loading .spin { font-size: 32px; animation: spin 1.2s linear infinite; display: block; margin-bottom: 12px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── ORDER CARDS ── */
+  .orders-grid { display: grid; gap: 16px; }
+
+  .order-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden; transition: border-color 0.15s;
+  }
+  .order-card:hover { border-color: var(--border2); }
+
+  .card-header {
+    padding: 16px 20px; display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid var(--border); flex-wrap: wrap;
+  }
+
+  .order-num {
+    font-family: 'Hachi Maru Pop', sans-serif;
+    font-size: 15px; color: var(--text); flex: 1;
+  }
+  .order-date { font-size: 11px; color: var(--text3); font-weight: 700; }
+  .order-total {
+    font-family: 'Hachi Maru Pop', sans-serif;
+    font-size: 15px; color: var(--pink);
+  }
+
+  .status-badge {
+    font-size: 10px; font-weight: 800; padding: 4px 12px;
+    border-radius: 100px; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid;
+  }
+  .status-badge.pending    { background: var(--pending-bg);    color: var(--pending);    border-color: var(--pending); }
+  .status-badge.processing { background: var(--processing-bg); color: var(--processing); border-color: var(--processing); }
+  .status-badge.processed  { background: var(--processed-bg);  color: var(--processed);  border-color: var(--processed); }
+
+  .card-body {
+    padding: 18px 20px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px;
+  }
+
+  .info-label {
+    font-size: 10px; font-weight: 800; color: var(--text3);
+    letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px;
+  }
+  .info-val { font-size: 13px; font-weight: 600; color: var(--text2); line-height: 1.5; word-break: break-all; }
+
+  .color-swatches { display: flex; gap: 6px; margin-top: 4px; }
+  .swatch { width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--border2); }
+
+  .pay-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 5px 10px; font-size: 12px; font-weight: 700; color: var(--text2);
+  }
+
+  .txid-val {
+    font-family: 'Courier New', monospace; font-size: 10px;
+    word-break: break-all; background: var(--surface2); border: 1px solid var(--border);
+    padding: 5px 8px; border-radius: 6px; margin-top: 4px; color: var(--text3);
+  }
+
+  .thumb-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  .thumb {
+    width: 52px; height: 52px; object-fit: cover;
+    border-radius: 10px; border: 1px solid var(--border);
+    cursor: pointer; transition: opacity 0.15s;
+  }
+  .thumb:hover { opacity: 0.8; }
+
+  .ss-thumb {
+    width: 68px; height: 52px; object-fit: cover;
+    border-radius: 10px; border: 1px solid var(--border);
+    cursor: pointer; transition: opacity 0.15s; margin-top: 4px;
+  }
+  .ss-thumb:hover { opacity: 0.8; }
+
+  .words-wrap { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+  .word-tag {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 100px; padding: 3px 10px;
+    font-size: 11px; font-weight: 700; color: var(--text3);
+  }
+
+  .card-footer {
+    padding: 14px 20px; border-top: 1px solid var(--border);
+    display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+  }
+
+  .action-btn {
+    border: 1px solid; border-radius: 100px; padding: 7px 16px;
+    font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800;
+    cursor: pointer; transition: opacity 0.15s; background: transparent;
+  }
+  .action-btn:hover { opacity: 0.75; }
+
+  .btn-processing { color: var(--processing); border-color: var(--processing); }
+  .btn-processed  { color: var(--processed);  border-color: var(--processed); }
+  .btn-pending    { color: var(--pending);    border-color: var(--pending); }
+  .btn-delete     { color: var(--red); border-color: var(--red); margin-left: auto; }
+
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85); z-index: 100;
+    align-items: center; justify-content: center;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 90vw; max-height: 90vh;
+    border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .lightbox-close {
+    position: fixed; top: 20px; right: 24px;
+    font-size: 28px; color: var(--text2);
+    cursor: pointer; background: none; border: none; font-weight: 800;
+  }
+
+  /* ── ABOUT INFO IN CARD ── */
+  .about-block {
+    font-size: 13px; font-weight: 600; color: var(--text2); line-height: 1.5;
+  }
+  .about-role {
+    display: inline-block; margin-top: 4px;
+    font-size: 10px; font-weight: 800; color: var(--pink);
+    border: 1px solid var(--pink); padding: 2px 8px; border-radius: 100px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 600px) {
+    .topbar { padding: 12px 16px; }
+    .main { padding: 16px; }
+    .card-body { grid-template-columns: 1fr; }
+    .stats { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <h2>omiku admin</h2>
+    <p>Enter your password to access orders</p>
+    <input class="login-input" type="password" id="pwInput" placeholder="password" onkeydown="if(event.key==='Enter') doLogin()">
+    <button class="login-btn" onclick="doLogin()">sign in</button>
+    <div class="login-error" id="loginError">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="admin-wrap" id="adminWrap">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">omiku<span>.co</span></div>
+      <div class="stats" id="statsBar"></div>
+    </div>
+    <div class="topbar-right">
+      <div class="orders-toggle" id="ordersToggle" onclick="toggleOrders()">
+        <div class="orders-toggle-dot"></div>
+        <span class="orders-toggle-label" id="ordersToggleLabel">Orders Open</span>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">sign out</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <div class="status-banner open" id="statusBanner">
+      <div class="status-banner-text">
+        <h3 id="statusTitle">Orders are Open</h3>
+        <p id="statusDesc">Customers can currently submit new orders.</p>
+      </div>
+      <button class="status-toggle-btn btn-close" id="statusToggleBtn" onclick="toggleOrders()">Close Orders</button>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active" onclick="setFilter('all', this)">All Orders</button>
+      <button class="filter-btn f-pending"    onclick="setFilter('pending', this)">Pending</button>
+      <button class="filter-btn f-processing" onclick="setFilter('processing', this)">Processing</button>
+      <button class="filter-btn f-processed"  onclick="setFilter('processed', this)">Processed</button>
+    </div>
+
+    <div id="ordersContainer">
+      <div class="loading"><span class="spin">✦</span><br>Loading orders...</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script>
+  const JSONBIN_KEY = '$2a$10$o2YtONgvSq90bwyBDCCQ1OLXuB.j5eK85wferc3jpzJH4iz7yCFJO';
+  const JSONBIN_BIN = '69cc431f856a682189e9354f';
+  const ADMIN_PASS  = 'Loving21!';
+
+  let allOrders = [];
+  let currentFilter = 'all';
+
+  async function readBin() {
+    const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN}/latest`, {
+      headers: { 'X-Master-Key': JSONBIN_KEY }
+    });
+    if (!r.ok) throw new Error('Read failed');
+    const d = await r.json();
+    return d.record;
+  }
+
+  async function writeBin(data) {
+    const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN}`, {
+      method: 'PUT',
+      headers: { 'X-Master-Key': JSONBIN_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!r.ok) throw new Error('Write failed');
+  }
+
+  window.addEventListener('load', () => {
+    if (localStorage.getItem('omiku-admin') === 'yes') showAdmin();
+  });
+
+  function showAdmin() {
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('adminWrap').style.display = 'block';
+    loadAll();
+  }
+
+  function doLogin() {
+    if (document.getElementById('pwInput').value === ADMIN_PASS) {
+      localStorage.setItem('omiku-admin', 'yes');
+      showAdmin();
+    } else {
+      const err = document.getElementById('loginError');
+      err.style.display = 'block';
+      document.getElementById('pwInput').value = '';
+      setTimeout(() => err.style.display = 'none', 3000);
+    }
+  }
+
+  function doLogout() {
+    localStorage.removeItem('omiku-admin');
+    document.getElementById('loginWrap').style.display = 'flex';
+    document.getElementById('adminWrap').style.display = 'none';
+    document.getElementById('pwInput').value = '';
+  }
+
+  async function loadAll() {
+    document.getElementById('ordersContainer').innerHTML = '<div class="loading"><span class="spin">✦</span><br>Loading orders...</div>';
+    try {
+      const bin = await readBin();
+      allOrders = (bin.orders || []).slice().reverse();
+      updateToggleUI(bin.ordersOpen !== false);
+      updateStats();
+      renderOrders();
+    } catch(e) {
+      document.getElementById('ordersContainer').innerHTML = '<div class="empty-state"><p>Could not load orders. Check your JSONBin config.</p></div>';
+    }
+  }
+
+  async function toggleOrders() {
+    try {
+      const bin = await readBin();
+      bin.ordersOpen = bin.ordersOpen === false ? true : false;
+      await writeBin(bin);
+      updateToggleUI(bin.ordersOpen);
+    } catch { alert('Could not update order status. Try again.'); }
+  }
+
+  function updateToggleUI(isOpen) {
+    const pill = document.getElementById('ordersToggle');
+    const pillLbl = document.getElementById('ordersToggleLabel');
+    if (pill) { pill.classList.toggle('closed', !isOpen); pillLbl.textContent = isOpen ? 'Orders Open' : 'Orders Closed'; }
+    const banner = document.getElementById('statusBanner');
+    const title  = document.getElementById('statusTitle');
+    const desc   = document.getElementById('statusDesc');
+    const btn    = document.getElementById('statusToggleBtn');
+    if (isOpen) {
+      banner.className = 'status-banner open';
+      title.textContent = 'Orders are Open';
+      desc.textContent  = 'Customers can currently submit new orders.';
+      btn.className = 'status-toggle-btn btn-close';
+      btn.textContent = 'Close Orders';
+    } else {
+      banner.className = 'status-banner closed';
+      title.textContent = 'Orders are Closed';
+      desc.textContent  = 'Customers cannot submit new orders.';
+      btn.className = 'status-toggle-btn btn-open';
+      btn.textContent = 'Open Orders';
+    }
+  }
+
+  function updateStats() {
+    const pending    = allOrders.filter(o => o.status === 'pending').length;
+    const processing = allOrders.filter(o => o.status === 'processing').length;
+    const processed  = allOrders.filter(o => o.status === 'processed').length;
+    document.getElementById('statsBar').innerHTML = `
+      <div class="stat-pill">${allOrders.length} total</div>
+      <div class="stat-pill s-pending">${pending} pending</div>
+      <div class="stat-pill s-processing">${processing} processing</div>
+      <div class="stat-pill s-processed">${processed} done</div>`;
+  }
+
+  function setFilter(f, btn) {
+    currentFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderOrders();
+  }
+
+  function renderOrders() {
+    const filtered = currentFilter === 'all' ? allOrders : allOrders.filter(o => o.status === currentFilter);
+    const container = document.getElementById('ordersContainer');
+    if (filtered.length === 0) {
+      container.innerHTML = `<div class="empty-state"><p>No ${currentFilter === 'all' ? '' : currentFilter + ' '}orders yet.</p></div>`;
+      return;
+    }
+    container.innerHTML = filtered.map(o => orderCard(o)).join('');
+  }
+
+  function orderCard(o) {
+    const statusLabel = { pending: 'Pending', processing: 'Processing', processed: 'Done' }[o.status] || o.status;
+    const colorSwatches = (o.colors||[]).map(c=>`<div class="swatch" style="background:${c}" title="${c}"></div>`).join('');
+    const thumbs = (o.images||[]).filter(Boolean).map(src=>`<img class="thumb" src="${src}" onclick="openLightbox('${src}')" title="Click to view">`).join('');
+    const emailVal   = o.contact?.email   ? o.contact.email   : '';
+    const discordVal = o.contact?.discord ? o.contact.discord : '';
+    const contactVal = [emailVal, discordVal].filter(Boolean).join('<br>') || 'N/A';
+    const aboutBlock = o.about?.name
+      ? `<div class="about-block">${o.about.name}<br><span class="about-role">${o.about.role||''}</span></div>`
+      : '<span style="color:var(--text3);font-size:12px;">N/A</span>';
+    const payBlock = o.payment?.method === 'cashapp'
+      ? `<span class="pay-chip"><img src="https://cdn.simpleicons.org/cashapp/00C244" style="width:12px;height:12px;vertical-align:middle;margin-right:3px;">CashApp</span>${o.payment?.screenshot ? `<br><img class="ss-thumb" src="${o.payment.screenshot}" onclick="openLightbox('${o.payment.screenshot}')" title="View screenshot">` : '<br><span style="font-size:11px;color:var(--red);">No screenshot</span>'}`
+      : `<span class="pay-chip"><img src="https://cdn.simpleicons.org/bitcoin/F7931A" style="width:12px;height:12px;vertical-align:middle;margin-right:2px;"><img src="https://cdn.simpleicons.org/ethereum/627EEA" style="width:11px;height:11px;vertical-align:middle;margin-right:3px;">BTC / ETH</span><div class="txid-val">${o.payment?.txid || 'No TXID provided'}</div>`;
+    const domainBlock = o.domain?.addon
+      ? `<div class="info-block"><div class="info-label">Domain Add-On</div><div class="info-val" style="color:var(--pink);">Yes (+$15)</div><div class="words-wrap">${(o.domain.words||[]).map(w=>`<span class="word-tag">${w}</span>`).join('')}</div></div>`
+      : `<div class="info-block"><div class="info-label">Site Path</div><div class="info-val">${o.path||'N/A'}</div></div>`;
+    const socialsBlock = (o.socials||[]).length
+      ? (o.socials||[]).map(s=>`<span class="word-tag">${s.platform}: ${s.username}</span>`).join('')
+      : '<span style="color:var(--text3);font-size:11px;">None provided</span>';
+    let actions = '';
+    if (o.status === 'pending')    actions += `<button class="action-btn btn-processing" onclick="setStatus('${o.id}','processing')">Mark as Processing</button>`;
+    if (o.status === 'processing') actions += `<button class="action-btn btn-pending" onclick="setStatus('${o.id}','pending')">Back to Pending</button><button class="action-btn btn-processed" onclick="setStatus('${o.id}','processed')">Mark as Done</button>`;
+    if (o.status === 'processed')  actions += `<button class="action-btn btn-processing" onclick="setStatus('${o.id}','processing')">Back to Processing</button>`;
+    actions += `<button class="action-btn btn-delete" onclick="deleteOrder('${o.id}')">Delete</button>`;
+
+    return `<div class="order-card" id="card-${o.id}">
+      <div class="card-header">
+        <div class="order-num">#${o.id.replace('order-','')}</div>
+        <div class="order-date">${o.submittedAt||'Unknown date'}</div>
+        <div class="order-total">${o.total||'$15'}</div>
+        <div class="status-badge ${o.status}">${statusLabel}</div>
+      </div>
+      <div class="card-body">
+        <div class="info-block"><div class="info-label">About</div>${aboutBlock}</div>
+        <div class="info-block"><div class="info-label">Contact</div><div class="info-val">${contactVal}</div></div>
+        <div class="info-block"><div class="info-label">Theme Colors</div><div class="color-swatches">${colorSwatches}</div><div class="info-val" style="font-size:11px;margin-top:4px;">${(o.colors||[]).join(', ')}</div></div>
+        <div class="info-block"><div class="info-label">Photos</div><div class="thumb-row">${thumbs||'None'}</div></div>
+        <div class="info-block"><div class="info-label">Socials</div><div class="words-wrap">${socialsBlock}</div></div>
+        <div class="info-block"><div class="info-label">Payment</div><div class="info-val">${payBlock}</div></div>
+        ${domainBlock}
+      </div>
+      <div class="card-footer">${actions}</div>
+    </div>`;
+  }
+
+  async function setStatus(id, newStatus) {
+    try {
+      const bin = await readBin();
+      const order = (bin.orders||[]).find(o => o.id === id);
+      if (!order) return;
+      order.status = newStatus;
+      await writeBin(bin);
+      allOrders = bin.orders.slice().reverse();
+      updateStats();
+      renderOrders();
+    } catch { alert('Could not update status. Try again.'); }
+  }
+
+  async function deleteOrder(id) {
+    if (!confirm('Delete this order? This cannot be undone.')) return;
+    try {
+      const bin = await readBin();
+      bin.orders = (bin.orders||[]).filter(o => o.id !== id);
+      await writeBin(bin);
+      allOrders = bin.orders.slice().reverse();
+      updateStats();
+      renderOrders();
+    } catch { alert('Could not delete order. Try again.'); }
+  }
+
+  function openLightbox(src) { document.getElementById('lightboxImg').src = src; document.getElementById('lightbox').classList.add('open'); }
+  function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+  setInterval(() => { if (localStorage.getItem('omiku-admin') === 'yes') loadAll(); }, 30000);
+</script>
+</body>
+</html>
