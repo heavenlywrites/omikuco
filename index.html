@@ -295,7 +295,7 @@ function renderShop(){
       `<div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto">`+
       `<div style="margin-bottom:0"><div style="font-size:9px;color:var(--text3);letter-spacing:0.5px;font-weight:700;margin-bottom:1px">PRICE</div>`+
       `<div style="font-family:var(--head);font-size:18px;color:var(--accent2)">$${l.price.toLocaleString()}</div></div>`+
-      `<div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">${l.available?`<button class="btn" onclick="event.stopPropagation();addToCart('${l.id}')" style="font-size:11px;padding:6px 12px;background:${inCart?'var(--green)':'var(--accent)'}">${inCart?'✓ Cart':'Buy'}</button><button class="btn" onclick="event.stopPropagation();openBuy('${l.id}')" style="font-size:11px;padding:6px 12px">Info</button>`:''}`+
+      `<div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">${l.available?`<button class="btn" onclick="event.stopPropagation();addToCart('${l.id}')" style="font-size:11px;padding:6px 12px;background:${inCart?'var(--green)':'var(--accent)'}">${inCart?'✓ In Cart':'Add to Cart'}</button><button class="btn" onclick="event.stopPropagation();openBuy('${l.id}')" style="font-size:11px;padding:6px 12px;background:#5a7cff">Buy Now</button>`:''}`+
       `</div></div></div>`;
   }).join('');
   
@@ -745,8 +745,8 @@ function viewCart(){
       `<span style="font-family:var(--head);font-size:22px;color:var(--accent2)">$${total.toLocaleString()}</span>`+
       `</div></div>`+
       `<div style="display:flex;gap:10px">`+
-      `<button class="btn" onclick="document.getElementById('modal').innerHTML=''" style="flex:1;padding:12px">Add to Cart</button>`+
-      `<button class="btn" style="flex:1;padding:12px;background:var(--green)" onclick="document.getElementById('modal').innerHTML='';${cart.length===1?`openBuy('${cart[0].id}')`:`alert('You have ${cart.length} items. Click Buy Now on individual items to purchase them one at a time.')`}">Buy Now</button>`+
+      `<button class="btn" style="flex:1;padding:12px;background:var(--green)" onclick="document.getElementById('modal').innerHTML='';${cart.length===1?`openBuy('${cart[0].id}')`:`alert('You have ${cart.length} items. Click Buy Now on individual listings to purchase them one at a time.')`}">Checkout</button>`+
+      `<button onclick="document.getElementById('modal').innerHTML=''" style="flex:1;background:transparent;border:1px solid var(--border);color:var(--text3);padding:10px;border-radius:8px;cursor:pointer;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:600">Back to Shop</button>`+
       `</div>`+
       `<button onclick="document.getElementById('modal').innerHTML=''" style="margin-top:14px;background:transparent;border:1px solid var(--border);color:var(--text3);padding:8px;border-radius:8px;cursor:pointer;width:100%;font-family:'Quicksand',sans-serif;font-size:12px">Close</button>`+
       `</div></div>`;
