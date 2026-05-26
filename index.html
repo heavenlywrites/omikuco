@@ -305,8 +305,11 @@ function renderShop(){
   
   return`<div class="hero">`+
     `<h1 style="text-shadow:0 4px 16px rgba(0,0,0,.8)">Nuke's Nightmarket</h1>`+
-    `<div style="display:flex;align-items:center;justify-content:center;margin-bottom:14px">`+
+    `<div style="display:flex;align-items:center;justify-content:center;margin-bottom:6px">`+
     `<span style="font-size:11px;font-weight:700;color:#e8f2ff;letter-spacing:1px">Verified Seller • Manual Delivery • Daily Restocks</span>`+
+    `</div>`+
+    `<div style="display:flex;align-items:center;justify-content:center;margin-bottom:14px">`+
+    `<a href="https://oguser.com/nuke" target="_blank" style="font-size:11px;color:var(--accent2);text-decoration:none;letter-spacing:0.5px;transition:all .2s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--accent2)'">oguser.com/nuke</a>`+
     `</div>`+
     
     `<div style="margin-top:32px;background:rgba(5,9,28,0.92);border:1px solid rgba(182,156,255,.35);border-radius:18px;padding:18px 22px;max-width:560px;margin-left:auto;margin-right:auto;font-size:13px;color:#d8e8ff;line-height:1.7;box-shadow:0 4px 16px rgba(0,0,0,.5)">`+
@@ -700,13 +703,53 @@ function addToCart(lid){
 }
 function removeFromCart(lid){cart=cart.filter(c=>c.id!==lid);render()}
 function viewCart(){
-  if(cart.length===0)alert('Your cart is empty');
-  else{
-    const total=cart.reduce((s,i)=>s+i.price,0);
-    let msg='📦 Your Cart ('+cart.length+' item'+(cart.length!==1?'s':'')+'):\n\n';
-    cart.forEach(i=>msg+='• '+i.platform+' '+i.title+' - $'+i.price.toLocaleString()+'\n');
-    msg+='\n━━━━━━━━━━━━━━━━━\nTotal: $'+total.toLocaleString()+'\n\nClick a username to buy it, or clear and start shopping.';
-    alert(msg);
+  if(cart.length===0){
+    document.getElementById('modal').innerHTML=`<div style="position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px">`+
+      `<div style="background:rgba(5,9,28,0.95);border:1px solid rgba(182,156,255,.35);border-radius:18px;padding:40px 30px;max-width:400px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.8);text-align:center">`+
+      `<h2 style="font-family:var(--head);font-size:24px;margin-bottom:10px">Your Cart is Empty</h2>`+
+      `<p style="color:var(--text2);margin-bottom:20px">Add some accounts to get started!</p>`+
+      `<button class="btn" onclick="document.getElementById('modal').innerHTML='';nav('shop')" style="width:100%;padding:12px">Continue Shopping</button>`+
+      `</div></div>`;
+  }else{
+    const subtotal=cart.reduce((s,i)=>s+i.price,0);
+    const discount=cart.length>1?3:0;
+    const total=subtotal-discount;
+    const items=cart.map(i=>`<div class="card" style="padding:14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px">`+
+      `<div><div style="font-size:12px;color:var(--text3)">${esc(i.platform)}</div>`+
+      `<div style="font-family:var(--head);font-size:16px;color:#e4efff">${esc(i.title)}</div>`+
+      `<div style="font-size:13px;color:var(--accent2)">$${i.price.toLocaleString()}</div></div>`+
+      `<button class="btn-r" onclick="removeFromCart('${i.id}');viewCart()" style="white-space:nowrap;padding:6px 10px;font-size:11px">Remove</button>`+
+      `</div>`).join('');
+    
+    const couponHtml=discount>0?`<div style="background:rgba(127,232,192,.15);border:1px solid rgba(127,232,192,.3);border-radius:12px;padding:12px;margin-bottom:16px;text-align:center">`+
+      `<div style="font-size:12px;color:var(--green);font-weight:700;letter-spacing:1px;margin-bottom:4px">✓ MULTI-ITEM DISCOUNT</div>`+
+      `<div style="font-size:13px;color:var(--green)">You saved <strong>$3</strong> by buying multiple accounts!</div>`+
+      `</div>`:'';
+    
+    document.getElementById('modal').innerHTML=`<div style="position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto">`+
+      `<div style="background:rgba(5,9,28,0.95);border:1px solid rgba(182,156,255,.35);border-radius:18px;padding:30px;max-width:500px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.8)">`+
+      `<h2 style="font-family:var(--head);font-size:26px;margin-bottom:20px;color:#e4efff">Shopping Cart</h2>`+
+      `<div style="max-height:400px;overflow-y:auto;margin-bottom:20px">${items}</div>`+
+      `${couponHtml}`+
+      `<div style="border-top:1px solid rgba(182,156,255,.35);padding-top:16px;margin-bottom:20px">`+
+      `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">`+
+      `<span style="color:var(--text2);font-size:14px">Subtotal:</span>`+
+      `<span style="color:var(--text2);font-size:14px">$${subtotal.toLocaleString()}</span>`+
+      `</div>`+
+      (discount>0?`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">`+
+      `<span style="color:var(--green);font-size:14px;font-weight:700">Discount:</span>`+
+      `<span style="color:var(--green);font-size:14px;font-weight:700">-$${discount}</span>`+
+      `</div>`:'')+
+      `<div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid rgba(182,156,255,.2)">`+
+      `<span style="font-family:var(--head);font-size:18px;color:#e4efff">Total:</span>`+
+      `<span style="font-family:var(--head);font-size:22px;color:var(--accent2)">$${total.toLocaleString()}</span>`+
+      `</div></div>`+
+      `<div style="display:flex;gap:10px">`+
+      `<button class="btn" onclick="document.getElementById('modal').innerHTML='';nav('shop')" style="flex:1;padding:12px">Continue Shopping</button>`+
+      `<button class="btn" style="flex:1;padding:12px;background:var(--green)" onclick="alert('Checkout coming soon! For now, click individual items to purchase.')">Checkout</button>`+
+      `</div>`+
+      `<button onclick="document.getElementById('modal').innerHTML=''" style="margin-top:14px;background:transparent;border:1px solid var(--border);color:var(--text3);padding:8px;border-radius:8px;cursor:pointer;width:100%;font-family:'Quicksand',sans-serif;font-size:12px">Close</button>`+
+      `</div></div>`;
   }
 }
 
