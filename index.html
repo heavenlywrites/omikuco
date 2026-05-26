@@ -745,8 +745,8 @@ function viewCart(){
       `<span style="font-family:var(--head);font-size:22px;color:var(--accent2)">$${total.toLocaleString()}</span>`+
       `</div></div>`+
       `<div style="display:flex;gap:10px">`+
-      `<button class="btn" onclick="document.getElementById('modal').innerHTML='';nav('shop')" style="flex:1;padding:12px">Continue Shopping</button>`+
-      `<button class="btn" style="flex:1;padding:12px;background:var(--green)" onclick="alert('Checkout coming soon! For now, click individual items to purchase.')">Checkout</button>`+
+      `<button class="btn" onclick="document.getElementById('modal').innerHTML=''" style="flex:1;padding:12px">Add to Cart</button>`+
+      `<button class="btn" style="flex:1;padding:12px;background:var(--green)" onclick="document.getElementById('modal').innerHTML='';${cart.length===1?`openBuy('${cart[0].id}')`:`alert('You have ${cart.length} items. Click Buy Now on individual items to purchase them one at a time.')`}">Buy Now</button>`+
       `</div>`+
       `<button onclick="document.getElementById('modal').innerHTML=''" style="margin-top:14px;background:transparent;border:1px solid var(--border);color:var(--text3);padding:8px;border-radius:8px;cursor:pointer;width:100%;font-family:'Quicksand',sans-serif;font-size:12px">Close</button>`+
       `</div></div>`;
