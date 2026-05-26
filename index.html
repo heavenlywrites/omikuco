@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!-- cache-bust:9999999999 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -22,7 +22,7 @@
   --green:#7fe8c0;
   --red:#ff8aa5;
   --text:#eef0ff;
-  --text2:#b3bdf0;
+  --text2:#c8d8ff;
   --text3:#7d88c8;
   --head:'Mochiy Pop One','Mochiy Pop P One',sans-serif;
   --mono:'Share Tech Mono',monospace;
@@ -37,7 +37,7 @@ body{background-image:none}
 
 /* LAYOUT */
 #app{position:relative;z-index:1;min-height:100vh}
-header{position:sticky;top:0;background:linear-gradient(to bottom,rgba(20,20,72,0.55),rgba(20,20,72,0));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:none;padding:6px 28px 0;display:flex;align-items:center;justify-content:space-between;height:66px;z-index:50}
+header{position:sticky;top:0;background:rgba(5,9,28,0.95);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border-bottom:1px solid rgba(91,143,255,.25);padding:6px 28px 0;display:flex;align-items:center;justify-content:space-between;height:66px;z-index:50;box-shadow:0 4px 12px rgba(0,0,0,.5)}
 .logo{font-family:var(--head);font-size:17px;letter-spacing:1px;color:var(--text)}
 .logo em{color:var(--accent);font-style:normal}
 .domain{font-size:9px;color:var(--text3);letter-spacing:2px;font-family:var(--mono);margin-top:2px}
@@ -48,19 +48,19 @@ nav{display:flex;gap:6px}
 main{max-width:1150px;margin:0 auto;padding:48px 24px 80px}
 
 /* CARDS */
-.card{background:rgba(13,21,53,0.92);border:1px solid var(--border);border-radius:22px}
+.card{background:rgba(5,9,28,0.96);border:1px solid var(--border);border-radius:22px}
 
 /* HERO */
-.hero{text-align:center;padding:64px 0 56px}
-.pill{display:inline-block;background:var(--accent-glow);border:1px solid var(--border2);color:var(--accent);font-size:11px;font-weight:600;letter-spacing:1.5px;padding:6px 18px;border-radius:100px;margin-bottom:22px;font-family:'Quicksand',sans-serif;box-shadow:0 4px 12px rgba(255,158,200,.25)}
+.hero{text-align:center;padding:64px 0 56px;background:rgba(5,9,28,0.3);border-radius:20px;margin-bottom:40px;padding:48px 32px}
+.pill{display:inline-block;background:rgba(5,9,28,0.85);border:1px solid rgba(255,158,200,.4);color:#ffb8d8;font-size:11px;font-weight:600;letter-spacing:1.5px;padding:6px 18px;border-radius:100px;margin-bottom:22px;font-family:'Quicksand',sans-serif;box-shadow:0 4px 12px rgba(0,0,0,.5)}
 .hero h1{font-family:var(--head);font-size:clamp(26px,5vw,48px);line-height:1.3;margin-bottom:16px}
 .hero h1 .g{color:var(--accent2)}
 .hero p{color:var(--text2);font-size:14px;max-width:440px;margin:0 auto}
-h2,h3{font-family:var(--head);font-weight:400;letter-spacing:.5px;line-height:1.35;text-shadow:0 4px 12px rgba(0,0,0,.5)}
+h2,h3{font-family:var(--head);font-weight:400;letter-spacing:.5px;line-height:1.35;text-shadow:0 2px 8px rgba(0,0,0,.8)}
 
 /* GRID */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:16px}
-.lcard{background:rgba(13,21,53,0.92);border:1px solid var(--border);border-radius:22px;padding:22px;transition:all .2s;cursor:pointer}
+.lcard{background:rgba(5,9,28,0.96);border:1px solid var(--border);border-radius:22px;padding:22px;transition:all .2s;cursor:pointer}
 .lcard:hover{border-color:var(--accent);background:var(--card2);transform:translateY(-4px)}
 .lcard.sold{opacity:.42;cursor:default;pointer-events:none}
 
@@ -70,14 +70,15 @@ h2,h3{font-family:var(--head);font-weight:400;letter-spacing:.5px;line-height:1.
 .t-prem{background:var(--accent-glow);color:var(--accent);border:1px solid rgba(91,143,255,.28)}
 .t-niche{background:rgba(62,223,160,.09);color:var(--green);border:1px solid rgba(62,223,160,.22)}
 .t-leg{background:rgba(190,110,255,.1);color:#c87aff;border:1px solid rgba(190,110,255,.25)}
+.t-cutesy{background:rgba(255,158,200,.12);color:var(--accent);border:1px solid rgba(255,158,200,.35)}
 .t-sold{background:rgba(255,255,255,.05);color:var(--text3);border:1px solid var(--border)}
 
 /* BUTTONS */
-.btn{background:var(--accent);color:#3a1d2e;border:none;padding:10px 22px;border-radius:100px;cursor:pointer;font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;letter-spacing:.3px;transition:all .2s cubic-bezier(.34,.1,.68,1.48);box-shadow:0 4px 12px rgba(255,158,200,.35)}
+.btn{background:var(--accent);color:#1a0d20;border:none;padding:10px 22px;border-radius:100px;cursor:pointer;font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;letter-spacing:.3px;transition:all .2s cubic-bezier(.34,.1,.68,1.48);box-shadow:0 4px 12px rgba(255,158,200,.35)}
 .btn:hover{opacity:1;filter:brightness(1.1);transform:translateY(-3px);box-shadow:0 8px 20px rgba(255,158,200,.45)}
 .btn:active{transform:scale(.98)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
-.btn2{background:transparent;color:var(--text2);border:1px solid var(--border2);padding:9px 20px;border-radius:100px;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.2);cursor:pointer;font-family:'Quicksand',sans-serif;font-size:13px;font-weight:500;transition:all .18s}
+.btn2{background:transparent;color:#e8f2ff;border:1px solid rgba(91,143,255,.4);padding:9px 20px;border-radius:100px;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.4);cursor:pointer;font-family:'Quicksand',sans-serif;font-size:13px;font-weight:500;transition:all .18s}
 .btn2:hover{border-color:var(--border2);color:var(--text)}
 .btn-g{background:rgba(62,223,160,.1);color:var(--green);border:1px solid rgba(62,223,160,.24);padding:7px 15px;border-radius:14px;cursor:pointer;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;transition:all .15s}
 .btn-r{background:rgba(255,102,128,.1);color:var(--red);border:1px solid rgba(255,102,128,.24);padding:7px 15px;border-radius:14px;cursor:pointer;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;transition:all .15s}
@@ -92,7 +93,7 @@ label{display:block;font-size:11px;font-weight:700;color:var(--text3);letter-spa
 
 /* MODAL */
 .overlay{position:fixed;inset:0;background:rgba(2,5,22,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
-.mbox{background:rgba(13,21,53,0.92);border:1px solid var(--border2);border-radius:26px;width:100%;max-width:490px;max-height:90vh;overflow-y:auto;padding:32px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+.mbox{background:rgba(5,9,28,0.96);border:1px solid var(--border2);border-radius:26px;width:100%;max-width:490px;max-height:90vh;overflow-y:auto;padding:32px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
 
 /* PAY TOGGLE */
 .ptoggle{display:flex;gap:10px;margin-bottom:18px}
@@ -102,7 +103,7 @@ label{display:block;font-size:11px;font-weight:700;color:var(--text3);letter-spa
 
 /* INFO BOXES */
 .ibox{background:rgba(91,143,255,.07);border:1px solid rgba(91,143,255,.15);border-radius:16px;padding:14px 16px;margin-bottom:14px}
-.warn{background:rgba(182,156,255,.1);border:1px solid rgba(182,156,255,.26);border-radius:16px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:#cdb8ff;line-height:1.6}
+.warn{background:rgba(5,9,28,0.92);border:1px solid rgba(182,156,255,.35);border-radius:16px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:#e8d5ff;line-height:1.6;box-shadow:0 4px 12px rgba(0,0,0,.4)}
 
 /* UPLOAD */
 .uzone{border:2px dashed var(--border);border-radius:16px;padding:24px;text-align:center;cursor:pointer;transition:all .2s}
@@ -111,8 +112,8 @@ label{display:block;font-size:11px;font-weight:700;color:var(--text3);letter-spa
 
 /* STATUS */
 .sbadge{display:inline-block;font-size:11px;font-weight:700;padding:3px 11px;border-radius:100px;text-transform:uppercase;letter-spacing:.8px}
-.s-pending{background:rgba(182,156,255,.14);color:var(--accent2);border:1px solid rgba(182,156,255,.32)}
-.s-approved{background:rgba(62,223,160,.1);color:var(--green);border:1px solid rgba(62,223,160,.24)}
+.s-pending{background:rgba(5,9,28,0.9);color:#d8b8ff;border:1px solid rgba(182,156,255,.4)}
+.s-approved{background:rgba(5,9,28,0.9);color:#5ffe8f;border:1px solid rgba(62,223,160,.4)}
 .s-rejected{background:rgba(255,102,128,.1);color:var(--red);border:1px solid rgba(255,102,128,.22)}
 
 /* CREDS */
@@ -136,7 +137,36 @@ hr{border:none;border-top:1px solid var(--border);margin:18px 0}
 .empty{text-align:center;padding:48px 0;color:var(--text3)}
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
-@media(max-width:600px){main{padding:28px 16px 60px}header{padding:0 16px}.hero{padding:40px 0 36px}.mbox{padding:22px 18px}}
+
+@media(max-width:768px){
+  header{padding:6px 16px;height:60px}
+  .logo{font-size:15px}
+  nav{gap:4px}
+  .nb{padding:6px 12px;font-size:12px}
+  main{max-width:100%;padding:32px 12px 60px}
+  .hero{padding:36px 20px;margin-bottom:32px}
+  .hero h1{font-size:clamp(22px,4vw,36px);margin-bottom:12px}
+  .hero p{font-size:13px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+  .lcard{padding:12px;border-radius:16px}
+  .mbox{padding:18px 14px}
+}
+
+@media(max-width:480px){
+  header{padding:6px 12px}
+  .logo{font-size:13px}
+  nav{gap:2px}
+  .nb{padding:5px 10px;font-size:11px}
+  main{padding:24px 10px 50px}
+  .hero{padding:28px 16px;margin-bottom:24px;border-radius:16px}
+  .hero h1{font-size:clamp(18px,3vw,28px);margin-bottom:10px}
+  .hero p{font-size:12px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+  .lcard{padding:10px;border-radius:14px}
+  .mbox{padding:14px 12px}
+  .btn{padding:8px 16px;font-size:12px}
+  .btn2{padding:6px 12px;font-size:11px}
+}
 </style>
 </head>
 <body>
@@ -150,7 +180,7 @@ hr{border:none;border-top:1px solid var(--border);margin:18px 0}
     <nav>
       <button class="nb on" onclick="nav('shop')" id="n-shop">Shop</button>
       <button class="nb" onclick="nav('status')" id="n-status">Track Order</button>
-      <button class="nb" onclick="nav('admin')" id="n-admin">Admin</button>
+      <button class="nb" onclick="viewCart()" style="position:relative" id="cart-btn">🛒 <span id="cart-count" style="position:absolute;top:-4px;right:-6px;background:var(--accent);color:#000;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center"></span></button>
     </nav>
   </header>
   <main id="main"></main>
@@ -175,18 +205,22 @@ hr{border:none;border-top:1px solid var(--border);margin:18px 0}
 
 // ── DATA ──────────────────────────────────────────────────────
 const SAMPLE_LISTINGS=[
-  {id:'lst_001',platform:'Instagram',username:'@nature',price:1499,description:'Ultra-rare single-word OG handle. Perfect for brands, creators, or resale.',tag:'OG',available:true,
-   creds:{email:'igaccount01@gmail.com',password:'N@ture2024!',recoveryEmail:'backup01@gmail.com',phone:'N/A',notes:'Change email immediately after purchase. No linked Facebook.'}},
-  {id:'lst_002',platform:'X / Twitter',username:'@blockchain',price:749,description:'High-value Web3 keyword handle with years of account age.',tag:'Premium',available:true,
-   creds:{email:'xblockchain@gmail.com',password:'B1ockchain!',recoveryEmail:'xbackup02@gmail.com',phone:'N/A',notes:'2FA is off. Enable your own immediately after transfer.'}},
-  {id:'lst_003',platform:'TikTok',username:'@minimalist',price:329,description:'Aesthetic lifestyle handle. Zero prior posts, clean slate.',tag:'Niche',available:true,
-   creds:{email:'tiktokmin@gmail.com',password:'M!nimalist24',recoveryEmail:'N/A',phone:'N/A',notes:'Ready to transfer. No phone linked.'}},
-  {id:'lst_004',platform:'Instagram',username:'@trading',price:599,description:'Finance & trading niche. Strong brand recognition potential.',tag:'Niche',available:true,
-   creds:{email:'igtrading04@gmail.com',password:'Trd!ng2024',recoveryEmail:'backup04@gmail.com',phone:'N/A',notes:'No posts. Clean account. No connected apps.'}},
-  {id:'lst_005',platform:'Discord',username:'ghost#0001',price:899,description:'Legendary OG discriminator. Extremely rare #0001 Discord tag.',tag:'Legendary',available:true,
-   creds:{email:'discordghost@gmail.com',password:'Gh0st#001!',recoveryEmail:'N/A',phone:'N/A',notes:'Pre-username update account. Change email first.'}},
-  {id:'lst_006',platform:'Reddit',username:'u/wizard',price:1999,description:'Iconic Reddit username. Massive value for any community builder.',tag:'Legendary',available:true,
-   creds:{email:'redditwiz@gmail.com',password:'W!zard2024',recoveryEmail:'wizbackup@gmail.com',phone:'N/A',notes:'Old account. Change email immediately.'}}
+  {id:'lst_001',platform:'Instagram',username:'@fittle',price:25,description:'Cutesy Instagram Handle',tag:'Cutesy',available:true,accountStatus:'✓ OGE included',
+   creds:{email:'igaccount_fittle@gmail.com',password:'Fittle2024!',recoveryEmail:'backup_fittle@gmail.com',phone:'N/A',notes:'Change email immediately after purchase.'}},
+  {id:'lst_002',platform:'Instagram',username:'@flirtage',price:25,description:'Cutesy Instagram Handle',tag:'Cutesy',available:true,accountStatus:'✓ OGE included',
+   creds:{email:'igaccount_flirtage@gmail.com',password:'Flirtage2024!',recoveryEmail:'backup_flirtage@gmail.com',phone:'N/A',notes:'Change email immediately after purchase.'}},
+  {id:'lst_003',platform:'Valorant',username:'Valorant Account',price:60,description:'Bronze 2 account with premium skin collection. Featuring: Xeno Hunter, Mystbloom 2.0 & Soulstrife Knives, Gaia\'s/Xerofang/Exo/Reaver Vandals, Mystbloom & Singularity Sheriffs, and more.',tag:'Premium',available:true,accountStatus:'✓ Stacked skin collection • Ready to play',
+   creds:{email:'valorant_acc@gmail.com',password:'Valorant2024!',recoveryEmail:'backup_val@gmail.com',phone:'N/A',notes:'Account ready for ranked. Change email first for security. Skins include: Xeno Hunter Knife, Mystbloom 2.0 Knife, Soulstrife Scythe, Evori Dreamwings Spellcaster Knife, Reaver Vandal, Gaia\'s Vandal, Xerofang Vandal, Exo Vandal, Mystbloom 2.0 Vandal, Mystbloom Sheriff, Singularity Sheriff, Minima Sheriff, and more coming soon.'}},
+  {id:'lst_004',platform:'TikTok',username:'@ofwh',price:10,description:'TikTok OGE Account',tag:'4L',available:true,accountStatus:'✓ OGE included • Ready for ownership',
+   creds:{email:'tiktok_ofwh@gmail.com',password:'TikTok2024!',recoveryEmail:'backup_ofwh@gmail.com',phone:'N/A',notes:'Change email immediately after purchase.'}},
+  {id:'lst_005',platform:'TikTok',username:'@nmxc',price:10,description:'TikTok OGE Account',tag:'4L',available:true,accountStatus:'✓ OGE included • Ready for ownership',
+   creds:{email:'tiktok_nmxc@gmail.com',password:'TikTok2024!',recoveryEmail:'backup_nmxc@gmail.com',phone:'N/A',notes:'Change email immediately after purchase.'}},
+  {id:'lst_006',platform:'TikTok',username:'@xnyi',price:10,description:'TikTok OGE Account',tag:'4L',available:true,accountStatus:'✓ OGE included • Ready for ownership',
+   creds:{email:'tiktok_xnyi@gmail.com',password:'TikTok2024!',recoveryEmail:'backup_xnyi@gmail.com',phone:'N/A',notes:'Change email immediately after purchase.'}},
+  {id:'lst_007',platform:'TikTok',username:'@5aww',price:10,description:'TikTok OGE Account',tag:'4C',available:true,accountStatus:'✓ OGE included • Ready for ownership',
+   creds:{email:'tiktok_5aww@gmail.com',password:'TikTok2024!',recoveryEmail:'backup_5aww@gmail.com',phone:'N/A',notes:'Change email immediately after purchase.'}},
+  {id:'lst_008',platform:'TikTok',username:'@bnnx',price:10,description:'TikTok OGE Account',tag:'4L',available:true,accountStatus:'✓ OGE included • Ready for ownership',
+   creds:{email:'tiktok_bnnx@gmail.com',password:'TikTok2024!',recoveryEmail:'backup_bnnx@gmail.com',phone:'N/A',notes:'Change email immediately after purchase.'}}
 ];
 const DEF_CFG={
   cashapp:'$htqa',
@@ -198,11 +232,11 @@ const DEF_CFG={
   adminPw:'admin123'
 };
 const PC={Instagram:'#e1306c','X / Twitter':'#7eb8ff',TikTok:'#ff6b8a',YouTube:'#ff4444',Discord:'#7a8fff',Snapchat:'#ffdd57',Facebook:'#4f9bff',Reddit:'#ff7043',Twitch:'#a66bff'};
-const TC={'OG':'t-og','Premium':'t-prem','Niche':'t-niche','Legendary':'t-leg'};
+const TC={'OG':'t-og','Premium':'t-prem','Niche':'t-niche','Legendary':'t-leg','Cutesy':'t-cutesy','4L':'t-4l','4C':'t-4c'};
 
 function load(k,fb){try{const v=localStorage.getItem('omk_'+k);return v?JSON.parse(v):fb}catch{return fb}}
 function save(k,v){try{localStorage.setItem('omk_'+k,JSON.stringify(v))}catch{}}
-function getListings(){const v=load('listings',null);if(!v){save('listings',SAMPLE_LISTINGS);return SAMPLE_LISTINGS}return v}
+function getListings(){const v=load('listings',null);if(!v||v.length<8||!v.some(l=>l.tag==='4C')){save('listings',SAMPLE_LISTINGS);return SAMPLE_LISTINGS}return v||SAMPLE_LISTINGS}
 function getOrders(){return load('orders',[])}
 function getCfg(){return{...DEF_CFG,...load('cfg',{})}}
 function saveListings(v){save('listings',v)}
@@ -215,6 +249,8 @@ function cap(s){if(!s)return'';if(s==='recoveryEmail')return'Recovery Email';if(
 // ── STATE ─────────────────────────────────────────────────────
 let page='shop',adminOk=false,aTab='orders';
 let buyLid=null,buyStep=1,payM='cashapp',proofB64=null,proofName=null;
+let cart=[];
+let platformFilter=[];
 
 // ── NAV ───────────────────────────────────────────────────────
 function nav(p){
@@ -226,31 +262,63 @@ function nav(p){
 }
 
 // ── SHOP ──────────────────────────────────────────────────────
+function togglePlatformFilter(platform){
+  if(platformFilter.includes(platform)){
+    platformFilter=platformFilter.filter(p=>p!==platform);
+  }else{
+    platformFilter.push(platform);
+  }
+  render();
+}
+
 function renderShop(){
   const ls=getListings();
-  const cards=ls.map(l=>{
+  const platforms=[...new Set(ls.map(l=>l.platform))].sort();
+  
+  // Filter listings based on selected platforms
+  const filtered=platformFilter.length>0?ls.filter(l=>!platformFilter.includes(l.platform)):ls;
+  
+  const cards=filtered.map(l=>{
     const pc=PC[l.platform]||'#8aa4d8';
     const tc=TC[l.tag]||'t-niche';
-    return`<div class="lcard${!l.available?' sold':''}" ${l.available?`onclick="openBuy('${l.id}')"`:''}>`+
-      `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">`+
-      `<span style="color:${pc};font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase">${esc(l.platform)}</span>`+
+    const inCart = cart.find(c => c.id === l.id);
+    return`<div class="lcard${!l.available?' sold':''}" style="display:flex;flex-direction:column;padding:14px">`+
+      `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">`+
+      `<span style="color:${pc};font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase">${esc(l.platform)}</span>`+
       `<div>${l.tag?`<span class="tag ${tc}">${esc(l.tag)}</span>`:''}`+
       `${!l.available?'<span class="tag t-sold" style="margin-left:5px">Sold</span>':''}</div></div>`+
-      `<div style="font-family:var(--mono);font-size:22px;font-weight:700;color:#e4efff;margin-bottom:10px;word-break:break-all">${esc(l.username)}</div>`+
-      `<p style="color:var(--text2);font-size:12px;line-height:1.65;margin-bottom:20px;min-height:36px">${esc(l.description)}</p>`+
-      `<div style="display:flex;align-items:center;justify-content:space-between">`+
-      `<div><div style="font-size:10px;color:var(--text3);letter-spacing:1px;font-weight:700;margin-bottom:2px">PRICE</div>`+
-      `<div style="font-family:var(--head);font-size:21px;color:var(--accent2)">$${l.price.toLocaleString()}</div></div>`+
-      `${l.available?`<button class="btn" onclick="event.stopPropagation();openBuy('${l.id}')" style="font-size:12px;padding:8px 16px">Buy Now →</button>`:''}`+
-      `</div></div>`;
+      `<div style="font-family:var(--head);font-size:20px;font-weight:700;color:#e4efff;margin-bottom:6px;word-break:break-all;cursor:pointer" onclick="openBuy('${l.id}')">${esc(l.username)}</div>`+
+      `<p style="color:var(--text2);font-size:11px;line-height:1.4;margin-bottom:10px;min-height:22px">${esc(l.description)}</p>`+
+      `<div style="background:rgba(5,9,28,0.9);border:1px solid rgba(182,156,255,.35);border-radius:10px;padding:8px 10px;margin-bottom:12px;font-size:10px;color:#d8e8ff;line-height:1.5;box-shadow:0 4px 12px rgba(0,0,0,.4)">`+
+      `<strong style="color:var(--text)">Status:</strong> ${esc(l.accountStatus||'✓ Standard account included')}`+
+      `</div>`+
+      `<div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto">`+
+      `<div style="margin-bottom:0"><div style="font-size:9px;color:var(--text3);letter-spacing:0.5px;font-weight:700;margin-bottom:1px">PRICE</div>`+
+      `<div style="font-family:var(--head);font-size:18px;color:var(--accent2)">$${l.price.toLocaleString()}</div></div>`+
+      `<div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">${l.available?`<button class="btn" onclick="event.stopPropagation();addToCart('${l.id}')" style="font-size:11px;padding:6px 12px;background:${inCart?'var(--green)':'var(--accent)'}">${inCart?'✓ Cart':'Buy'}</button><button class="btn" onclick="event.stopPropagation();openBuy('${l.id}')" style="font-size:11px;padding:6px 12px">Info</button>`:''}`+
+      `</div></div></div>`;
   }).join('');
+  
+  const filterButtons=platforms.map(p=>
+    `<button style="background:${platformFilter.includes(p)?'var(--accent)':'transparent'};color:${platformFilter.includes(p)?'#1a0d20':'#e8f2ff'};border:1px solid ${platformFilter.includes(p)?'var(--accent)':'rgba(91,143,255,.3)'};padding:8px 14px;border-radius:100px;cursor:pointer;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:600;transition:all .2s" onclick="togglePlatformFilter(${JSON.stringify(p)})">${esc(p)}</button>`
+  ).join('');
+  
   return`<div class="hero">`+
-    `<h1>Nuke's Nightmarket</h1>`+
-    `<p>Come shop with someone you trust.</p>`+
-    `<div style="margin-top:32px;background:rgba(182,156,255,.08);border:1px solid rgba(182,156,255,.2);border-radius:18px;padding:18px 22px;max-width:560px;margin-left:auto;margin-right:auto;font-size:13px;color:var(--text2);line-height:1.7">`+
+    `<h1 style="text-shadow:0 4px 16px rgba(0,0,0,.8)">Nuke's Nightmarket</h1>`+
+    `<div style="display:flex;align-items:center;justify-content:center;margin-bottom:14px">`+
+    `<span style="font-size:11px;font-weight:700;color:#e8f2ff;letter-spacing:1px">Verified Seller • Manual Delivery • Daily Restocks</span>`+
+    `</div>`+
+    
+    `<div style="margin-top:32px;background:rgba(5,9,28,0.92);border:1px solid rgba(182,156,255,.35);border-radius:18px;padding:18px 22px;max-width:560px;margin-left:auto;margin-right:auto;font-size:13px;color:#d8e8ff;line-height:1.7;box-shadow:0 4px 16px rgba(0,0,0,.5)">`+
     `<strong style="color:var(--accent2)">⚠ Important:</strong> All sales are <strong>final</strong>. By purchasing, you agree to receive account credentials and take full responsibility for account security. Review our <strong><a href="javascript:void(0)" onclick="nav('tos')" style="color:var(--accent);text-decoration:underline">Terms of Service</a></strong> before buying.`+
     `</div></div>`+
-    `<div class="grid">${cards||'<div class="empty">No listings yet.</div>'}</div>`;
+    
+    `<div style="margin-top:28px;padding:16px 20px;background:rgba(5,9,28,0.95);border:1px solid rgba(91,143,255,.3);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.5)">`+
+    `<div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px">Filter by Platform</div>`+
+    `<div style="display:flex;gap:8px;flex-wrap:wrap">${filterButtons}</div>`+
+    `${platformFilter.length>0?`<button style="margin-top:10px;background:transparent;color:var(--accent);border:1px solid var(--accent);padding:6px 12px;border-radius:8px;cursor:pointer;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:600;transition:all .2s" onclick="platformFilter=[];render()">Clear Filters</button>`:''}`+
+    `</div>`+
+    `<div class="grid" style="margin-top:40px">${cards||'<div class="empty">No listings found.</div>'}</div>`;
 }
 
 // ── STATUS ────────────────────────────────────────────────────
@@ -304,13 +372,14 @@ function chkOrder(){
 // ── ADMIN ─────────────────────────────────────────────────────
 function renderAdmin(){
   if(!adminOk){
-    return`<div style="max-width:360px;margin:0 auto;text-align:center">`+
-      `<h2 style="font-family:var(--head);font-size:34px;font-weight:700;margin-bottom:8px">Admin Access</h2>`+
+    return`<div style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center">`+
+      `<div style="max-width:360px;background:rgba(5,9,28,0.95);border:1px solid rgba(182,156,255,.35);border-radius:18px;padding:40px 30px;box-shadow:0 20px 60px rgba(0,0,0,.8)">`+
+      `<h2 style="font-family:var(--head);font-size:34px;font-weight:700;margin-bottom:8px;color:#e4efff">Admin Access</h2>`+
       `<p style="color:var(--text2);font-size:14px;margin-bottom:30px">Enter your password to manage listings, orders, and settings.</p>`+
       `<div class="field"><input type="password" id="apw" placeholder="Password" onkeydown="if(event.key==='Enter')aLogin()"></div>`+
       `<button class="btn" onclick="aLogin()" style="width:100%;padding:12px">Sign In</button>`+
       `<p style="color:var(--text3);font-size:11px;margin-top:14px">Default: admin123</p>`+
-      `<div id="aerr" style="margin-top:10px"></div></div>`;
+      `<div id="aerr" style="margin-top:10px"></div></div></div>`;
   }
   const orders=getOrders(),ls=getListings();
   const pend=orders.filter(o=>o.status==='pending').length;
@@ -318,15 +387,17 @@ function renderAdmin(){
   if(aTab==='orders')tc=renderAOrders(orders,ls);
   else if(aTab==='listings')tc=renderAListings(ls);
   else tc=renderASettings();
-  return`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:30px;flex-wrap:wrap;gap:12px">`+
-    `<div><h2 style="font-family:var(--head);font-size:28px;font-weight:700">Dashboard</h2>`+
+  return`<div style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:999;overflow-y:auto;padding:30px 20px">`+
+    `<div style="max-width:1000px;margin:0 auto;background:rgba(5,9,28,0.96);border:1px solid rgba(182,156,255,.35);border-radius:18px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.8)">`+
+    `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:30px;flex-wrap:wrap;gap:12px">`+
+    `<div><h2 style="font-family:var(--head);font-size:28px;font-weight:700;color:#e4efff">Dashboard</h2>`+
     `<p style="color:var(--text3);font-size:13px">${ls.length} listings · ${orders.length} orders${pend?` · <span style="color:var(--gold)">${pend} pending</span>`:''}</p></div>`+
     `<button class="btn2" onclick="aLogout()" style="font-size:12px">Sign Out</button></div>`+
     `<div class="tabs">`+
     `<button class="tab${aTab==='orders'?' on':''}" onclick="setTab('orders')">Orders${pend?` <span style="background:var(--accent2);color:#1a1240;border-radius:100px;padding:1px 7px;font-size:10px;margin-left:4px;font-weight:700">${pend}</span>`:''}</button>`+
     `<button class="tab${aTab==='listings'?' on':''}" onclick="setTab('listings')">Listings</button>`+
     `<button class="tab${aTab==='settings'?' on':''}" onclick="setTab('settings')">Settings</button></div>`+
-    `<div id="atc">${tc}</div>`;
+    `<div id="atc">${tc}</div></div></div>`;
 }
 
 function renderAOrders(orders,ls){
@@ -476,7 +547,7 @@ function viewProof(id){
   const o=getOrders().find(x=>x.id===id);
   if(!o?.proofB64)return;
   document.getElementById('modal').innerHTML=`<div class="overlay" onclick="closeMod()">`+
-    `<div style="max-width:480px;width:100%;background:rgba(13,21,53,0.92);border:1px solid var(--border2);border-radius:16px;padding:22px" onclick="event.stopPropagation()">`+
+    `<div style="max-width:480px;width:100%;background:rgba(5,9,28,0.96);border:1px solid var(--border2);border-radius:16px;padding:22px" onclick="event.stopPropagation()">`+
     `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><span style="font-weight:600">Payment Screenshot</span><button onclick="closeMod()" style="background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;line-height:1">×</button></div>`+
     `<img src="${o.proofB64}" style="max-width:100%;border-radius:14px;border:1px solid var(--border)"></div></div>`;
 }
@@ -619,13 +690,36 @@ function submitBuy(){
 function closeMod(){document.getElementById('modal').innerHTML='';buyLid=null}
 function cp(t){navigator.clipboard?.writeText(t)}
 
+// ── CART ───────────────────────────────────────────────────────
+function addToCart(lid){
+  const ls=getListings();
+  const l=ls.find(x=>x.id===lid);
+  if(!l)return;
+  const inCart=cart.find(c=>c.id===lid);
+  if(!inCart){cart.push({id:lid,title:l.username,price:l.price,platform:l.platform});render()}
+}
+function removeFromCart(lid){cart=cart.filter(c=>c.id!==lid);render()}
+function viewCart(){
+  if(cart.length===0)alert('Your cart is empty');
+  else{
+    const total=cart.reduce((s,i)=>s+i.price,0);
+    let msg='📦 Your Cart ('+cart.length+' item'+(cart.length!==1?'s':'')+'):\n\n';
+    cart.forEach(i=>msg+='• '+i.platform+' '+i.title+' - $'+i.price.toLocaleString()+'\n');
+    msg+='\n━━━━━━━━━━━━━━━━━\nTotal: $'+total.toLocaleString()+'\n\nClick a username to buy it, or clear and start shopping.';
+    alert(msg);
+  }
+}
+
 // ── RENDER ────────────────────────────────────────────────────
 function render(){
   const m=document.getElementById('main');
   if(page==='shop')m.innerHTML=renderShop();
   else if(page==='status')m.innerHTML=renderStatus();
-  else if(page==='admin')m.innerHTML=renderAdmin();
   else if(page==='tos')m.innerHTML=renderToS();
+  
+  // Update cart count
+  const cnt=document.getElementById('cart-count');
+  if(cnt)cnt.innerHTML=cart.length>0?cart.length:'';
 }
 
 function renderToS(){
