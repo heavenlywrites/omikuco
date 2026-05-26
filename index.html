@@ -3,1075 +3,705 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>omiku — custom websites $15</title>
-<link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Nuke's Nightmarket</title>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Mochiy+Pop+P+One&family=Quicksand:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a1234;
+  --bg2:#101a44;
+  --card:#16215a;
+  --card2:#1d2b70;
+  --border:rgba(150,170,255,0.18);
+  --border2:rgba(170,150,255,0.34);
+  --accent:#ff9ec8;
+  --accent2:#b69cff;
+  --accent-glow:rgba(255,158,200,0.16);
+  --gold:#ff9ec8;
+  --gold-dim:rgba(255,158,200,0.14);
+  --green:#7fe8c0;
+  --red:#ff8aa5;
+  --text:#eef0ff;
+  --text2:#b3bdf0;
+  --text3:#7d88c8;
+  --head:'Mochiy Pop One','Mochiy Pop P One',sans-serif;
+  --mono:'Share Tech Mono',monospace;
+}
+html,body{min-height:100%;background:url('nightmarket.png') center/cover fixed,var(--bg);color:var(--text);font-family:'Quicksand',sans-serif;font-size:15px;line-height:1.65;font-weight:500}
+body{background-image:radial-gradient(ellipse 130% 70% at 50% 0%,#2a2470 0%,#16205a 40%,var(--bg) 80%)}
 
-  :root {
-    --bg:       #161616;
-    --surface:  #1e1e1e;
-    --surface2: #252525;
-    --surface3: #2c2c2c;
-    --border:   #303030;
-    --border2:  #3a3a3a;
-    --text:     #efefef;
-    --text2:    #aaaaaa;
-    --text3:    #666666;
-    --pink:     #f5c6d4;
-    --pink-dim: #2b1c22;
-  }
+/* STARS */
+#stars{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.star{position:absolute;border-radius:50%;background:white;animation:fall linear infinite}
+@keyframes fall{0%{transform:translateY(-20px);opacity:0}8%{opacity:1}88%{opacity:.7}100%{transform:translateY(101vh);opacity:0}}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Nunito', sans-serif;
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
+/* LAYOUT */
+#app{position:relative;z-index:1;min-height:100vh}
+header{position:sticky;top:0;background:linear-gradient(to bottom,rgba(20,20,72,0.55),rgba(20,20,72,0));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:none;padding:6px 28px 0;display:flex;align-items:center;justify-content:space-between;height:66px;z-index:50}
+.logo{font-family:var(--head);font-size:17px;letter-spacing:1px;color:var(--text)}
+.logo em{color:var(--accent);font-style:normal}
+.domain{font-size:9px;color:var(--text3);letter-spacing:2px;font-family:var(--mono);margin-top:2px}
+nav{display:flex;gap:6px}
+.nb{background:transparent;border:1px solid transparent;color:var(--text2);padding:6px 16px;border-radius:14px;cursor:pointer;font-family:'Quicksand',sans-serif;font-size:13px;font-weight:500;transition:all .18s}
+.nb:hover{color:var(--text);background:rgba(91,143,255,.07)}
+.nb.on{color:var(--accent);border-color:rgba(91,143,255,.3);background:var(--accent-glow)}
+main{max-width:1150px;margin:0 auto;padding:48px 24px 80px}
 
-  .wrap {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 72px 40px 100px;
-  }
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:22px}
 
-  /* ── CLOSED BANNER ── */
-  .closed-banner {
-    display: none; position: fixed; inset: 0; z-index: 999;
-    background: var(--bg); align-items: center; justify-content: center;
-    flex-direction: column; text-align: center; padding: 40px;
-  }
-  .closed-banner.show { display: flex; }
-  .closed-banner h2 {
-    font-family: 'Hachi Maru Pop', sans-serif;
-    font-size: 36px; color: var(--text); margin-bottom: 14px;
-  }
-  .closed-banner p { font-size: 15px; color: var(--text2); max-width: 400px; line-height: 1.7; }
+/* HERO */
+.hero{text-align:center;padding:64px 0 56px}
+.pill{display:inline-block;background:var(--accent-glow);border:1px solid var(--border2);color:var(--accent);font-size:11px;font-weight:600;letter-spacing:1.5px;padding:6px 18px;border-radius:100px;margin-bottom:22px;font-family:'Quicksand',sans-serif;box-shadow:0 4px 12px rgba(255,158,200,.25)}
+.hero h1{font-family:var(--head);font-size:clamp(26px,5vw,48px);line-height:1.3;margin-bottom:16px}
+.hero h1 .g{color:var(--accent2)}
+.hero p{color:var(--text2);font-size:14px;max-width:440px;margin:0 auto}
+h2,h3{font-family:var(--head);font-weight:400;letter-spacing:.5px;line-height:1.35;text-shadow:0 4px 12px rgba(0,0,0,.5)}
 
-  /* ── HERO ── */
-  .hero { margin-bottom: 56px; text-align: center; }
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:16px}
+.lcard{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:22px;transition:all .2s;cursor:pointer}
+.lcard:hover{border-color:var(--accent);background:var(--card2);transform:translateY(-4px)}
+.lcard.sold{opacity:.42;cursor:default;pointer-events:none}
 
-  .badge {
-    display: inline-block;
-    border: 1px solid var(--border2);
-    color: var(--text3);
-    font-size: 11px; font-weight: 700; letter-spacing: 2px;
-    text-transform: uppercase; padding: 5px 14px;
-    border-radius: 100px; margin-bottom: 28px;
-  }
+/* TAGS */
+.tag{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;letter-spacing:.8px;text-transform:uppercase;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.t-og{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(255,158,200,.3)}
+.t-prem{background:var(--accent-glow);color:var(--accent);border:1px solid rgba(91,143,255,.28)}
+.t-niche{background:rgba(62,223,160,.09);color:var(--green);border:1px solid rgba(62,223,160,.22)}
+.t-leg{background:rgba(190,110,255,.1);color:#c87aff;border:1px solid rgba(190,110,255,.25)}
+.t-sold{background:rgba(255,255,255,.05);color:var(--text3);border:1px solid var(--border)}
 
-  .hero-title {
-    font-family: 'Hachi Maru Pop', sans-serif;
-    font-size: clamp(36px, 7vw, 58px);
-    line-height: 1.2;
-    color: var(--text);
-    margin-bottom: 16px;
-  }
-  .hero-title .accent { color: var(--pink); }
+/* BUTTONS */
+.btn{background:var(--accent);color:#3a1d2e;border:none;padding:10px 22px;border-radius:100px;cursor:pointer;font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;letter-spacing:.3px;transition:all .2s cubic-bezier(.34,.1,.68,1.48);box-shadow:0 4px 12px rgba(255,158,200,.35)}
+.btn:hover{opacity:1;filter:brightness(1.1);transform:translateY(-3px);box-shadow:0 8px 20px rgba(255,158,200,.45)}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn2{background:transparent;color:var(--text2);border:1px solid var(--border2);padding:9px 20px;border-radius:100px;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.2);cursor:pointer;font-family:'Quicksand',sans-serif;font-size:13px;font-weight:500;transition:all .18s}
+.btn2:hover{border-color:var(--border2);color:var(--text)}
+.btn-g{background:rgba(62,223,160,.1);color:var(--green);border:1px solid rgba(62,223,160,.24);padding:7px 15px;border-radius:14px;cursor:pointer;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;transition:all .15s}
+.btn-r{background:rgba(255,102,128,.1);color:var(--red);border:1px solid rgba(255,102,128,.24);padding:7px 15px;border-radius:14px;cursor:pointer;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;transition:all .15s}
 
-  .hero-sub {
-    font-size: 14px; color: var(--text2); font-weight: 500;
-    line-height: 1.7; margin-bottom: 24px; max-width: 380px;
-    margin-left: auto; margin-right: auto;
-  }
+/* FORMS */
+input,textarea,select{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:14px;font-family:'Quicksand',sans-serif;font-size:13px;outline:none;transition:border-color .2s;box-sizing:border-box}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+select option{background:var(--card)}
+label{display:block;font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px}
+.field{margin-bottom:14px}
+.err{color:var(--red);font-size:13px;margin-bottom:10px}
 
-  .price-tag {
-    display: inline-flex; align-items: center; gap: 8px;
-    border: 1px solid var(--pink);
-    color: var(--pink);
-    font-family: 'Hachi Maru Pop', sans-serif;
-    font-size: 18px; padding: 8px 22px; border-radius: 100px;
-  }
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(2,5,22,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+.mbox{background:var(--card);border:1px solid var(--border2);border-radius:26px;width:100%;max-width:490px;max-height:90vh;overflow-y:auto;padding:32px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
 
-  /* ── STEPS OVERVIEW ── */
-  .steps-row {
-    display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
-    margin-bottom: 48px;
-  }
-  .step-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 14px; padding: 16px 12px; text-align: center;
-  }
-  .step-card:nth-child(1) { grid-column: 1 / span 2; }
-  .step-card:nth-child(2) { grid-column: 3 / span 2; }
-  .step-card:nth-child(3) { grid-column: 5 / span 2; }
-  .step-card:nth-child(4) { grid-column: 1 / span 2; }
-  .step-card:nth-child(5) { grid-column: 3 / span 2; }
-  .step-card:nth-child(6) { grid-column: 5 / span 2; border-color: var(--pink); }
-  .step-n {
-    font-family: 'Hachi Maru Pop', sans-serif;
-    font-size: 11px; color: var(--pink); margin-bottom: 6px; display: block;
-  }
-  .step-card h3 { font-size: 12px; font-weight: 600; color: var(--text2); line-height: 1.4; }
-  .step-chip {
-    display: inline-block; margin-top: 6px;
-    font-size: 10px; font-weight: 700; color: var(--pink);
-    border: 1px solid var(--pink); padding: 2px 8px; border-radius: 100px;
-  }
+/* PAY TOGGLE */
+.ptoggle{display:flex;gap:10px;margin-bottom:18px}
+.popt{flex:1;background:transparent;border:1px solid var(--border);color:var(--text2);padding:13px 10px;border-radius:16px;cursor:pointer;text-align:center;font-family:'Quicksand',sans-serif;font-size:13px;font-weight:600;transition:all .18s}
+.popt.on{border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
+.popt:hover:not(.on){border-color:var(--border2);color:var(--text)}
 
-  /* ── FORM ── */
-  .form-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    overflow: hidden;
-  }
+/* INFO BOXES */
+.ibox{background:rgba(91,143,255,.07);border:1px solid rgba(91,143,255,.15);border-radius:16px;padding:14px 16px;margin-bottom:14px}
+.warn{background:rgba(182,156,255,.1);border:1px solid rgba(182,156,255,.26);border-radius:16px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:#cdb8ff;line-height:1.6}
 
-  .section {
-    padding: 28px 32px;
-    border-bottom: 1px solid var(--border);
-  }
-  .section:last-child { border-bottom: none; }
+/* UPLOAD */
+.uzone{border:2px dashed var(--border);border-radius:16px;padding:24px;text-align:center;cursor:pointer;transition:all .2s}
+.uzone:hover{border-color:var(--accent);background:var(--accent-glow)}
+.uzone.done{border-color:var(--green);background:rgba(62,223,160,.06)}
 
-  .sec-label {
-    font-family: 'Hachi Maru Pop', sans-serif;
-    font-size: 13px; color: var(--pink);
-    margin-bottom: 4px; display: block;
-  }
-  .sec-title {
-    font-family: 'Hachi Maru Pop', sans-serif;
-    font-size: 18px; color: var(--text);
-    margin-bottom: 6px;
-  }
-  .sec-sub {
-    font-size: 12px; color: var(--text3); font-weight: 500;
-    margin-bottom: 20px; line-height: 1.6;
-  }
+/* STATUS */
+.sbadge{display:inline-block;font-size:11px;font-weight:700;padding:3px 11px;border-radius:100px;text-transform:uppercase;letter-spacing:.8px}
+.s-pending{background:rgba(182,156,255,.14);color:var(--accent2);border:1px solid rgba(182,156,255,.32)}
+.s-approved{background:rgba(62,223,160,.1);color:var(--green);border:1px solid rgba(62,223,160,.24)}
+.s-rejected{background:rgba(255,102,128,.1);color:var(--red);border:1px solid rgba(255,102,128,.22)}
 
-  /* ── INPUTS ── */
-  .input {
-    width: 100%; background: var(--surface2);
-    border: 1px solid var(--border2); border-radius: 10px;
-    padding: 11px 14px; color: var(--text);
-    font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600;
-    outline: none; transition: border-color 0.15s;
-  }
-  .input::placeholder { color: var(--text3); font-weight: 500; }
-  .input:focus { border-color: var(--pink); }
+/* CREDS */
+.cbox{background:rgba(62,223,160,.06);border:1px solid rgba(62,223,160,.18);border-radius:20px;padding:16px 18px}
+.crow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:6px 0;border-bottom:1px solid rgba(62,223,160,.08);font-size:13px}
+.crow:last-child{border-bottom:none}
+.ckey{color:var(--text3);font-size:12px;flex-shrink:0}
+.cval{font-family:var(--mono);font-size:12px;color:var(--green);word-break:break-all;text-align:right}
 
-  .input-label {
-    display: block; font-size: 11px; font-weight: 700;
-    color: var(--text3); letter-spacing: 1px; text-transform: uppercase;
-    margin-bottom: 6px;
-  }
+/* TABS */
+.tabs{display:flex;gap:4px;margin-bottom:28px;border-bottom:1px solid var(--border)}
+.tab{background:transparent;border:none;color:var(--text3);padding:10px 18px;cursor:pointer;font-family:'Quicksand',sans-serif;font-size:14px;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .18s}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.tab:hover:not(.on){color:var(--text2)}
 
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+/* COPY BTN */
+.cpbtn{background:transparent;border:1px solid var(--border);color:var(--text3);padding:3px 9px;border-radius:5px;cursor:pointer;font-size:11px;font-family:var(--mono);transition:all .18s}
+.cpbtn:hover{border-color:var(--accent);color:var(--accent)}
 
-  /* ── COLORS ── */
-  .color-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .color-item {
-    border-radius: 12px; overflow: hidden;
-    border: 1px solid var(--border2); cursor: pointer;
-    position: relative; transition: border-color 0.15s;
-  }
-  .color-item:hover { border-color: var(--pink); }
-  .color-preview { height: 64px; }
-  .color-bottom {
-    background: var(--surface2); padding: 8px 12px; border-radius: 0 0 12px 12px;
-    display: flex; align-items: center; gap: 5px;
-  }
-  .color-bottom .hash { font-size: 12px; font-weight: 800; color: var(--text3); }
-  .hex-input {
-    background: transparent; border: none; outline: none;
-    color: var(--text); font-family: 'Nunito', sans-serif;
-    font-size: 13px; font-weight: 700; width: 70px; letter-spacing: 1px;
-  }
-  input[type="color"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
-
-  /* ── IMAGES ── */
-  .img-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .img-slot {
-    aspect-ratio: 1; border-radius: 4px;
-    border: 1px dashed var(--border2);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 6px;
-    cursor: pointer; position: relative; overflow: hidden;
-    background: var(--surface2); transition: border-color 0.15s;
-  }
-  .img-slot:hover { border-color: var(--pink); }
-  .img-slot input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
-  .img-slot .slot-icon { font-size: 20px; color: var(--text3); }
-  .img-slot span { font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; }
-  .img-slot .preview-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-
-  /* ── SOCIALS ── */
-  .socials-list { display: flex; flex-direction: column; gap: 8px; }
-  .social-row { display: flex; gap: 8px; }
-  .social-select {
-    background: var(--surface2); border: 1px solid var(--border2); border-radius: 10px;
-    padding: 10px 10px; font-family: 'Nunito', sans-serif; font-size: 12px;
-    font-weight: 700; color: var(--text); outline: none; cursor: pointer;
-    min-width: 130px; transition: border-color 0.15s; appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 10px center;
-    background-color: var(--surface2); padding-right: 28px;
-  }
-  .social-select:focus { border-color: var(--pink); }
-
-  /* ── CONTACT ── */
-  .contact-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: end; }
-  .contact-or { text-align: center; padding-bottom: 11px; font-size: 12px; font-weight: 700; color: var(--text3); }
-
-  /* ── PATH INPUT ── */
-  .path-wrap {
-    display: flex; align-items: center;
-    background: var(--surface2); border: 1px solid var(--border2); border-radius: 12px; overflow: hidden;
-  }
-  .path-prefix {
-    padding: 11px 14px; font-family: 'Hachi Maru Pop', sans-serif;
-    font-size: 12px; color: var(--text3);
-    border-right: 1px solid var(--border2); white-space: nowrap;
-    background: var(--surface3);
-  }
-  .path-input {
-    flex: 1; background: transparent; border: none; outline: none;
-    padding: 11px 14px; color: var(--text);
-    font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600;
-  }
-  .path-input::placeholder { color: var(--text3); }
-  .path-hint { font-size: 11px; font-weight: 700; margin-top: 6px; min-height: 16px; }
-
-  /* ── DOMAIN ADDON ── */
-  .addon-card {
-    border: 1px solid var(--border2); border-radius: 16px;
-    overflow: hidden; position: relative; cursor: pointer;
-    transition: border-color 0.15s;
-  }
-  .addon-card:hover { border-color: var(--pink); }
-  .addon-card.active { border-color: var(--pink); }
-
-  .addon-tag {
-    position: absolute; top: 0; left: 0;
-    background: var(--pink); color: #1a1a1a;
-    font-family: 'Hachi Maru Pop', sans-serif;
-    font-size: 10px; padding: 3px 10px;
-    border-bottom-right-radius: 10px;
-  }
-
-  .addon-head {
-    padding: 20px 20px 20px 80px;
-    display: flex; align-items: center; gap: 16px;
-  }
-  .toggle {
-    width: 40px; height: 22px; border-radius: 100px;
-    background: var(--border2); flex-shrink: 0; position: relative;
-    transition: background 0.2s;
-  }
-  .toggle.on { background: var(--pink); }
-  .toggle-dot {
-    position: absolute; top: 3px; left: 3px; width: 16px; height: 16px;
-    border-radius: 50%; background: #fff;
-    transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
-  }
-  .toggle.on .toggle-dot { transform: translateX(18px); }
-  .addon-info {}
-  .addon-title {
-    font-family: 'Hachi Maru Pop', sans-serif;
-    font-size: 15px; color: var(--text); display: flex; align-items: center; gap: 8px;
-  }
-  .price-pill {
-    font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 800;
-    color: var(--pink); border: 1px solid var(--pink);
-    padding: 2px 8px; border-radius: 2px;
-  }
-
-  .addon-examples { padding: 0 20px 16px; }
-  .examples-label { font-size: 11px; font-weight: 700; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
-  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; }
-  .dpill {
-    font-family: 'Courier New', monospace;
-    font-size: 11px; font-weight: 700;
-    color: var(--text2); background: var(--surface2);
-    border: 1px solid var(--border2); padding: 4px 10px; border-radius: 100px;
-  }
-
-  .addon-body { display: none; padding: 0 20px 20px; }
-  .addon-body.visible { display: block; }
-  .words-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px; }
-  .word-input {
-    background: var(--surface2); border: 1px solid var(--border2); border-radius: 10px;
-    padding: 9px 6px; color: var(--text); font-family: 'Nunito', sans-serif;
-    font-size: 12px; font-weight: 700; outline: none; text-align: center; width: 100%;
-    transition: border-color 0.15s;
-  }
-  .word-input::placeholder { color: var(--text3); font-weight: 500; font-size: 11px; }
-  .word-input:focus { border-color: var(--pink); }
-  .hint-box {
-    margin-top: 10px; padding: 10px 12px;
-    background: var(--surface2); border-radius: 10px;
-    font-size: 11px; color: var(--text3); font-weight: 600; line-height: 1.6;
-  }
-
-  /* ── PAYMENT ── */
-  .pay-notice {
-    background: var(--surface2); border-left: 3px solid var(--pink);
-    padding: 12px 16px; border-radius: 0 12px 12px 0;
-    font-size: 12px; font-weight: 600; color: var(--text2);
-    margin-bottom: 16px; line-height: 1.6;
-  }
-  .pay-options { display: flex; gap: 10px; margin-bottom: 16px; }
-  .pay-btn {
-    flex: 1; border: 1px solid var(--border2); background: var(--surface2);
-    border-radius: 14px; padding: 16px 12px;
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    cursor: pointer; transition: border-color 0.15s; font-family: 'Nunito', sans-serif;
-  }
-  .pay-btn:hover { border-color: var(--pink); }
-  .pay-btn.selected { border-color: var(--pink); background: var(--pink-dim); }
-  .pay-btn .pay-icon { font-size: 26px; }
-  .pay-btn .pay-name { font-size: 13px; font-weight: 800; color: var(--text); }
-  .pay-btn .pay-sub  { font-size: 11px; color: var(--text3); font-weight: 600; }
-
-  .pay-detail {
-    display: none; background: var(--surface2);
-    border: 1px solid var(--border2); border-radius: 14px;
-    padding: 16px; margin-bottom: 14px;
-  }
-  .pay-detail.visible { display: block; }
-  .pay-detail-title { font-family: 'Hachi Maru Pop', sans-serif; font-size: 14px; color: var(--text); margin-bottom: 12px; }
-
-  .wallet-row {
-    background: var(--surface3); border: 1px solid var(--border); border-radius: 10px;
-    padding: 10px 12px; display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
-  }
-  .wallet-label { font-size: 10px; font-weight: 800; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; min-width: 36px; }
-  .wallet-addr { font-family: 'Courier New', monospace; font-size: 11px; color: var(--text2); flex: 1; word-break: break-all; }
-  .copy-btn {
-    background: var(--border); border: none; border-radius: 8px;
-    padding: 5px 10px; font-family: 'Nunito', sans-serif;
-    font-size: 11px; font-weight: 800; color: var(--text); cursor: pointer;
-    white-space: nowrap; transition: background 0.15s;
-  }
-  .copy-btn:hover { background: var(--pink); color: #1a1a1a; }
-
-  .cashapp-tag {
-    background: var(--surface3); border: 1px solid var(--border);
-    border-radius: 12px; padding: 12px 14px; margin-bottom: 8px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .cashapp-handle { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 20px; color: var(--text); }
-  .pay-note {
-    background: var(--surface3); border-radius: 10px; padding: 10px 12px;
-    font-size: 11px; font-weight: 600; color: var(--text2); line-height: 1.5; margin-top: 4px;
-  }
-
-  .screenshot-slot {
-    border: 1px dashed var(--border2); border-radius: 14px;
-    background: var(--surface3); padding: 20px;
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    cursor: pointer; position: relative; overflow: hidden;
-    transition: border-color 0.15s; margin-top: 8px;
-  }
-  .screenshot-slot:hover { border-color: var(--pink); }
-  .screenshot-slot input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
-  .screenshot-slot .ss-icon { font-size: 22px; color: var(--text3); }
-  .screenshot-slot span { font-size: 11px; font-weight: 700; color: var(--text3); }
-  .screenshot-slot .preview-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 3px; }
-
-  /* ── SUBMIT ── */
-  .submit-btn {
-    width: 100%; background: var(--pink); color: #1a1a1a;
-    border: none; border-radius: 14px; padding: 16px;
-    font-family: 'Hachi Maru Pop', sans-serif; font-size: 17px;
-    cursor: pointer; transition: opacity 0.15s;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  .submit-btn:hover { opacity: 0.88; }
-  .submit-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
-  .form-note {
-    margin-top: 16px; text-align: center;
-    font-size: 12px; color: var(--text3); font-weight: 500; line-height: 1.7;
-  }
-  .form-note a { color: var(--pink); text-decoration: none; font-weight: 700; }
-  .form-note a:hover { text-decoration: underline; }
-
-  /* ── SUCCESS ── */
-  .success-card {
-    display: none; background: var(--surface);
-    border: 1px solid var(--border); border-radius: 20px;
-    padding: 56px 32px; text-align: center;
-  }
-  .success-card h2 {
-    font-family: 'Hachi Maru Pop', sans-serif;
-    font-size: 36px; color: var(--pink); margin-bottom: 12px;
-  }
-  .success-card p { font-size: 14px; color: var(--text2); font-weight: 500; line-height: 1.7; }
-  .order-num-box {
-    background: var(--surface2); border: 1px solid var(--border2);
-    border-radius: 14px; padding: 14px 24px; display: inline-block;
-    margin: 18px 0 10px;
-  }
-  .order-num-label { font-size: 10px; font-weight: 800; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 4px; }
-  .order-num-value { font-family: 'Hachi Maru Pop', sans-serif; font-size: 26px; color: var(--text); }
-
-  /* ── FOOTER LOGO ── */
-  .footer-logo {
-    text-align: center; margin-top: 48px;
-    font-family: 'Hachi Maru Pop', sans-serif;
-    font-size: 28px; color: var(--pink); letter-spacing: 3px;
-    opacity: 0.6;
-  }
-
-  .work-btn {
-    background: transparent; border: 1px solid var(--border2);
-    color: var(--text2); font-family: 'Nunito', sans-serif;
-    font-size: 13px; font-weight: 700; padding: 8px 22px;
-    border-radius: 100px; cursor: pointer;
-    transition: border-color 0.15s, color 0.15s;
-  }
-  .work-btn:hover { border-color: var(--pink); color: var(--pink); }
-
-  /* ── ANIMATIONS ── */
-  @keyframes pop {
-    from { opacity: 0; transform: scale(0.92); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-
-  /* ── MOBILE ── */
-  @media (max-width: 600px) {
-    .wrap { padding: 36px 16px 80px; }
-    .hero-title { font-size: clamp(28px, 9vw, 40px); }
-    .steps-row { grid-template-columns: 1fr 1fr; }
-    .step-card:nth-child(n) { grid-column: auto / span 1; }
-    .section { padding: 22px 18px; }
-    .two-col { grid-template-columns: 1fr; }
-    .color-row { gap: 8px; }
-    .color-preview { height: 52px; }
-    .img-row { gap: 8px; }
-    .social-row { flex-direction: column; }
-    .social-select { width: 100%; min-width: unset; }
-    .contact-row { grid-template-columns: 1fr; }
-    .contact-or { padding: 0; text-align: left; }
-    .words-grid { grid-template-columns: repeat(2, 1fr); }
-    .pay-options { gap: 8px; }
-    .wallet-row { flex-wrap: wrap; }
-    .wallet-addr { width: 100%; }
-    .copy-btn { width: 100%; text-align: center; padding: 8px; }
-    .success-card { padding: 36px 18px; }
-    .addon-head { padding: 16px 16px 16px 70px; }
-  }
+hr{border:none;border-top:1px solid var(--border);margin:18px 0}
+.empty{text-align:center;padding:48px 0;color:var(--text3)}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+@media(max-width:600px){main{padding:28px 16px 60px}header{padding:0 16px}.hero{padding:40px 0 36px}.mbox{padding:22px 18px}}
 </style>
 </head>
 <body>
 
-<!-- CLOSED BANNER -->
-<div class="closed-banner" id="closedBanner">
-  <h2>orders are closed</h2>
-  <p>We have reached our maximum orders for now. We will reopen once current orders are complete. Check back soon.</p>
-  <br>
-  <p style="font-size:13px;color:var(--text3);">Questions? <a href="mailto:im@omiku.co" style="color:var(--pink);">im@omiku.co</a></p>
+<div id="stars"></div>
+<div id="app">
+  <header>
+    <div>
+      <div class="logo">NUKE'S <em>NIGHTMARKET</em></div>
+    </div>
+    <nav>
+      <button class="nb on" onclick="nav('shop')" id="n-shop">Shop</button>
+      <button class="nb" onclick="nav('status')" id="n-status">Track Order</button>
+      <button class="nb" onclick="nav('admin')" id="n-admin">Admin</button>
+    </nav>
+  </header>
+  <main id="main"></main>
 </div>
-
-<div class="wrap">
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="badge">limited spots open</div>
-    <h1 class="hero-title">omiku<br>custom <span class="accent">websites</span></h1>
-    <p class="hero-sub">a personalized website made just for you ♡</p>
-    <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
-      <div class="price-tag">$15</div>
-      <button onclick="openWork()" class="work-btn">see our work</button>
-    </div>
-  </div>
-
-  <!-- STEPS -->
-  <div class="steps-row">
-    <div class="step-card">
-      <span class="step-n">step 1</span>
-      <h3>Tell us about you</h3>
-    </div>
-    <div class="step-card">
-      <span class="step-n">step 2</span>
-      <h3>Pick 3 colors for your vibe</h3>
-    </div>
-    <div class="step-card">
-      <span class="step-n">step 3</span>
-      <h3>Upload 3 great photos</h3>
-    </div>
-    <div class="step-card">
-      <span class="step-n">step 4</span>
-      <h3>List your socials (up to 6)</h3>
-    </div>
-    <div class="step-card">
-      <span class="step-n">step 5</span>
-      <h3>Drop your email or Discord</h3>
-    </div>
-    <div class="step-card">
-      <span class="step-n">step 6</span>
-      <h3>Add 5 words for your domain</h3>
-      <span class="step-chip">+ $15 add-on</span>
-    </div>
-  </div>
-
-  <!-- FORM -->
-  <div class="form-card" id="formCard">
-
-    <!-- ABOUT YOU -->
-    <div class="section">
-      <span class="sec-label">step 1</span>
-      <div class="sec-title">About You</div>
-      <p class="sec-sub">Tell us a little about yourself so we can make your site feel like you.</p>
-      <div class="two-col">
-        <div>
-          <label class="input-label">Your name</label>
-          <input class="input" type="text" id="aboutName" placeholder="your name or alias">
-        </div>
-        <div>
-          <label class="input-label">What are you?</label>
-          <input class="input" type="text" id="aboutRole" placeholder="musician, artist, streamer...">
-        </div>
-      </div>
-    </div>
-
-    <!-- COLORS -->
-    <div class="section">
-      <span class="sec-label">step 2</span>
-      <div class="sec-title">Your Theme Colors</div>
-      <p class="sec-sub">Pick 3 hex colors that match your style. Click a box to open the color picker.</p>
-      <div class="color-row">
-        <div class="color-item">
-          <div class="color-preview" id="cp1" style="background:#888888"></div>
-          <div class="color-bottom"><span class="hash">#</span><input class="hex-input" id="hex1" value="888888" maxlength="6"></div>
-          <input type="color" id="col1" value="#888888">
-        </div>
-        <div class="color-item">
-          <div class="color-preview" id="cp2" style="background:#b0b0b0"></div>
-          <div class="color-bottom"><span class="hash">#</span><input class="hex-input" id="hex2" value="B0B0B0" maxlength="6"></div>
-          <input type="color" id="col2" value="#b0b0b0">
-        </div>
-        <div class="color-item">
-          <div class="color-preview" id="cp3" style="background:#d8d8d8"></div>
-          <div class="color-bottom"><span class="hash">#</span><input class="hex-input" id="hex3" value="D8D8D8" maxlength="6"></div>
-          <input type="color" id="col3" value="#d8d8d8">
-        </div>
-      </div>
-    </div>
-
-    <!-- PHOTOS -->
-    <div class="section">
-      <span class="sec-label">step 3</span>
-      <div class="sec-title">Your Photos</div>
-      <p class="sec-sub">Upload 3 images to feature on your site.</p>
-      <div class="img-row">
-        <div class="img-slot" id="slot1">
-          <div class="slot-icon">+</div>
-          <span>Photo 1</span>
-          <input type="file" accept="image/*" id="img1" onchange="previewImg(this,'slot1')">
-        </div>
-        <div class="img-slot" id="slot2">
-          <div class="slot-icon">+</div>
-          <span>Photo 2</span>
-          <input type="file" accept="image/*" id="img2" onchange="previewImg(this,'slot2')">
-        </div>
-        <div class="img-slot" id="slot3">
-          <div class="slot-icon">+</div>
-          <span>Photo 3</span>
-          <input type="file" accept="image/*" id="img3" onchange="previewImg(this,'slot3')">
-        </div>
-      </div>
-    </div>
-
-    <!-- SOCIALS -->
-    <div class="section">
-      <span class="sec-label">step 4</span>
-      <div class="sec-title">Your Socials</div>
-      <p class="sec-sub">List up to 6 of your social media accounts. At least 1 required.</p>
-      <div class="socials-list">
-        <div class="social-row">
-          <select class="social-select" id="sp1"><option value="">Platform</option><option>Instagram</option><option>TikTok</option><option>Twitter/X</option><option>YouTube</option><option>Twitch</option><option>SoundCloud</option><option>Discord</option><option>Snapchat</option><option>Facebook</option><option>Pinterest</option><option>Threads</option><option>Reddit</option><option>LinkedIn</option><option>BeReal</option><option>Other</option></select>
-          <input class="input" id="su1" placeholder="username or link" style="flex:1">
-        </div>
-        <div class="social-row">
-          <select class="social-select" id="sp2"><option value="">Platform</option><option>Instagram</option><option>TikTok</option><option>Twitter/X</option><option>YouTube</option><option>Twitch</option><option>SoundCloud</option><option>Discord</option><option>Snapchat</option><option>Facebook</option><option>Pinterest</option><option>Threads</option><option>Reddit</option><option>LinkedIn</option><option>BeReal</option><option>Other</option></select>
-          <input class="input" id="su2" placeholder="username or link" style="flex:1">
-        </div>
-        <div class="social-row">
-          <select class="social-select" id="sp3"><option value="">Platform</option><option>Instagram</option><option>TikTok</option><option>Twitter/X</option><option>YouTube</option><option>Twitch</option><option>SoundCloud</option><option>Discord</option><option>Snapchat</option><option>Facebook</option><option>Pinterest</option><option>Threads</option><option>Reddit</option><option>LinkedIn</option><option>BeReal</option><option>Other</option></select>
-          <input class="input" id="su3" placeholder="username or link" style="flex:1">
-        </div>
-        <div class="social-row">
-          <select class="social-select" id="sp4"><option value="">Platform</option><option>Instagram</option><option>TikTok</option><option>Twitter/X</option><option>YouTube</option><option>Twitch</option><option>SoundCloud</option><option>Discord</option><option>Snapchat</option><option>Facebook</option><option>Pinterest</option><option>Threads</option><option>Reddit</option><option>LinkedIn</option><option>BeReal</option><option>Other</option></select>
-          <input class="input" id="su4" placeholder="username or link" style="flex:1">
-        </div>
-        <div class="social-row">
-          <select class="social-select" id="sp5"><option value="">Platform</option><option>Instagram</option><option>TikTok</option><option>Twitter/X</option><option>YouTube</option><option>Twitch</option><option>SoundCloud</option><option>Discord</option><option>Snapchat</option><option>Facebook</option><option>Pinterest</option><option>Threads</option><option>Reddit</option><option>LinkedIn</option><option>BeReal</option><option>Other</option></select>
-          <input class="input" id="su5" placeholder="username or link" style="flex:1">
-        </div>
-        <div class="social-row">
-          <select class="social-select" id="sp6"><option value="">Platform</option><option>Instagram</option><option>TikTok</option><option>Twitter/X</option><option>YouTube</option><option>Twitch</option><option>SoundCloud</option><option>Discord</option><option>Snapchat</option><option>Facebook</option><option>Pinterest</option><option>Threads</option><option>Reddit</option><option>LinkedIn</option><option>BeReal</option><option>Other</option></select>
-          <input class="input" id="su6" placeholder="username or link" style="flex:1">
-        </div>
-      </div>
-    </div>
-
-    <!-- CONTACT -->
-    <div class="section">
-      <span class="sec-label">step 5</span>
-      <div class="sec-title">How to Reach You</div>
-      <p class="sec-sub">We will send your finished site here. Pick whichever you prefer.</p>
-      <div class="contact-row">
-        <div>
-          <label class="input-label">Email address</label>
-          <input class="input" type="email" id="emailInput" placeholder="you@example.com">
-        </div>
-        <div class="contact-or">or</div>
-        <div>
-          <label class="input-label">Discord username</label>
-          <input class="input" type="text" id="discordInput" placeholder="username">
-        </div>
-      </div>
-    </div>
-
-    <!-- DOMAIN -->
-    <div class="section">
-      <span class="sec-label">step 6</span>
-      <div class="sec-title">Domain Name</div>
-      <p class="sec-sub">Your site path is <strong style="color:var(--text2)">omiku.co/</strong> unless you add the domain add-on below.</p>
-
-      <div style="margin-bottom:20px;">
-        <label class="input-label">Choose your path</label>
-        <div class="path-wrap">
-          <span class="path-prefix">omiku.co/</span>
-          <input class="path-input" type="text" id="pathInput" placeholder="you">
-        </div>
-        <p id="pathHint" class="path-hint"></p>
-      </div>
-
-      <div class="addon-card" id="addonCard" onclick="toggleAddon()">
-        <div class="addon-tag">popular</div>
-        <div class="addon-head">
-          <div class="toggle" id="toggleEl"><div class="toggle-dot"></div></div>
-          <div class="addon-info">
-            <div class="addon-title">
-              Find me a domain name <span class="price-pill">+ $15</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="addon-examples">
-          <div class="examples-label">Example domains</div>
-          <div class="pill-row">
-            <span class="dpill">yourname.com</span>
-            <span class="dpill">vibesbyjess.co</span>
-            <span class="dpill">creativekai.xyz</span>
-            <span class="dpill">thezoeshow.me</span>
-            <span class="dpill">lunaart.studio</span>
-            <span class="dpill">neonbyryan.io</span>
-            <span class="dpill">bylilah.com</span>
-            <span class="dpill">shopwithsolar.co</span>
-          </div>
-        </div>
-
-        <div class="addon-body" id="addonBody">
-          <label class="input-label">Enter 5 words that describe your brand, vibe, or name</label>
-          <div class="words-grid">
-            <input class="word-input" id="w1" placeholder="word 1" onclick="stopProp(event)">
-            <input class="word-input" id="w2" placeholder="word 2" onclick="stopProp(event)">
-            <input class="word-input" id="w3" placeholder="word 3" onclick="stopProp(event)">
-            <input class="word-input" id="w4" placeholder="word 4" onclick="stopProp(event)">
-            <input class="word-input" id="w5" placeholder="word 5" onclick="stopProp(event)">
-          </div>
-          <div class="hint-box">Think: your name, niche, style, vibe, e.g. <em>luna, art, pink, cozy, nova</em></div>
-          <div class="hint-box" style="margin-top:6px;">We will reach out to confirm ideas before deciding on a final domain. Nothing gets locked in without your approval.</div>
-          <div class="hint-box" style="margin-top:6px;">If we find a great domain outside the $15 price, we will reach out about a payment adjustment. You are never obligated to accept.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAYMENT -->
-    <div class="section">
-      <span class="sec-label">step 7</span>
-      <div class="sec-title">Payment</div>
-      <p class="sec-sub">Choose how you would like to pay. Proof required to confirm your order.</p>
-
-      <div class="pay-notice">
-        <strong>Heads up.</strong> Payments are processed manually and can take <strong>24 to 72 hours</strong> to be accepted and verified.
-      </div>
-
-      <label class="input-label" style="margin-bottom:10px;">Select a payment method</label>
-      <div class="pay-options">
-        <div class="pay-btn" id="payBtnCashapp" onclick="selectPay('cashapp')">
-          <img src="https://cdn.simpleicons.org/cashapp/00C244" style="width:32px;height:32px;" alt="CashApp">
-          <div class="pay-name">CashApp</div>
-          <div class="pay-sub">Instant payment</div>
-        </div>
-        <div class="pay-btn" id="payBtnCrypto" onclick="selectPay('crypto')">
-          <div style="display:flex;gap:4px;align-items:center;">
-            <img src="https://cdn.simpleicons.org/bitcoin/F7931A" style="width:28px;height:28px;" alt="Bitcoin">
-            <img src="https://cdn.simpleicons.org/ethereum/627EEA" style="width:24px;height:24px;" alt="Ethereum">
-          </div>
-          <div class="pay-name">BTC or ETH</div>
-          <div class="pay-sub">Crypto payment</div>
-        </div>
-      </div>
-
-      <!-- CashApp detail -->
-      <div class="pay-detail" id="detailCashapp">
-        <div class="pay-detail-title">Send via CashApp</div>
-        <div class="cashapp-tag">
-          <span class="cashapp-handle">$htqa</span>
-        </div>
-        <div class="pay-note">You <u>must</u> write <strong>website</strong> in the note/memo field when sending. Orders without this note cannot be verified.</div>
-      </div>
-
-      <!-- Crypto detail -->
-      <div class="pay-detail" id="detailCrypto">
-        <div class="pay-detail-title">Send via Crypto</div>
-        <div class="wallet-row">
-          <span class="wallet-label">BTC</span>
-          <span class="wallet-addr" id="addrBTC">bc1qeqgsckrgg9xytf6f02z7anpy8khl7lfp4yy7d3</span>
-          <button class="copy-btn" onclick="copyAddr('addrBTC', this)">Copy</button>
-        </div>
-        <div class="wallet-row">
-          <span class="wallet-label">ETH</span>
-          <span class="wallet-addr" id="addrETH">0xa94933309fEB1Ec1D392FecaE1C4EE6622b08a78</span>
-          <button class="copy-btn" onclick="copyAddr('addrETH', this)">Copy</button>
-        </div>
-        <label class="input-label" style="margin-top:12px;margin-bottom:6px;">Transaction ID (TXID)</label>
-        <input class="input" type="text" id="txidInput" placeholder="Paste your TXID here..." onclick="stopProp(event)" oninput="checkProof()">
-        <p style="font-size:11px;font-weight:600;color:var(--text3);margin-top:6px;">Find your TXID in your wallet app after sending.</p>
-      </div>
-
-      <!-- Screenshot (CashApp) -->
-      <div id="screenshotSection" style="display:none;">
-        <label class="input-label" style="margin-bottom:6px;">Upload your payment screenshot</label>
-        <div class="pay-note" style="margin-bottom:8px;">Your screenshot must clearly show payment was made using your <strong>CashApp balance</strong>. Screenshots showing a card or bank payment will not be accepted.</div>
-        <div class="screenshot-slot" id="ssSlot">
-          <div class="ss-icon">+</div>
-          <span>Tap to upload screenshot</span>
-          <input type="file" accept="image/*" id="ssFile" onchange="previewScreenshot(this); checkProof();">
-        </div>
-      </div>
-    </div>
-
-    <!-- SUBMIT -->
-    <div class="section">
-      <button class="submit-btn" id="submitBtn" onclick="handleSubmit()" disabled>
-        <span id="btnLabel">Confirm Site Order $15</span>
-      </button>
-      <p class="form-note">
-        We will reach out once payment is confirmed. Orders take up to 3–7 business days.<br>
-        Any questions? Discord: @8064<br>Email us at <a href="mailto:im@omiku.co">im@omiku.co</a>
-      </p>
-    </div>
-
-  </div><!-- /form-card -->
-
-  <!-- SUCCESS -->
-  <div class="success-card" id="successCard">
-    <h2>order received</h2>
-    <div class="order-num-box" id="orderNumDisplay">
-      <span class="order-num-label">Your Order Number</span>
-      <span class="order-num-value" id="orderNumValue">#—</span>
-    </div>
-    <p style="margin-top:6px;font-size:12px;font-weight:700;color:var(--pink);">Screenshot or write down your order number. If we are unable to reach you, or if you have questions, contact us with this number.</p>
-    <p style="margin-top:10px;">We will reach out when we confirm your payment. Please allow 24–72 hours for confirmation and 3–7 business days for your site.</p>
-  </div>
-
-  <div class="footer-logo">omiku</div>
-
-</div>
-
-<!-- WORK MODAL -->
-<div id="workModalBackdrop" onclick="closeWork()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;"></div>
-<div id="workModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:201;background:#1e1e1e;border:1px solid #303030;border-radius:20px;padding:36px 32px;max-width:400px;width:calc(100% - 48px);text-align:center;">
-  <h3 style="font-family:'Hachi Maru Pop',sans-serif;font-size:20px;color:#efefef;margin-bottom:6px;">our work</h3>
-  <p style="font-size:12px;color:#666;font-weight:600;margin-bottom:24px;">click to view examples</p>
-  <div style="display:flex;flex-direction:column;gap:10px;">
-    <a href="https://rayray.gg" target="_blank" rel="noopener noreferrer" style="display:block;background:#252525;border:1px solid #303030;border-radius:12px;padding:14px 20px;text-decoration:none;color:#efefef;font-family:'Hachi Maru Pop',sans-serif;font-size:14px;transition:border-color 0.15s;" onmouseover="this.style.borderColor='#f5c6d4'" onmouseout="this.style.borderColor='#303030'">1</a>
-    <a href="https://heavenly.gg" target="_blank" rel="noopener noreferrer" style="display:block;background:#252525;border:1px solid #303030;border-radius:12px;padding:14px 20px;text-decoration:none;color:#efefef;font-family:'Hachi Maru Pop',sans-serif;font-size:14px;transition:border-color 0.15s;" onmouseover="this.style.borderColor='#f5c6d4'" onmouseout="this.style.borderColor='#303030'">2</a>
-    <a href="https://osaki.lol/azeem" target="_blank" rel="noopener noreferrer" style="display:block;background:#252525;border:1px solid #303030;border-radius:12px;padding:14px 20px;text-decoration:none;color:#efefef;font-family:'Hachi Maru Pop',sans-serif;font-size:14px;transition:border-color 0.15s;" onmouseover="this.style.borderColor='#f5c6d4'" onmouseout="this.style.borderColor='#303030'">3</a>
-  </div>
-  <button onclick="closeWork()" style="margin-top:20px;background:transparent;border:1px solid #303030;color:#666;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;padding:8px 20px;border-radius:100px;cursor:pointer;">close</button>
-</div>
+<div id="modal"></div>
 
 <script>
-  // ═══════════════════════════════════════════════
-  //  CONFIG — paste your values from jsonbin.io
-  // ═══════════════════════════════════════════════
-  const JSONBIN_KEY = '$2a$10$o2YtONgvSq90bwyBDCCQ1OLXuB.j5eK85wferc3jpzJH4iz7yCFJO';
-  const JSONBIN_BIN = '69cc431f856a682189e9354f';
-  // ═══════════════════════════════════════════════
-
-  let _cache = null;
-
-  async function readBin() {
-    const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN}/latest`, {
-      headers: { 'X-Master-Key': JSONBIN_KEY }
-    });
-    const d = await r.json();
-    _cache = d.record;
-    return _cache;
+// ── STARS ─────────────────────────────────────────────────────
+(function(){
+  const c=document.getElementById('stars');
+  for(let i=0;i<95;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    const sz=Math.random()*2.4+.4;
+    s.style.cssText=`left:${Math.random()*100}%;width:${sz}px;height:${sz}px;`+
+      `opacity:${Math.random()*.65+.15};animation-duration:${Math.random()*11+5}s;`+
+      `animation-delay:${Math.random()*14}s;`+
+      (Math.random()>.55?`background:${['#ffc4e0','#d4c4ff','#ffffff'][Math.floor(Math.random()*3)]};`:'');
+    c.appendChild(s);
   }
+})();
 
-  async function writeBin(data) {
-    _cache = data;
-    const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN}`, {
-      method: 'PUT',
-      headers: { 'X-Master-Key': JSONBIN_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    if (!r.ok) {
-      const err = await r.text();
-      throw new Error(`JSONBin write failed (${r.status}): ${err}`);
+// ── DATA ──────────────────────────────────────────────────────
+const SAMPLE_LISTINGS=[
+  {id:'lst_001',platform:'Instagram',username:'@nature',price:1499,description:'Ultra-rare single-word OG handle. Perfect for brands, creators, or resale.',tag:'OG',available:true,
+   creds:{email:'igaccount01@gmail.com',password:'N@ture2024!',recoveryEmail:'backup01@gmail.com',phone:'N/A',notes:'Change email immediately after purchase. No linked Facebook.'}},
+  {id:'lst_002',platform:'X / Twitter',username:'@blockchain',price:749,description:'High-value Web3 keyword handle with years of account age.',tag:'Premium',available:true,
+   creds:{email:'xblockchain@gmail.com',password:'B1ockchain!',recoveryEmail:'xbackup02@gmail.com',phone:'N/A',notes:'2FA is off. Enable your own immediately after transfer.'}},
+  {id:'lst_003',platform:'TikTok',username:'@minimalist',price:329,description:'Aesthetic lifestyle handle. Zero prior posts, clean slate.',tag:'Niche',available:true,
+   creds:{email:'tiktokmin@gmail.com',password:'M!nimalist24',recoveryEmail:'N/A',phone:'N/A',notes:'Ready to transfer. No phone linked.'}},
+  {id:'lst_004',platform:'Instagram',username:'@trading',price:599,description:'Finance & trading niche. Strong brand recognition potential.',tag:'Niche',available:true,
+   creds:{email:'igtrading04@gmail.com',password:'Trd!ng2024',recoveryEmail:'backup04@gmail.com',phone:'N/A',notes:'No posts. Clean account. No connected apps.'}},
+  {id:'lst_005',platform:'Discord',username:'ghost#0001',price:899,description:'Legendary OG discriminator. Extremely rare #0001 Discord tag.',tag:'Legendary',available:true,
+   creds:{email:'discordghost@gmail.com',password:'Gh0st#001!',recoveryEmail:'N/A',phone:'N/A',notes:'Pre-username update account. Change email first.'}},
+  {id:'lst_006',platform:'Reddit',username:'u/wizard',price:1999,description:'Iconic Reddit username. Massive value for any community builder.',tag:'Legendary',available:true,
+   creds:{email:'redditwiz@gmail.com',password:'W!zard2024',recoveryEmail:'wizbackup@gmail.com',phone:'N/A',notes:'Old account. Change email immediately.'}}
+];
+const DEF_CFG={
+  cashapp:'$htqa',
+  cryptoOptions:[
+    {name:'Bitcoin',symbol:'BTC',addr:'bc1qeqgsckrgg9xytf6f02z7anpy8khl7lfp4yy7d3',logo:'₿'},
+    {name:'Litecoin',symbol:'LTC',addr:'LdTtC1GtoiBguQcMPf7Fu7jpwKYHEqyENh',logo:'Ł'},
+    {name:'Ethereum',symbol:'ETH',addr:'0xa94933309fEB1Ec1D392FecaE1C4EE6622b08a78',logo:'◆'}
+  ],
+  adminPw:'admin123'
+};
+const PC={Instagram:'#e1306c','X / Twitter':'#7eb8ff',TikTok:'#ff6b8a',YouTube:'#ff4444',Discord:'#7a8fff',Snapchat:'#ffdd57',Facebook:'#4f9bff',Reddit:'#ff7043',Twitch:'#a66bff'};
+const TC={'OG':'t-og','Premium':'t-prem','Niche':'t-niche','Legendary':'t-leg'};
+
+function load(k,fb){try{const v=localStorage.getItem('omk_'+k);return v?JSON.parse(v):fb}catch{return fb}}
+function save(k,v){try{localStorage.setItem('omk_'+k,JSON.stringify(v))}catch{}}
+function getListings(){const v=load('listings',null);if(!v){save('listings',SAMPLE_LISTINGS);return SAMPLE_LISTINGS}return v}
+function getOrders(){return load('orders',[])}
+function getCfg(){return{...DEF_CFG,...load('cfg',{})}}
+function saveListings(v){save('listings',v)}
+function saveOrders(v){save('orders',v)}
+function saveCfg(v){save('cfg',v)}
+function gid(){return'ORD-'+Math.random().toString(36).substr(2,9).toUpperCase()}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function cap(s){if(!s)return'';if(s==='recoveryEmail')return'Recovery Email';if(s==='cryptoAddr')return'Crypto Addr';return s.charAt(0).toUpperCase()+s.slice(1)}
+
+// ── STATE ─────────────────────────────────────────────────────
+let page='shop',adminOk=false,aTab='orders';
+let buyLid=null,buyStep=1,payM='cashapp',proofB64=null,proofName=null;
+
+// ── NAV ───────────────────────────────────────────────────────
+function nav(p){
+  page=p;
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  const btn=document.getElementById('n-'+p);
+  if(btn)btn.classList.add('on');
+  render();
+}
+
+// ── SHOP ──────────────────────────────────────────────────────
+function renderShop(){
+  const ls=getListings();
+  const cards=ls.map(l=>{
+    const pc=PC[l.platform]||'#8aa4d8';
+    const tc=TC[l.tag]||'t-niche';
+    return`<div class="lcard${!l.available?' sold':''}" ${l.available?`onclick="openBuy('${l.id}')"`:''}>`+
+      `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">`+
+      `<span style="color:${pc};font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase">${esc(l.platform)}</span>`+
+      `<div>${l.tag?`<span class="tag ${tc}">${esc(l.tag)}</span>`:''}`+
+      `${!l.available?'<span class="tag t-sold" style="margin-left:5px">Sold</span>':''}</div></div>`+
+      `<div style="font-family:var(--mono);font-size:22px;font-weight:700;color:#e4efff;margin-bottom:10px;word-break:break-all">${esc(l.username)}</div>`+
+      `<p style="color:var(--text2);font-size:12px;line-height:1.65;margin-bottom:20px;min-height:36px">${esc(l.description)}</p>`+
+      `<div style="display:flex;align-items:center;justify-content:space-between">`+
+      `<div><div style="font-size:10px;color:var(--text3);letter-spacing:1px;font-weight:700;margin-bottom:2px">PRICE</div>`+
+      `<div style="font-family:var(--head);font-size:21px;color:var(--accent2)">$${l.price.toLocaleString()}</div></div>`+
+      `${l.available?`<button class="btn" onclick="event.stopPropagation();openBuy('${l.id}')" style="font-size:12px;padding:8px 16px">Buy Now →</button>`:''}`+
+      `</div></div>`;
+  }).join('');
+  return`<div class="hero">`+
+    `<h1>Nuke's Nightmarket</h1>`+
+    `<p>Come shop with someone you trust.</p>`+
+    `<div style="margin-top:32px;background:rgba(182,156,255,.08);border:1px solid rgba(182,156,255,.2);border-radius:18px;padding:18px 22px;max-width:560px;margin-left:auto;margin-right:auto;font-size:13px;color:var(--text2);line-height:1.7">`+
+    `<strong style="color:var(--accent2)">⚠ Important:</strong> All sales are <strong>final</strong>. By purchasing, you agree to receive account credentials and take full responsibility for account security. Review our <strong><a href="javascript:void(0)" onclick="nav('tos')" style="color:var(--accent);text-decoration:underline">Terms of Service</a></strong> before buying.`+
+    `</div></div>`+
+    `<div class="grid">${cards||'<div class="empty">No listings yet.</div>'}</div>`;
+}
+
+// ── STATUS ────────────────────────────────────────────────────
+function renderStatus(){
+  return`<div style="max-width:520px;margin:0 auto">`+
+    `<h2 style="font-family:var(--head);font-size:32px;font-weight:700;margin-bottom:8px">Track Your Order</h2>`+
+    `<p style="color:var(--text2);font-size:14px;margin-bottom:28px">Enter your Order ID to check payment status and retrieve account credentials once approved.</p>`+
+    `<div style="display:flex;gap:10px;margin-bottom:24px">`+
+    `<input type="text" id="oid" placeholder="ORD-XXXXXXXXX" style="font-family:var(--mono);font-size:14px;letter-spacing:1px" onkeydown="if(event.key==='Enter')chkOrder()">`+
+    `<button class="btn" onclick="chkOrder()" style="white-space:nowrap;flex-shrink:0">Look Up</button></div>`+
+    `<div id="ores"></div></div>`;
+}
+
+function chkOrder(){
+  const id=(document.getElementById('oid')?.value||'').trim().toUpperCase();
+  const el=document.getElementById('ores');
+  if(!el)return;
+  const o=getOrders().find(x=>x.id===id);
+  if(!o){
+    el.innerHTML=`<div style="background:rgba(255,102,128,.08);border:1px solid rgba(255,102,128,.2);border-radius:20px;padding:16px 18px;color:var(--red)">Order not found. Please double-check your ID.</div>`;
+    return;
+  }
+  let credHtml='';
+  if(o.status==='approved'){
+    const l=getListings().find(x=>x.id===o.listingId);
+    if(l?.creds){
+      const rows=Object.entries(l.creds).filter(([,v])=>v&&v!=='N/A')
+        .map(([k,v])`=><div class="crow"><span class="ckey">${cap(k)}</span><span class="cval">${esc(v)}</span></div>`).join('');
+      credHtml=`<div style="margin-top:18px"><div style="font-size:11px;font-weight:700;color:var(--green);letter-spacing:1.5px;margin-bottom:10px">✓ ACCOUNT CREDENTIALS</div><div class="cbox">${rows}</div><p style="color:var(--text3);font-size:11px;margin-top:11px;line-height:1.6">⚠ Change your password and email immediately. Keep these credentials private.</p></div>`;
     }
   }
+  const proofLine=o.payMethod==='cashapp'&&o.proofB64?`<div style="font-size:11px;color:var(--text3);margin-top:8px">Screenshot submitted ✓</div>`:o.payMethod==='crypto'&&o.txId?`<div style="font-size:11px;color:var(--text3);margin-top:8px">TX: <span style="font-family:var(--mono);color:var(--text2)">${esc(o.txId.substring(0,40))}…</span></div>`:'';
+  el.innerHTML=`<div class="card" style="padding:22px">`+
+    `<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">`+
+    `<div><div style="font-family:var(--mono);font-size:12px;color:var(--text3);margin-bottom:4px">${esc(o.id)}</div>`+
+    `<div style="font-size:16px;font-weight:600">${esc(o.listingPlatform)} · <span style="font-family:var(--mono);color:var(--accent)">${esc(o.listingUsername)}</span></div>`+
+    `<div style="font-family:var(--head);font-size:16px;color:var(--gold);margin-top:3px">$${(o.listingPrice||0).toLocaleString()}</div></div>`+
+    `<span class="sbadge s-${o.status}">${o.status}</span></div><hr>`+
+    `<div style="font-size:13px;color:var(--text2);display:flex;flex-direction:column;gap:4px">`+
+    `<div>Buyer: <span style="color:var(--text)">${esc(o.buyerName)}</span></div>`+
+    `<div>Discord: <span style="color:var(--text)">${esc(o.buyerDiscord||'N/A')}</span></div>`+
+    `<div>Email: <span style="color:var(--text)">${esc(o.buyerEmail)}</span></div>`+
+    `<div>Payment: <span style="color:var(--text)">${o.payMethod==='cashapp'?'CashApp':'Crypto'}</span></div>`+
+    `<div>Placed: <span style="color:var(--text)">${new Date(o.createdAt).toLocaleString()}</span></div></div>`+
+    proofLine+
+    (o.status==='pending'?`<div style="margin-top:16px;background:rgba(182,156,255,.1);border:1px solid rgba(182,156,255,.26);border-radius:16px;padding:14px;font-size:13px;color:#cdb8ff">⏳ Payment is under review. Credentials will appear here once approved.</div>`:'')+
+    (o.status==='rejected'?`<div style="margin-top:16px;background:rgba(255,102,128,.07);border:1px solid rgba(255,102,128,.18);border-radius:16px;padding:14px;font-size:13px;color:var(--red)">✗ This order was not approved. Contact support if you believe this is an error.</div>`:'')+
+    credHtml+`</div>`;
+}
 
-  async function compressImg(file, maxW = 200, quality = 0.35) {
-    return new Promise(res => {
-      const reader = new FileReader();
-      reader.onload = e => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const scale = Math.min(1, maxW / img.width);
-          canvas.width = img.width * scale;
-          canvas.height = img.height * scale;
-          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-          res(canvas.toDataURL('image/jpeg', quality));
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    });
+// ── ADMIN ─────────────────────────────────────────────────────
+function renderAdmin(){
+  if(!adminOk){
+    return`<div style="max-width:360px;margin:0 auto;text-align:center">`+
+      `<h2 style="font-family:var(--head);font-size:34px;font-weight:700;margin-bottom:8px">Admin Access</h2>`+
+      `<p style="color:var(--text2);font-size:14px;margin-bottom:30px">Enter your password to manage listings, orders, and settings.</p>`+
+      `<div class="field"><input type="password" id="apw" placeholder="Password" onkeydown="if(event.key==='Enter')aLogin()"></div>`+
+      `<button class="btn" onclick="aLogin()" style="width:100%;padding:12px">Sign In</button>`+
+      `<p style="color:var(--text3);font-size:11px;margin-top:14px">Default: admin123</p>`+
+      `<div id="aerr" style="margin-top:10px"></div></div>`;
   }
+  const orders=getOrders(),ls=getListings();
+  const pend=orders.filter(o=>o.status==='pending').length;
+  let tc='';
+  if(aTab==='orders')tc=renderAOrders(orders,ls);
+  else if(aTab==='listings')tc=renderAListings(ls);
+  else tc=renderASettings();
+  return`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:30px;flex-wrap:wrap;gap:12px">`+
+    `<div><h2 style="font-family:var(--head);font-size:28px;font-weight:700">Dashboard</h2>`+
+    `<p style="color:var(--text3);font-size:13px">${ls.length} listings · ${orders.length} orders${pend?` · <span style="color:var(--gold)">${pend} pending</span>`:''}</p></div>`+
+    `<button class="btn2" onclick="aLogout()" style="font-size:12px">Sign Out</button></div>`+
+    `<div class="tabs">`+
+    `<button class="tab${aTab==='orders'?' on':''}" onclick="setTab('orders')">Orders${pend?` <span style="background:var(--accent2);color:#1a1240;border-radius:100px;padding:1px 7px;font-size:10px;margin-left:4px;font-weight:700">${pend}</span>`:''}</button>`+
+    `<button class="tab${aTab==='listings'?' on':''}" onclick="setTab('listings')">Listings</button>`+
+    `<button class="tab${aTab==='settings'?' on':''}" onclick="setTab('settings')">Settings</button></div>`+
+    `<div id="atc">${tc}</div>`;
+}
 
-  window.addEventListener('load', async () => {
-    try {
-      const bin = await readBin();
-      if (bin.ordersOpen === false) {
-        document.getElementById('closedBanner').classList.add('show');
-      }
-    } catch {}
+function renderAOrders(orders,ls){
+  if(!orders.length)return'<div class="empty">No orders yet.</div>';
+  return[...orders].sort((a,b)=>{const r={pending:0,approved:1,rejected:2};return r[a.status]-r[b.status]||new Date(b.createdAt)-new Date(a.createdAt);})
+    .map(o=>{
+      const proof=o.payMethod==='cashapp'&&o.proofB64?`<button class="btn2" onclick="viewProof(${JSON.stringify(o.id)})" style="font-size:11px;padding:4px 11px;margin-top:8px">View Screenshot</button>`:
+        o.payMethod==='crypto'&&o.txId?`<div style="font-size:11px;color:var(--text3);margin-top:7px;word-break:break-all">TX: <span style="font-family:var(--mono);color:var(--text2)">${esc(o.txId)}</span></div>`:'';
+      const acts=o.status==='pending'?`<div style="display:flex;gap:8px;flex-shrink:0"><button class="btn-g" onclick="appOrder(${JSON.stringify(o.id)})">✓ Approve</button><button class="btn-r" onclick="rejOrder(${JSON.stringify(o.id)})">✗ Reject</button></div>`:`<span class="sbadge s-${o.status}">${o.status}</span>`;
+      const l=ls.find(x=>x.id===o.listingId);
+      const credHtml=o.status==='approved'&&l?.creds?`<hr><div style="font-size:11px;font-weight:700;color:var(--green);letter-spacing:1.2px;margin-bottom:8px">CREDENTIALS RELEASED</div><div class="cbox">${Object.entries(l.creds).filter(([,v])=>v&&v!=='N/A').map(([k,v])`=><div class="crow"><span class="ckey">${cap(k)}</span><span class="cval">${esc(v)}</span></div>`).join('')}</div>`:'';
+      return`<div class="card" style="padding:18px 20px;margin-bottom:10px">`+
+        `<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap">`+
+        `<div style="flex:1;min-width:0">`+
+        `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px"><span style="font-family:var(--mono);font-size:11px;color:var(--text3)">${esc(o.id)}</span><span class="sbadge s-${o.status}">${o.status}</span></div>`+
+        `<div style="font-size:15px;font-weight:600;margin-bottom:3px">${esc(o.listingPlatform)} · <span style="font-family:var(--mono);color:var(--accent)">${esc(o.listingUsername)}</span> <span style="font-family:var(--head);font-size:13px;color:var(--gold)">$${(o.listingPrice||0).toLocaleString()}</span></div>`+
+        `<div style="font-size:12px;color:var(--text2)">${esc(o.buyerName)} · ${esc(o.buyerEmail)} · ${o.payMethod==='cashapp'?'CashApp':'Crypto'}</div>`+
+        `<div style="font-size:11px;color:var(--text3);margin-top:3px">${new Date(o.createdAt).toLocaleString()}</div>`+
+        proof+`</div>${acts}</div>${credHtml}</div>`;
+    }).join('');
+}
+
+function renderAListings(ls){
+  const plats=['Instagram','X / Twitter','TikTok','YouTube','Discord','Reddit','Snapchat','Facebook','Twitch'];
+  const cards=ls.map(l=>{
+    const pc=PC[l.platform]||'#8aa4d8';const tc=TC[l.tag]||'t-niche';
+    return`<div class="card" style="padding:16px 18px;margin-bottom:9px">`+
+      `<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">`+
+      `<div style="flex:1;min-width:0">`+
+      `<div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:5px"><span style="color:${pc};font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase">${esc(l.platform)}</span>${l.tag?`<span class="tag ${tc}">${esc(l.tag)}</span>`:''}${!l.available?'<span class="tag t-sold">Sold</span>':''}</div>`+
+      `<div style="font-family:var(--mono);font-size:17px;font-weight:700;margin-bottom:3px">${esc(l.username)}</div>`+
+      `<div style="font-family:var(--head);font-size:14px;color:var(--gold)">$${l.price.toLocaleString()}</div>`+
+      `</div><div style="display:flex;gap:8px;flex-shrink:0">`+
+      (l.available?`<button class="btn-r" onclick="delL(${JSON.stringify(l.id)})">Delete</button>`:`<button class="btn2" onclick="restL(${JSON.stringify(l.id)})" style="font-size:12px;padding:6px 12px">Restore</button>`)+
+      `</div></div><details style="margin-top:12px"><summary style="cursor:pointer;font-size:11px;color:var(--text3);font-weight:700;letter-spacing:1px;text-transform:uppercase">Credentials</summary>`+
+      `<div class="cbox" style="margin-top:8px">${Object.entries(l.creds||{}).map(([k,v])=>`<div class="crow"><span class="ckey">${cap(k)}</span><span class="cval">${esc(v||'—')}</span></div>`).join('')}</div></details></div>`;
+  }).join('');
+  return cards+`<div class="card" style="padding:22px;margin-top:18px">`+
+    `<div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:18px">Add New Listing</div>`+
+    `<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">`+
+    `<div class="field"><label>Platform</label><select id="np">${plats.map(p=>`<option>${p}</option>`).join('')}</select></div>`+
+    `<div class="field"><label>Username</label><input id="nu" placeholder="@handle" style="font-family:var(--mono)"></div>`+
+    `<div class="field"><label>Price (USD)</label><input id="npr" type="number" placeholder="299"></div>`+
+    `<div class="field"><label>Tag</label><select id="nt"><option value="">None</option><option>OG</option><option>Premium</option><option>Niche</option><option>Legendary</option></select></div>`+
+    `</div><div class="field"><label>Description</label><input id="nd" placeholder="Short description of the handle"></div>`+
+    `<div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin:14px 0 10px">Account Credentials (revealed to buyer after approval)</div>`+
+    `<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">`+
+    `<div class="field"><label>Email</label><input id="ce" placeholder="account@gmail.com"></div>`+
+    `<div class="field"><label>Password</label><input id="cp" placeholder="P@ssword123"></div>`+
+    `<div class="field"><label>Recovery Email</label><input id="cr" placeholder="backup@gmail.com"></div>`+
+    `<div class="field"><label>Phone</label><input id="cph" placeholder="N/A"></div>`+
+    `</div><div class="field"><label>Notes for Buyer</label><textarea id="cn" rows="2" placeholder="Transfer instructions, important notes..."></textarea></div>`+
+    `<button class="btn" onclick="addL()">Add Listing</button></div>`;
+}
+
+function renderASettings(){
+  const c=getCfg();
+  const cryptoFields = c.cryptoOptions.map((co,i) => 
+    `<div class="field"><label>${co.name} (${co.symbol})</label><input id="crypto${i}" value="${esc(co.addr)}" style="font-family:var(--mono);font-size:11px"></div>`
+  ).join('');
+  return`<div class="card" style="padding:26px;max-width:500px">`+
+    `<div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:18px">Payment Settings</div>`+
+    `<div class="field"><label>CashApp Tag</label><input id="ca" value="${esc(c.cashapp)}" placeholder="$YourTag"></div>`+
+    `<div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1px;margin:18px 0 12px">Crypto Addresses</div>`+
+    cryptoFields+
+    `<hr><div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:1.2px;text-transform:uppercase;margin:16px 0 16px">Change Password</div>`+
+    `<div class="field"><label>New Password</label><input type="password" id="np1" placeholder="Leave blank to keep current"></div>`+
+    `<div class="field"><label>Confirm Password</label><input type="password" id="np2" placeholder="Confirm"></div>`+
+    `<button class="btn" onclick="saveSettings()">Save Settings</button>`+
+    `<div id="smsg" style="margin-top:12px"></div></div>`;
+}
+
+// ── ADMIN ACTIONS ─────────────────────────────────────────────
+function aLogin(){
+  const pw=document.getElementById('apw')?.value;
+  if(pw===getCfg().adminPw){adminOk=true;render()}
+  else{const e=document.getElementById('aerr');if(e)e.innerHTML='<span class="err">Incorrect password.</span>'}
+}
+function aLogout(){adminOk=false;render()}
+function setTab(t){
+  aTab=t;
+  document.querySelectorAll('.tab').forEach((b,i)=>{b.classList.toggle('on',['orders','listings','settings'][i]===t)});
+  const el=document.getElementById('atc');
+  if(!el)return;
+  const o=getOrders(),l=getListings();
+  if(t==='orders')el.innerHTML=renderAOrders(o,l);
+  else if(t==='listings')el.innerHTML=renderAListings(l);
+  else el.innerHTML=renderASettings();
+}
+function appOrder(id){
+  const orders=getOrders();
+  const o=orders.find(x=>x.id===id);
+  if(o){const ls=getListings();saveListings(ls.map(l=>l.id===o.listingId?{...l,available:false}:l))}
+  saveOrders(orders.map(o=>o.id===id?{...o,status:'approved'}:o));
+  setTab('orders');
+}
+function rejOrder(id){
+  if(!confirm('Reject this order?'))return;
+  saveOrders(getOrders().map(o=>o.id===id?{...o,status:'rejected'}:o));
+  setTab('orders');
+}
+function delL(id){if(!confirm('Delete this listing?'))return;saveListings(getListings().filter(l=>l.id!==id));setTab('listings')}
+function restL(id){saveListings(getListings().map(l=>l.id===id?{...l,available:true}:l));setTab('listings')}
+function addL(){
+  const u=document.getElementById('nu')?.value?.trim();
+  const pr=parseFloat(document.getElementById('npr')?.value||0);
+  if(!u||!pr){alert('Username and price are required.');return}
+  saveListings([...getListings(),{
+    id:'lst_'+Date.now(),
+    platform:document.getElementById('np')?.value||'Instagram',
+    username:u,price:pr,
+    description:document.getElementById('nd')?.value?.trim()||'',
+    tag:document.getElementById('nt')?.value||'',
+    available:true,
+    creds:{
+      email:document.getElementById('ce')?.value?.trim()||'',
+      password:document.getElementById('cp')?.value?.trim()||'',
+      recoveryEmail:document.getElementById('cr')?.value?.trim()||'N/A',
+      phone:document.getElementById('cph')?.value?.trim()||'N/A',
+      notes:document.getElementById('cn')?.value?.trim()||''
+    }
+  }]);
+  setTab('listings');
+}
+function saveSettings(){
+  const c=getCfg();
+  const p1=document.getElementById('np1')?.value;
+  const p2=document.getElementById('np2')?.value;
+  const msg=document.getElementById('smsg');
+  if(p1&&p1!==p2){if(msg)msg.innerHTML='<span class="err">Passwords do not match.</span>';return}
+  
+  // Update crypto addresses from form inputs
+  const updatedCrypto = c.cryptoOptions.map((co,i) => ({
+    ...co,
+    addr: document.getElementById(`crypto${i}`)?.value?.trim() || co.addr
+  }));
+  
+  saveCfg({...c,
+    cashapp:document.getElementById('ca')?.value?.trim()||c.cashapp,
+    cryptoOptions:updatedCrypto,
+    ...(p1?{adminPw:p1}:{})
   });
+  if(msg)msg.innerHTML='<span style="color:var(--green);font-size:13px">✓ Settings saved.</span>';
+  setTimeout(()=>{if(msg)msg.innerHTML=''},3000);
+}
+function viewProof(id){
+  const o=getOrders().find(x=>x.id===id);
+  if(!o?.proofB64)return;
+  document.getElementById('modal').innerHTML=`<div class="overlay" onclick="closeMod()">`+
+    `<div style="max-width:480px;width:100%;background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:22px" onclick="event.stopPropagation()">`+
+    `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><span style="font-weight:600">Payment Screenshot</span><button onclick="closeMod()" style="background:none;border:none;color:var(--text2);cursor:pointer;font-size:22px;line-height:1">×</button></div>`+
+    `<img src="${o.proofB64}" style="max-width:100%;border-radius:14px;border:1px solid var(--border)"></div></div>`;
+}
 
-  function bindColor(colId, hexId, previewId) {
-    const col = document.getElementById(colId);
-    const hex = document.getElementById(hexId);
-    const prev = document.getElementById(previewId);
-    col.addEventListener('input', () => {
-      prev.style.background = col.value;
-      hex.value = col.value.slice(1).toUpperCase();
-    });
-    hex.addEventListener('input', () => {
-      const v = hex.value.replace(/[^0-9a-fA-F]/g, '');
-      hex.value = v;
-      if (v.length === 6) { col.value = '#' + v; prev.style.background = '#' + v; }
-    });
+// ── BUY MODAL ─────────────────────────────────────────────────
+function openBuy(lid){
+  const l=getListings().find(x=>x.id===lid);
+  if(!l||!l.available)return;
+  buyLid=lid;buyStep=1;payM='cashapp';proofB64=null;proofName=null;
+  drawBuy(l);
+}
+
+function drawBuy(l){
+  const cfg=getCfg();
+  const pc=PC[l.platform]||'#8aa4d8';
+  
+  // Build crypto option buttons dynamically
+  const cryptoOpts = cfg.cryptoOptions.map(c => 
+    `<button class="popt${payM===c.symbol?' on':''}" onclick="setPayM('${c.symbol}')" style="flex:1">`+
+    `<div style="font-size:16px;margin-bottom:3px">${c.symbol==='BTC'?'₿':c.symbol==='LTC'?'Ł':'◆'}</div>`+
+    `<div style="font-size:11px">${c.name}</div></button>`
+  ).join('');
+  
+  const step1=`<div>`+
+    `<div style="margin-bottom:16px">`+
+    `<div style="font-size:11px;font-weight:700;color:${pc};letter-spacing:1px;text-transform:uppercase;margin-bottom:5px">${esc(l.platform)}</div>`+
+    `<div style="font-family:var(--mono);font-size:26px;font-weight:700;color:#e4efff">${esc(l.username)}</div>`+
+    `<div style="font-family:var(--head);font-size:22px;color:var(--gold);margin-top:5px">$${l.price.toLocaleString()}</div>`+
+    `<p style="color:var(--text2);font-size:13px;margin-top:7px;line-height:1.6">${esc(l.description)}</p></div><hr>`+
+    `<div style="font-size:11px;font-weight:700;color:var(--text2);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px">Choose Payment Method</div>`+
+    `<div class="ptoggle">`+
+    `<button class="popt${payM==='cashapp'?' on':''}" onclick="setPayM('cashapp')" style="flex:1;display:flex;flex-direction:column;align-items:center">`+
+    `<svg width="20" height="20" viewBox="0 0 100 100" style="margin-bottom:4px"><circle cx="50" cy="50" r="48" fill="white" stroke="#007AFF" stroke-width="2"/><text x="50" y="60" font-size="45" font-weight="bold" fill="#007AFF" text-anchor="middle">$</text></svg>`+
+    `<div style="font-size:11px">CashApp</div></button>`+
+    cryptoOpts+
+    `</div>`+
+    (payM==='cashapp'?
+      `<div class="ibox"><div style="font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Send To</div>`+
+      `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px"><span style="color:var(--text2);font-size:13px">CashApp Tag</span><div style="display:flex;align-items:center;gap:8px"><span style="font-family:var(--mono);font-size:15px;color:var(--text)">${esc(cfg.cashapp)}</span><button class="cpbtn" onclick="cp(${JSON.stringify(cfg.cashapp)})">copy</button></div></div>`+
+      `<div style="display:flex;align-items:center;justify-content:space-between"><span style="color:var(--text2);font-size:13px">Amount</span><span style="font-family:var(--mono);font-size:15px;color:var(--gold)">$${l.price.toLocaleString()}</span></div></div>`+
+      `<div class="warn">⚠ Your screenshot <strong>must clearly show</strong> that payment was sent from your <strong>CashApp balance</strong>. Screenshots from bank or card will not be accepted.</div>`
+    :
+      (() => {
+        const selected = cfg.cryptoOptions.find(c => c.symbol === payM);
+        if (!selected) return '';
+        return `<div class="ibox"><div style="font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Send To ${selected.name}</div>`+
+        `<div style="margin-bottom:8px"><button class="cpbtn" onclick="cp(${JSON.stringify(selected.addr)})" style="float:right">copy address</button>`+
+        `<div style="font-family:var(--mono);font-size:11px;color:var(--text);word-break:break-all;background:rgba(255,255,255,.04);padding:8px 10px;border-radius:6px">${esc(selected.addr)}</div></div>`+
+        `<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px"><span style="color:var(--text2);font-size:13px">Amount (USD equiv.)</span><span style="font-family:var(--mono);color:var(--gold)">$${l.price.toLocaleString()}</span></div></div>`;
+      })()
+    )+
+    `<button class="btn" onclick="buyNext()" style="width:100%;padding:12px;font-size:14px">Continue →</button></div>`;
+
+  const step2=`<div>`+
+    `<button onclick="buyBack()" style="background:none;border:none;color:var(--text2);cursor:pointer;font-size:13px;padding:0;margin-bottom:14px">← Back</button>`+
+    `<h3 style="font-size:18px;font-weight:700;margin-bottom:6px">${payM==='cashapp'?'Upload Screenshot':'Enter Transaction ID'}</h3>`+
+    `<p style="color:var(--text2);font-size:13px;margin-bottom:18px">${payM==='cashapp'?'Upload a screenshot showing the payment sent from your CashApp balance.':'After sending payment, paste the full transaction ID from your wallet.'}</p>`+
+    (payM==='cashapp'?
+      `<div class="uzone${proofB64?' done':''}" onclick="document.getElementById('pfil').click()" id="uz">`+
+      `<input type="file" id="pfil" accept="image/*" style="display:none" onchange="handleProof(this)">`+
+      (proofB64?`<div style="color:var(--green);font-weight:600;margin-bottom:4px">✓ Screenshot uploaded</div><div style="color:var(--text3);font-size:12px">${esc(proofName||'')}</div><img src="${proofB64}" style="max-width:100%;max-height:140px;object-fit:contain;margin-top:10px;border-radius:6px">`:`<div style="font-size:28px;opacity:.35;margin-bottom:8px">📸</div><div style="color:var(--text2);font-size:13px">Click to upload screenshot</div><div style="color:var(--text3);font-size:11px;margin-top:3px">JPG or PNG</div>`)+`</div>`
+    :
+      `<div class="field"><label>Transaction ID / Hash</label><textarea id="txinp" rows="3" placeholder="Paste your full transaction hash here..." style="font-family:var(--mono);font-size:12px;resize:none"></textarea></div>`
+    )+
+    `<hr><div class="field"><label>Your Name</label><input type="text" id="bname" placeholder="Full name"></div>`+
+    `<div class="field"><label>Discord Username</label><input type="text" id="bdiscord" placeholder="YourName#1234"></div>`+
+    `<div class="field"><label>Email Address</label><input type="email" id="bemail" placeholder="you@email.com"></div>`+
+    `<div id="berr" style="margin-bottom:10px"></div>`+
+    `<div style="background:rgba(182,156,255,.1);border:1px solid rgba(182,156,255,.24);border-radius:16px;padding:12px 14px;margin-bottom:14px;font-size:11px;color:#cdb8ff;line-height:1.65">`+
+    `<strong>⏱ Payment Policy</strong><br>• Review takes <strong>up to 24 hours</strong><br>• <strong>No cancellations</strong> after sending payment<br>• <strong>No refunds</strong> unless our error<br>• Final sale once submitted`+
+    `</div>`+
+    `<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;padding:12px 14px;background:rgba(182,156,255,.08);border:1px solid rgba(182,156,255,.18);border-radius:10px">`+
+    `<input type="checkbox" id="toscheck" style="margin-top:2px;cursor:pointer;width:18px;height:18px;flex-shrink:0">`+
+    `<label for="toscheck" style="margin:0;font-size:12px;color:var(--text2);line-height:1.6;cursor:pointer">I have read and agree to Nuke's Nightmarket <strong><a href="javascript:void(0)" onclick="window.open('#tos','_blank')" style="color:var(--accent);text-decoration:underline">Terms of Service</a></strong>. I understand this is a final sale with no refunds.</label>`+
+    `</div>`+
+    `<button class="btn" onclick="submitBuy()" style="width:100%;padding:12px;font-size:14px">Submit Order</button></div>`;
+
+  document.getElementById('modal').innerHTML=`<div class="overlay" onclick="closeMod()">`+
+    `<div class="mbox" onclick="event.stopPropagation()">`+
+    `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px">`+
+    `<div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1px">STEP ${buyStep} OF 2</div>`+
+    `<button onclick="closeMod()" style="background:none;border:none;color:var(--text2);cursor:pointer;font-size:24px;line-height:1;padding:0">×</button></div>`+
+    (buyStep===1?step1:step2)+`</div></div>`;
+}
+
+function setPayM(m){payM=m;const l=getListings().find(x=>x.id===buyLid);if(l)drawBuy(l)}
+function buyNext(){buyStep=2;const l=getListings().find(x=>x.id===buyLid);if(l)drawBuy(l)}
+function buyBack(){buyStep=1;const l=getListings().find(x=>x.id===buyLid);if(l)drawBuy(l)}
+function handleProof(inp){
+  const f=inp.files[0];if(!f)return;
+  proofName=f.name;
+  const r=new FileReader();
+  r.onload=e=>{proofB64=e.target.result;const l=getListings().find(x=>x.id===buyLid);if(l)drawBuy(l)};
+  r.readAsDataURL(f);
+}
+function submitBuy(){
+  const name=document.getElementById('bname')?.value?.trim();
+  const discord=document.getElementById('bdiscord')?.value?.trim();
+  const email=document.getElementById('bemail')?.value?.trim();
+  const tosChecked=document.getElementById('toscheck')?.checked;
+  const errEl=document.getElementById('berr');
+  if(!name||!discord||!email){if(errEl)errEl.innerHTML='<span class="err">Please fill in all fields (name, Discord, email).</span>';return}
+  if(!tosChecked){if(errEl)errEl.innerHTML='<span class="err">You must agree to the Terms of Service to proceed.</span>';return}
+  if(!/\S+@\S+\.\S+/.test(email)){if(errEl)errEl.innerHTML='<span class="err">Please enter a valid email address.</span>';return}
+  let txId='';
+  if(payM==='cashapp'){
+    if(!proofB64){if(errEl)errEl.innerHTML='<span class="err">Please upload your payment screenshot.</span>';return}
+  } else {
+    txId=document.getElementById('txinp')?.value?.trim()||'';
+    if(!txId){if(errEl)errEl.innerHTML='<span class="err">Please paste your transaction ID.</span>';return}
   }
-  bindColor('col1','hex1','cp1');
-  bindColor('col2','hex2','cp2');
-  bindColor('col3','hex3','cp3');
+  const l=getListings().find(x=>x.id===buyLid);
+  if(!l)return;
+  const oid=gid();
+  saveOrders([...getOrders(),{
+    id:oid,listingId:buyLid,listingUsername:l.username,listingPlatform:l.platform,listingPrice:l.price,
+    buyerName:name,buyerDiscord:discord,buyerEmail:email,payMethod:payM,txId,proofB64:proofB64||'',
+    status:'pending',createdAt:new Date().toISOString()
+  }]);
+  document.getElementById('modal').innerHTML=`<div class="overlay">`+
+    `<div class="mbox" style="text-align:center;padding:40px 32px">`+
+    `<div style="font-size:54px;margin-bottom:14px">🌙</div>`+
+    `<h3 style="font-family:var(--head);font-size:24px;font-weight:700;margin-bottom:10px">Order Submitted!</h3>`+
+    `<p style="color:var(--text2);font-size:14px;line-height:1.7;margin-bottom:24px">Your payment is being reviewed. Once approved, your account credentials will be available using the Order ID below.</p>`+
+    `<div style="background:var(--accent-glow);border:1px solid rgba(91,143,255,.25);border-radius:20px;padding:16px 20px;margin-bottom:24px">`+
+    `<div style="font-size:10px;color:var(--text3);letter-spacing:1.5px;margin-bottom:7px">YOUR ORDER ID — SAVE THIS</div>`+
+    `<div style="font-family:var(--mono);font-size:22px;color:var(--accent);letter-spacing:2px">${oid}</div>`+
+    `<button class="cpbtn" onclick="cp(${JSON.stringify(oid)})" style="margin-top:9px">copy</button></div>`+
+    `<div style="background:rgba(182,156,255,.1);border:1px solid rgba(182,156,255,.24);border-radius:16px;padding:14px 16px;margin-bottom:16px;font-size:12px;color:#cdb8ff;line-height:1.65">`+
+    `<strong>⏱ Payment Policy:</strong><br>`+
+    `• Payment review may take <strong>up to 24 hours</strong><br>`+
+    `• <strong>No cancellations</strong> after payment is sent<br>`+
+    `• <strong>No refunds</strong> except if error is on our end<br>`+
+    `• Your order is final once payment is submitted`+
+    `</div>`+
+    `<div style="display:flex;gap:10px">`+
+    `<button class="btn2" onclick="closeMod()" style="flex:1">Close</button>`+
+    `<button class="btn" onclick='closeMod();nav("status");setTimeout(()=>{const i=document.getElementById("oid");if(i){i.value=${JSON.stringify(oid)};chkOrder()}},120)' style="flex:1">Track Order</button></div></div></div>`;
+}
+function closeMod(){document.getElementById('modal').innerHTML='';buyLid=null}
+function cp(t){navigator.clipboard?.writeText(t)}
 
-  function previewImg(input, slotId) {
-    if (!input.files || !input.files[0]) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      const slot = document.getElementById(slotId);
-      const old = slot.querySelector('.preview-img');
-      if (old) old.remove();
-      slot.querySelectorAll('.slot-icon, span').forEach(el => el.style.opacity = '0');
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      img.className = 'preview-img';
-      slot.prepend(img);
-    };
-    reader.readAsDataURL(input.files[0]);
-  }
+// ── RENDER ────────────────────────────────────────────────────
+function render(){
+  const m=document.getElementById('main');
+  if(page==='shop')m.innerHTML=renderShop();
+  else if(page==='status')m.innerHTML=renderStatus();
+  else if(page==='admin')m.innerHTML=renderAdmin();
+  else if(page==='tos')m.innerHTML=renderToS();
+}
 
-  let addonOn = false;
-  let selectedPay = null;
-  let pathValid = false;
+function renderToS(){
+  return`<div style="max-width:800px;margin:0 auto;padding:40px 24px">`+
+    `<h2 style="font-family:var(--head);font-size:32px;margin-bottom:8px">Terms of Service</h2>`+
+    `<p style="color:var(--text3);font-size:13px;margin-bottom:32px">Last Updated: ${new Date().toLocaleDateString()}</p>`+
+    
+    `<div style="display:flex;flex-direction:column;gap:28px">`+
+    
+    `<div>`+
+    `<h3 style="font-family:var(--head);font-size:18px;margin-bottom:10px">1. No Refunds Policy</h3>`+
+    `<p style="color:var(--text2);line-height:1.8">All purchases are <strong>final and non-refundable</strong>. Once you submit payment, you are committed to the transaction. There are no exceptions to this policy unless an error occurs on our end.</p>`+
+    `</div>`+
+    
+    `<div>`+
+    `<h3 style="font-family:var(--head);font-size:18px;margin-bottom:10px">2. Account Delivery & Login Support</h3>`+
+    `<p style="color:var(--text2);line-height:1.8">Upon payment approval, you will receive account credentials (email, password, and any additional information). We will provide login support to ensure you can successfully access the account. <strong>Support is only provided during the initial handover period</strong>. After you have confirmed login and access to the account, the exchange is complete.</p>`+
+    `</div>`+
+    
+    `<div>`+
+    `<h3 style="font-family:var(--head);font-size:18px;margin-bottom:10px">3. Post-Purchase Account Security</h3>`+
+    `<p style="color:var(--text2);line-height:1.8"><strong>After you have successfully logged in, you are fully responsible for account security.</strong> This includes:</p>`+
+    `<ul style="color:var(--text2);margin-left:24px;margin-top:10px;line-height:1.8">`+
+    `<li>Changing the password immediately</li>`+
+    `<li>Enabling two-factor authentication (2FA) or other security measures</li>`+
+    `<li>Protecting the account from unauthorized access</li>`+
+    `<li>Maintaining the account in good standing</li>`+
+    `</ul>`+
+    `<p style="color:var(--text2);line-height:1.8;margin-top:12px"><strong>We are not responsible for any issues that occur after you have taken possession of the account.</strong> This includes hacking, account suspension, data loss, or any other problems. You assume all liability once login is confirmed.</p>`+
+    `</div>`+
+    
+    `<div>`+
+    `<h3 style="font-family:var(--head);font-size:18px;margin-bottom:10px">4. Account Status & Ownership</h3>`+
+    `<p style="color:var(--text2);line-height:1.8"><strong>OG Accounts:</strong> Accounts marked as "OG" or third-party owned accounts are sold as-is. We have no control over platform policies or account status changes. You are purchasing at your own risk.</p>`+
+    `<p style="color:var(--text2);line-height:1.8;margin-top:10px"><strong>Personally Owned Accounts:</strong> If an account is personally owned by us and something happens to it after transfer, we will evaluate the situation on a case-by-case basis. Depending on the nature of the issue, we may offer a refund or alternative account exchange. This is at our sole discretion.</p>`+
+    `</div>`+
+    
+    `<div>`+
+    `<h3 style="font-family:var(--head);font-size:18px;margin-bottom:10px">5. Platform Policies & Account Suspension</h3>`+
+    `<p style="color:var(--text2);line-height:1.8">Social media platforms (Instagram, TikTok, X, Discord, etc.) have strict terms of service regarding account ownership and transfers. By purchasing an account, you acknowledge that:</p>`+
+    `<ul style="color:var(--text2);margin-left:24px;margin-top:10px;line-height:1.8">`+
+    `<li>The account may be subject to suspension or permanent ban by the platform</li>`+
+    `<li>Platform policies may change at any time</li>`+
+    `<li>We are not liable for platform actions or account restrictions</li>`+
+    `<li>Accounts purchased here are at the buyer's risk</li>`+
+    `</ul>`+
+    `</div>`+
+    
+    `<div>`+
+    `<h3 style="font-family:var(--head);font-size:18px;margin-bottom:10px">6. Account Credentials & Information</h3>`+
+    `<p style="color:var(--text2);line-height:1.8">All account information provided (email, password, recovery options) is accurate at the time of delivery. <strong>You must change all credentials immediately upon receipt.</strong> Failure to do so puts your account at risk. We are not responsible for accounts compromised due to failure to secure credentials.</p>`+
+    `</div>`+
+    
+    `<div>`+
+    `<h3 style="font-family:var(--head);font-size:18px;margin-bottom:10px">7. Limitation of Liability</h3>`+
+    `<p style="color:var(--text2);line-height:1.8">Nuke's Nightmarket is not responsible for:</p>`+
+    `<ul style="color:var(--text2);margin-left:24px;margin-top:10px;line-height:1.8">`+
+    `<li>Account suspension or bans by platforms</li>`+
+    `<li>Loss of access or data after delivery</li>`+
+    `<li>Unauthorized access or hacking post-delivery</li>`+
+    `<li>Platform policy changes</li>`+
+    `<li>Third-party claims or disputes</li>`+
+    `</ul>`+
+    `</div>`+
+    
+    `<div>`+
+    `<h3 style="font-family:var(--head);font-size:18px;margin-bottom:10px">8. Agreement to Terms</h3>`+
+    `<p style="color:var(--text2);line-height:1.8">By making a purchase on Nuke's Nightmarket, you agree to all terms and conditions outlined in this agreement. You acknowledge that you have read, understood, and accept these terms. <strong>Your purchase is a binding agreement to these conditions.</strong></p>`+
+    `</div>`+
+    
+    `<div style="margin-top:40px">`+
+    `<button class="btn2" onclick="nav('shop')" style="padding:12px 24px">← Back to Shop</button>`+
+    `</div></div></div>`;
+}
 
-  function stopProp(e) { e.stopPropagation(); }
-
-  function checkSubmitBtn() {
-    const btn = document.getElementById('submitBtn');
-    if (!pathValid) { btn.disabled = true; return; }
-    if (!selectedPay) { btn.disabled = true; return; }
-    if (selectedPay === 'cashapp') {
-      btn.disabled = !document.getElementById('ssFile').files[0];
-    } else if (selectedPay === 'crypto') {
-      btn.disabled = !document.getElementById('txidInput').value.trim();
-    }
-  }
-
-  function checkProof() { checkSubmitBtn(); }
-
-  function selectPay(method) {
-    selectedPay = method;
-    document.getElementById('payBtnCashapp').classList.toggle('selected', method === 'cashapp');
-    document.getElementById('payBtnCrypto').classList.toggle('selected', method === 'crypto');
-    document.getElementById('detailCashapp').classList.toggle('visible', method === 'cashapp');
-    document.getElementById('detailCrypto').classList.toggle('visible', method === 'crypto');
-    document.getElementById('screenshotSection').style.display = method === 'cashapp' ? 'block' : 'none';
-    checkSubmitBtn();
-  }
-
-  function copyAddr(id, btn) {
-    navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => {
-      btn.textContent = 'Copied!';
-      setTimeout(() => btn.textContent = 'Copy', 2000);
-    });
-  }
-
-  function previewScreenshot(input) {
-    if (!input.files || !input.files[0]) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-      const slot = document.getElementById('ssSlot');
-      const old = slot.querySelector('.preview-img');
-      if (old) old.remove();
-      slot.querySelectorAll('.ss-icon, span').forEach(el => el.style.opacity = '0');
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      img.className = 'preview-img';
-      slot.prepend(img);
-    };
-    reader.readAsDataURL(input.files[0]);
-  }
-
-  function toggleAddon() {
-    addonOn = !addonOn;
-    document.getElementById('toggleEl').classList.toggle('on', addonOn);
-    document.getElementById('addonCard').classList.toggle('active', addonOn);
-    document.getElementById('addonBody').classList.toggle('visible', addonOn);
-    document.getElementById('btnLabel').textContent = addonOn
-      ? 'Confirm Site and Domain Order $30'
-      : 'Confirm Site Order $15';
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const input = document.getElementById('pathInput');
-    const hint  = document.getElementById('pathHint');
-    let debounce;
-    input.addEventListener('input', () => {
-      clearTimeout(debounce);
-      pathValid = false;
-      checkSubmitBtn();
-      debounce = setTimeout(async () => {
-        const val = input.value.trim().toLowerCase();
-        if (!val) { hint.textContent = ''; pathValid = false; checkSubmitBtn(); return; }
-        try {
-          const bin = await readBin();
-          const taken = (bin.takenPaths || []).includes(val);
-          if (taken) {
-            hint.textContent = 'omiku.co/' + val + ' is already taken. Try a different name.';
-            hint.style.color = '#f5c6d4';
-            input.style.borderColor = '#484848';
-            pathValid = false;
-          } else {
-            hint.textContent = 'omiku.co/' + val + ' is available!';
-            hint.style.color = '#888888';
-            pathValid = true;
-          }
-        } catch {
-          hint.textContent = '';
-          pathValid = true;
-        }
-        checkSubmitBtn();
-      }, 500);
-    });
-  });
-
-  function openWork() {
-    document.getElementById('workModal').style.display = 'block';
-    document.getElementById('workModalBackdrop').style.display = 'block';
-  }
-  function closeWork() {
-    document.getElementById('workModal').style.display = 'none';
-    document.getElementById('workModalBackdrop').style.display = 'none';
-  }
-
-  async function handleSubmit() {
-    const aboutName = document.getElementById('aboutName').value.trim();
-    const aboutRole = document.getElementById('aboutRole').value.trim();
-    const email   = document.getElementById('emailInput').value.trim();
-    const discord = document.getElementById('discordInput').value.trim();
-    const h1 = document.getElementById('hex1').value;
-    const h2 = document.getElementById('hex2').value;
-    const h3 = document.getElementById('hex3').value;
-    const img1f = document.getElementById('img1').files[0];
-    const img2f = document.getElementById('img2').files[0];
-    const img3f = document.getElementById('img3').files[0];
-
-    if (!aboutName || !aboutRole) { alert('Step 1: Please fill in your name and what you do!'); return; }
-    if (h1.length !== 6 || h2.length !== 6 || h3.length !== 6) { alert('Step 2: Please fill in all 3 hex color codes!'); return; }
-    if (!img1f || !img2f || !img3f) { alert('Step 3: Please upload all 3 photos!'); return; }
-    const socials = [1,2,3,4,5,6].map(n => {
-      const platform = document.getElementById('sp'+n).value.trim();
-      const username = document.getElementById('su'+n).value.trim();
-      return platform && username ? { platform, username } : null;
-    }).filter(Boolean);
-    if (socials.length === 0) { alert('Step 4: Please add at least 1 social media account!'); return; }
-    if (!email && !discord) { alert('Step 5: Please enter your email or Discord so we can reach you!'); return; }
-    const sitePath = document.getElementById('pathInput').value.trim().toLowerCase();
-    if (!sitePath) { alert('Please enter what you\'d like after omiku.co/'); return; }
-    if (addonOn) {
-      const words = [1,2,3,4,5].map(n => document.getElementById('w'+n).value.trim()).filter(Boolean);
-      if (words.length < 5) { alert('Please fill in all 5 words for the domain finder!'); return; }
-    }
-    if (!selectedPay) { alert('Please select a payment method!'); return; }
-    if (selectedPay === 'cashapp' && !document.getElementById('ssFile').files[0]) { alert('Please upload a screenshot of your CashApp payment!'); return; }
-    if (selectedPay === 'crypto' && !document.getElementById('txidInput').value.trim()) { alert('Please enter your TXID as proof of payment!'); return; }
-
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.querySelector('#btnLabel').textContent = 'Submitting...';
-
-    try {
-      const bin = await readBin();
-      if ((bin.takenPaths || []).includes(sitePath)) {
-        alert('Sorry, omiku.co/' + sitePath + ' was just taken! Please choose a different path.');
-        btn.disabled = false;
-        document.getElementById('btnLabel').textContent = addonOn ? 'Confirm Site and Domain Order $30' : 'Confirm Site Order $15';
-        return;
-      }
-
-      const ssFile = selectedPay === 'cashapp' ? document.getElementById('ssFile').files[0] : null;
-      const [img1b64, img2b64, img3b64, ssb64] = await Promise.all([
-        compressImg(img1f), compressImg(img2f), compressImg(img3f),
-        ssFile ? compressImg(ssFile, 200, 0.35) : Promise.resolve(null)
-      ]);
-
-      const addonWords = addonOn ? [1,2,3,4,5].map(n => document.getElementById('w'+n).value.trim()) : [];
-      const txid = selectedPay === 'crypto' ? document.getElementById('txidInput').value.trim() : null;
-
-      const order = {
-        id: 'order-' + Date.now(),
-        submittedAt: new Date().toLocaleString(),
-        about: { name: aboutName, role: aboutRole },
-        path: 'omiku.co/' + sitePath,
-        colors: ['#'+h1, '#'+h2, '#'+h3],
-        images: [img1b64, img2b64, img3b64],
-        socials,
-        contact: { email, discord },
-        payment: { method: selectedPay, txid, screenshot: ssb64 },
-        domain: { addon: addonOn, words: addonWords },
-        total: addonOn ? '$30' : '$15',
-        status: 'pending'
-      };
-
-      bin.orders = [...(bin.orders || []), order];
-      bin.takenPaths = [...(bin.takenPaths || []), sitePath];
-      await writeBin(bin);
-
-      document.getElementById('formCard').style.display = 'none';
-      const sc = document.getElementById('successCard');
-      document.getElementById('orderNumValue').textContent = '#' + order.id.replace('order-', '');
-      sc.style.display = 'block';
-      sc.style.animation = 'pop 0.5s cubic-bezier(0.34,1.56,0.64,1) both';
-      sc.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-    } catch(e) {
-      alert('Something went wrong saving your order: ' + e.message + '\n\nPlease try again or contact us directly.');
-      btn.disabled = false;
-      document.getElementById('btnLabel').textContent = addonOn ? 'Confirm Site and Domain Order $30' : 'Confirm Site Order $15';
-    }
-  }
+render();
 </script>
 </body>
 </html>
