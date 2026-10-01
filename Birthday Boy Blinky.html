@@ -1,0 +1,506 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Birthday Boy Blinky</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka:wght@400;500;600&display=swap">
+<style>
+/* Layout: one-column dive — sea surface title, landmark strip over an 8×6 grid of diggable seabed blocks, inventory bar below. Single deliberate undersea look. */
+:root{
+  --sea-top:#1b8fd1;
+  --sea-mid:#0d5d9b;
+  --sea-deep:#06233f;
+  --sand:#f2d48a;
+  --sun:#ffe14d;
+  --coral:#ff6f91;
+  --kelp:#3fcf6e;
+  --ink:#fff8e7;
+  --ink-dim:#bfe3ff;
+  --panel:#0a2f52;
+  --panel-edge:#ffe14d;
+  --display:"Press Start 2P", "Courier New", monospace;
+  --body:"Fredoka", "Trebuchet MS", system-ui, sans-serif;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  margin:0;
+  background:linear-gradient(180deg,var(--sea-top) 0%,var(--sea-mid) 38%,var(--sea-deep) 100%);
+  background-color:var(--sea-deep);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.5;
+  padding-inline:16px;
+  padding-block:24px 48px;
+  overflow-x:hidden;
+}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:18px;position:relative;z-index:1}
+
+/* ambient bubbles */
+.bubbles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bubbles span{position:absolute;bottom:-20px;width:10px;height:10px;border:2px solid rgba(255,255,255,.55);background:rgba(255,255,255,.12);animation:rise linear infinite}
+@keyframes rise{to{transform:translateY(-110vh) translateX(20px)}}
+
+header{text-align:center;display:flex;flex-direction:column;gap:10px}
+h1{font-family:var(--display);font-size:clamp(18px,5.4vw,28px);line-height:1.35;margin:0;color:var(--sun);text-shadow:3px 3px 0 #c2410c,6px 6px 0 rgba(0,0,0,.35);text-wrap:balance}
+.sub{margin:0;color:var(--ink-dim);font-size:16px}
+
+.pill{font-family:var(--display);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+
+/* clue panel */
+.clue{
+  background:var(--panel);border:4px solid var(--panel-edge);
+  box-shadow:6px 6px 0 rgba(0,0,0,.35);
+  padding:14px 16px;display:flex;gap:14px;align-items:flex-start;
+}
+.clue .icon{width:44px;height:44px;flex:none}
+.clue .txt{min-width:0;display:flex;flex-direction:column;gap:6px}
+.clue .label{color:var(--sun)}
+.clue p{margin:0;font-size:17px}
+.status{min-height:26px;font-size:15px;color:var(--ink-dim);text-align:center}
+.status.hot{color:var(--sun)}
+
+/* map */
+.map{display:flex;flex-direction:column;border:4px solid #000;box-shadow:6px 6px 0 rgba(0,0,0,.35)}
+.landmarks,.grid{display:grid;grid-template-columns:repeat(8,1fr)}
+.landmarks{background:linear-gradient(180deg,#2aa6e6,#1c84c4);padding-top:6px}
+.lm{aspect-ratio:1;display:flex;align-items:flex-end;justify-content:center;padding:8%}
+.lm svg{width:100%;height:100%}
+.grid{background:#140a05}
+.tile{
+  aspect-ratio:1;border:0;padding:0;margin:0;cursor:pointer;position:relative;
+  background-size:100% 100%;image-rendering:pixelated;
+  box-shadow:inset -3px -3px 0 rgba(0,0,0,.28), inset 3px 3px 0 rgba(255,255,255,.18);
+}
+.tile:hover{filter:brightness(1.12)}
+.tile:focus-visible{outline:3px solid var(--sun);outline-offset:-3px;z-index:2}
+.tile .crack{position:absolute;inset:0;opacity:0;pointer-events:none}
+.tile .crack svg{width:100%;height:100%}
+.tile[data-hits="1"] .crack{opacity:1}
+.tile.dug{background:#1d0f07 !important;box-shadow:inset 4px 4px 0 rgba(0,0,0,.6);cursor:default}
+.tile.dug:hover{filter:none}
+.tile.shake{animation:shake .18s}
+@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.tile.glint::after{content:"";position:absolute;inset:30%;background:var(--sun);opacity:.0;animation:glint 1.1s ease-in-out 2}
+@keyframes glint{50%{opacity:.85}}
+.tile .found{position:absolute;inset:12%}
+.tile .found svg{width:100%;height:100%}
+.col-hint{outline:3px dashed var(--sun);outline-offset:-3px}
+
+/* inventory */
+.inv{background:#3b2a1a;border:4px solid #000;padding:8px;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;box-shadow:6px 6px 0 rgba(0,0,0,.35)}
+.slot{aspect-ratio:1;max-width:72px;width:100%;justify-self:center;background:#7a5a3a;border:0;box-shadow:inset 3px 3px 0 rgba(0,0,0,.45);padding:12%;cursor:default}
+.slot.full{cursor:pointer;background:#9c7650}
+.slot.full:hover{filter:brightness(1.12)}
+.slot.full:focus-visible{outline:3px solid var(--sun)}
+.slot svg{width:100%;height:100%}
+.invlabel{display:flex;justify-content:space-between;color:var(--ink-dim);gap:12px;flex-wrap:wrap}
+
+/* buttons */
+.btn{
+  font-family:var(--display);font-size:13px;line-height:1.4;
+  background:var(--sun);color:#3a1d00;border:0;padding:14px 20px;cursor:pointer;
+  box-shadow:inset -4px -4px 0 #d39b00, inset 4px 4px 0 #fff6b0, 5px 5px 0 rgba(0,0,0,.4);
+}
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:translate(2px,2px);box-shadow:inset -4px -4px 0 #d39b00, inset 4px 4px 0 #fff6b0, 3px 3px 0 rgba(0,0,0,.4)}
+.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 3px var(--ink-dim)}
+
+/* overlays */
+.overlay{position:fixed;inset:0;z-index:10;background:rgba(2,16,32,.78);display:flex;align-items:center;justify-content:center;padding:16px}
+.card{
+  width:100%;max-width:440px;background:var(--sand);color:#3a2408;
+  border:4px solid #000;box-shadow:inset -6px -6px 0 #d6b264, inset 6px 6px 0 #fff0c2, 8px 8px 0 rgba(0,0,0,.45);
+  padding:26px 22px;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;
+  animation:pop .35s cubic-bezier(.2,1.6,.4,1);
+}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+.card .big{width:84px;height:84px}
+.card .big svg{width:100%;height:100%}
+.card .kind{font-family:var(--display);font-size:11px;letter-spacing:.08em;color:#b4321f}
+.card h2{font-family:var(--display);font-size:15px;line-height:1.5;margin:0;text-wrap:balance}
+.card p{margin:0;font-size:18px;max-width:34ch}
+
+/* intro */
+.intro .card{background:var(--panel);color:var(--ink);box-shadow:inset 0 0 0 4px var(--panel-edge), 8px 8px 0 rgba(0,0,0,.45)}
+.intro .card h2{color:var(--sun);font-size:16px}
+.intro .card p{font-size:17px}
+
+/* finale */
+.finale{position:fixed;inset:0;z-index:20;overflow-y:auto;background:linear-gradient(180deg,#ff9ec0 0%,#ffcf6b 55%,#ffe8a8 100%);padding-inline:16px;padding-block:32px;display:flex;justify-content:center}
+.finale canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+.finale .inner{position:relative;max-width:520px;width:100%;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center;color:#4a1430;margin:auto 0}
+.finale h2{font-family:var(--display);font-size:clamp(22px,7vw,40px);line-height:1.35;margin:0;color:#fff;text-shadow:4px 4px 0 #d6336c,8px 8px 0 rgba(74,20,48,.35);text-wrap:balance}
+.finale .cake{width:min(220px,60vw)}
+.finale .cake svg{width:100%;height:auto}
+.finale .letter{background:#fff8e7;border:4px solid #4a1430;box-shadow:8px 8px 0 rgba(74,20,48,.3);padding:22px 20px;font-size:18px;line-height:1.6;text-align:left;display:flex;flex-direction:column;gap:12px}
+.finale .letter p{margin:0}
+.finale .sign{font-family:var(--display);font-size:12px;color:#d6336c;text-align:right}
+.mute{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:30;font-size:10px;padding:10px 12px}
+
+@media (prefers-reduced-motion: reduce){
+  .bubbles{display:none}
+  .card{animation:none}
+  .tile.shake,.tile.glint::after{animation:none}
+}
+</style>
+
+<div class="bubbles" id="bubbles" aria-hidden="true"></div>
+
+<main class="wrap">
+  <header>
+    <span class="pill" style="color:var(--ink-dim)">A birthday mystery</span>
+    <h1>BIRTHDAY BOY BLINKY</h1>
+    <p class="sub">Fifteen treasures are buried under the seabed. Follow the clues, dig the right blocks, and open the chest at the bottom.</p>
+  </header>
+
+  <section class="clue" aria-live="polite">
+    <div class="icon" id="clueIcon"></div>
+    <div class="txt">
+      <span class="pill label" id="clueLabel">Clue 1 of 15</span>
+      <p id="clueText"></p>
+    </div>
+  </section>
+
+  <div class="map">
+    <div class="landmarks" id="landmarks"></div>
+    <div class="grid" id="grid" role="grid" aria-label="Seabed blocks. Tap a block twice to dig it."></div>
+  </div>
+
+  <div class="status" id="status">Tap a block twice to dig it out.</div>
+
+  <div class="invlabel"><span class="pill">Treasure bag</span><span class="pill" id="count">0 / 15 found</span></div>
+  <div class="inv" id="inv"></div>
+</main>
+
+<div class="overlay intro" id="intro">
+  <div class="card">
+    <div class="big" id="introIcon"></div>
+    <h2>Happy birthday, my love</h2>
+    <p>I hid a few things for you at the bottom of the ocean. Every treasure is a memory of us or a reason I love you. Find them all to unlock the chest.</p>
+    <button class="btn" id="startBtn">Start diving</button>
+  </div>
+</div>
+
+<div class="overlay" id="reveal" hidden>
+  <div class="card">
+    <div class="big" id="revealIcon"></div>
+    <span class="kind" id="revealKind"></span>
+    <h2 id="revealTitle"></h2>
+    <p id="revealText"></p>
+    <button class="btn" id="revealBtn">Keep digging</button>
+  </div>
+</div>
+
+<div class="finale" id="finale" hidden>
+  <canvas id="confetti"></canvas>
+  <div class="inner">
+    <div class="cake" id="cake"></div>
+    <h2>Happy Birthday!</h2>
+    <div class="letter">
+      <p>You dug all the way to the bottom of the sea, and this is what was waiting: me, loving you more than every block in this ocean.</p>
+      <p>Thank you for every laugh, every adventure, and every quiet moment that feels like home. I hope this year gives you as much happiness as you give me every single day.</p>
+      <p>I love you so much. Here's to you, and to us.</p>
+      <p class="sign">Forever yours ♥</p>
+    </div>
+    <button class="btn" id="againBtn">Dive again</button>
+  </div>
+</div>
+
+<button class="btn ghost mute" id="muteBtn" aria-pressed="false">Sound on</button>
+
+<script>
+/* ---------- pixel art ---------- */
+function px(rows, pal){
+  const h = rows.length, w = rows[0].length; let r = '';
+  rows.forEach((row,y)=>[...row].forEach((c,x)=>{ if(c!=='.' && pal[c]) r += `<rect x="${x}" y="${y}" width="1.03" height="1.03" fill="${pal[c]}"/>`; }));
+  return `<svg viewBox="0 0 ${w} ${h}" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`;
+}
+const ART = {
+  kelp: px(["..g.....","..gG....","...g..g.","..gG.gG.","..g..g..","..gG.gG.","...ggg..","...gG..."],{g:'#3fcf6e',G:'#1f8f45'}),
+  anchor: px(["...aa...","..a..a..","...aa...",".aaaaaa.","...aa...","a..aa..a","aa.aa.aa",".aaaaaa."],{a:'#2b3a4a'}),
+  jelly: px(["..pppp..",".pPPPPp.","pPPwPPPp","pppppppp",".p.p.p.p","p.p.p.p.",".p.p.p.p","p...p..."],{p:'#e879f9',P:'#f5b8ff',w:'#ffffff'}),
+  ship: px(["...m....","...mss..","...msss.","...m....","bbbbbbbb",".bwbbwb.","..bbbb..","........"],{m:'#5b3a1e',s:'#f1ece0',b:'#8b5a2b',w:'#3a2410'}),
+  coral: px([".c...c..",".c.c.c.c","cc.c.cc.",".ccc.c..","..cccc..","...cc...","...cc...","..cccc.."],{c:'#ff6f91'}),
+  star: px(["...o....","...o....","oooooooo",".ooOOoo.","..oOOo..","..o..o..",".o....o.","........"],{o:'#ff9f1c',O:'#ffd166'}),
+  vent: px(["..w..w..",".w....w.","...w....","..w.....","...rr...","..rrrr..",".rrRRrr.","rrrrrrrr"],{w:'#d6f3ff',r:'#5c6670',R:'#ff6b35'}),
+  rock: px(["........","........","........","...rr...","..rrrr..",".rrrrrr.","rrrrrrrr","rrrrrrrr"],{r:'#4a5560'}),
+  pearl: px(["..wwww..",".wWWwww.","wWWwwwww","wWwwwwww","wwwwwwpw","wwwwwppw",".wwwppw.","..wwww.."],{w:'#f4f4ff',W:'#ffffff',p:'#d9c6f5'}),
+  gem: px(["..cccc..",".cCCccc.","cCCccccc","cccccccc",".cccccc.","..cccc..","...cc...","........"],{c:'#ff3d7f',C:'#ffb3cc'}),
+  key: px(["..yyy...",".y...y..",".y...y..","..yyy...","...y....","...yy...","...y....","...yyy.."],{y:'#ffd23f'}),
+  heart: px([".rr..rr.","rRrrrrrr","rRrrrrrr","rrrrrrrr",".rrrrrr.","..rrrr..","...rr...","........"],{r:'#ff3d6e',R:'#ffb3c6'}),
+  chest: px(["bbbbbbbb","bBBBBBBb","bBBBBBBb","yyyyyyyy","bBBykBBb","bBBBBBBb","bBBBBBBb","bbbbbbbb"],{b:'#5b3a1e',B:'#9c6b3a',y:'#ffd23f',k:'#2b1a0a'}),
+  map: px(["ssssssss","sbbsssss","sbbssxss","ssssxsxs","sssssxss","ssbsssss","ssbbsbss","ssssssss"],{s:'#f2d48a',b:'#6fc3ff',x:'#d62828'}),
+  cake: px([
+    "....f...f...f....",
+    "....c...c...c....",
+    "....c...c...c....",
+    "..pppppppppppppp.",
+    "..pPpPpPpPpPpPpp.",
+    "..ssssssssssssss.",
+    "..sswsssswsssswss",
+    "..ssssssssssssss.",
+    ".ppppppppppppppp.",
+    ".pPpPpPpPpPpPpPp.",
+    ".ssssssssssssssss",
+    ".sssswssssswsssss",
+    ".ssssssssssssssss",
+    "bbbbbbbbbbbbbbbbb"
+  ],{f:'#ffb000',c:'#ffffff',p:'#ff6fa5',P:'#ffffff',s:'#c9874a',w:'#ff3d6e',b:'#6b4423'})
+};
+const CRACK = `<svg viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true">${[[2,1],[3,2],[3,3],[4,3],[5,4],[5,5],[2,4],[1,5],[6,2],[4,6]].map(([x,y])=>`<rect x="${x}" y="${y}" width="1" height="1" fill="rgba(0,0,0,.6)"/>`).join('')}</svg>`;
+
+/* ---------- textures ---------- */
+function texture(colors, seed){
+  const c = document.createElement('canvas'); c.width = c.height = 8;
+  const g = c.getContext('2d'); let s = seed;
+  const rnd = ()=> (s = (s*9301+49297)%233280)/233280;
+  for(let y=0;y<8;y++) for(let x=0;x<8;x++){ g.fillStyle = colors[Math.floor(rnd()*colors.length)]; g.fillRect(x,y,1,1); }
+  return c.toDataURL();
+}
+const TEX = {
+  sand: [0,1,2].map(i=>texture(['#f2d48a','#e8c374','#f7e0a3','#ddb664'], 11+i*7)),
+  gravel: [0,1,2].map(i=>texture(['#a39a8c','#8c8478','#b8afa0','#6f685e'], 31+i*13)),
+  stone: [0,1,2].map(i=>texture(['#5a6470','#4a535e','#6c7783','#3b434c'], 71+i*17)),
+};
+
+/* ---------- content ---------- */
+const COLS = 8, ROWS = 6;
+const LANDMARKS = ['kelp','anchor','jelly','ship','coral','star','vent','rock'];
+const TREASURES = [
+  { col:1,row:0, art:'pearl', kind:'A memory', title:'When we first met',
+    clue:'Start where ships stop. Dig the block right under the anchor.',
+    text:'I\'ll always remember how shy you were when we first met. You could barely even talk to me, and I thought it was the cutest thing ever.' },
+  { col:2,row:3, art:'gem', kind:'Why I love you', title:'That big brain',
+    clue:'The jellyfish dropped something as it drifted. Look four blocks beneath it.',
+    text:'I love you because you\'re so smart.' },
+  { col:4,row:5, art:'gem', kind:'Why I love you', title:'The little things',
+    clue:'The coral\'s roots go all the way down. Dig the deepest block under the coral.',
+    text:'I love that you notice all the little things about me that no one else notices.' },
+  { col:5,row:2, art:'gem', kind:'Why I love you', title:'Your laugh',
+    clue:'A starfish never hurries. Three blocks under it, something is waiting.',
+    text:'I love watching you have fun with your friends, and the way you laugh like a little boy.' },
+  { col:0,row:4, art:'pearl', kind:'A memory', title:'"When is too soon?"',
+    clue:'Swim to the kelp at the far left edge and dig the fifth block down.',
+    text:'I remember you asking me when is too soon to say I love you. And then you finally told me you love me.' },
+  { col:3,row:0, art:'gem', kind:'Why I love you', title:'Funny guy',
+    clue:'The sunken ship lost its treasure close by. Try the very first block below the wreck.',
+    text:'I love how funny you are. You always make me laugh.' },
+  { col:6,row:3, art:'gem', kind:'Why I love you', title:'Sleepy giggles',
+    clue:'Follow the bubbles back to their hot vent. Four blocks down is the warmest secret.',
+    text:'I love your tired giggles at night.' },
+  { col:7,row:1, art:'heart', kind:'Why I love you', title:'A million times',
+    clue:'The lonely rock on the far right is hiding something. Two blocks down.',
+    text:'I love when you tell me you love me a million times before I go to sleep.' },
+  { col:1,row:3, art:'gem', kind:'Why I love you', title:'Food updates',
+    clue:'Back to the anchor. This time its chain reaches four blocks down.',
+    text:'I love when you show me what you\'re eating.' },
+  { col:2,row:5, art:'gem', kind:'Why I love you', title:'Player one',
+    clue:'The jellyfish has a second secret, buried at the very bottom.',
+    text:'I love playing games with you and watching you be the best at them.' },
+  { col:4,row:1, art:'gem', kind:'Why I love you', title:'Our little secret',
+    clue:'Check the coral again. Only two blocks down this time.',
+    text:'I love how you\'re so shy in front of others, but a freak when it\'s just us.' },
+  { col:5,row:4, art:'gem', kind:'Why I love you', title:'Serious mode',
+    clue:'The starfish has another one. Dig five blocks beneath it.',
+    text:'I love how stern you get. It\'s so hot and sexy.' },
+  { col:0,row:1, art:'pearl', kind:'Why I love you', title:'Our future',
+    clue:'The kelp is swaying toward a block just two down from it.',
+    text:'I love making plans about our future with you.' },
+  { col:3,row:4, art:'heart', kind:'Why I love you', title:'Bragging rights',
+    clue:'Go back to the shipwreck. Five blocks down, the last of its cargo is waiting.',
+    text:'I love telling the whole world about you.' },
+  { col:7,row:5, art:'key', kind:'The final treasure', title:'Forever',
+    clue:'Last one. Under the lonely rock on the far right, at the very bottom of the sea, the key is waiting.',
+    text:'I want you in my life forever. You found the key, so the treasure chest is unlocked. Tap below to open it.', final:true },
+];
+
+/* ---------- state ---------- */
+let found = new Set();
+let hits = {};
+let dug = new Set();
+let misses = 0;
+let muted = false;
+
+const $ = id => document.getElementById(id);
+const grid = $('grid'), lmRow = $('landmarks'), inv = $('inv');
+
+function nextIndex(){ return TREASURES.findIndex((t,i)=>!found.has(i)); }
+function treasureAt(c,r){ return TREASURES.findIndex(t=>t.col===c && t.row===r); }
+
+/* ---------- build ---------- */
+function build(){
+  lmRow.innerHTML = LANDMARKS.map(k=>`<div class="lm">${ART[k]}</div>`).join('');
+  grid.innerHTML = '';
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+    const b = document.createElement('button');
+    b.className = 'tile'; b.dataset.c = c; b.dataset.r = r; b.dataset.hits = 0;
+    const set = r<2 ? TEX.sand : r<4 ? TEX.gravel : TEX.stone;
+    b.style.backgroundImage = `url(${set[(c*3+r*5)%3]})`;
+    b.setAttribute('aria-label', `Block, column ${c+1}, ${r+1} down`);
+    b.innerHTML = `<span class="crack">${CRACK}</span>`;
+    b.addEventListener('click', ()=>dig(b));
+    grid.appendChild(b);
+  }
+  inv.innerHTML = '';
+  TREASURES.forEach((t,i)=>{
+    const s = document.createElement('button');
+    s.className = 'slot'; s.dataset.i = i; s.disabled = true;
+    s.setAttribute('aria-label','Empty slot');
+    s.addEventListener('click', ()=>{ if(found.has(i)) showReveal(i, true); });
+    inv.appendChild(s);
+  });
+  $('clueIcon').innerHTML = ART.map;
+  $('introIcon').innerHTML = ART.chest;
+  $('cake').innerHTML = ART.cake;
+  updateClue();
+}
+
+function updateClue(){
+  const i = nextIndex();
+  document.querySelectorAll('.col-hint').forEach(e=>e.classList.remove('col-hint'));
+  if(i<0) return;
+  $('clueLabel').textContent = `Clue ${found.size+1} of ${TREASURES.length}`;
+  $('clueText').textContent = TREASURES[i].clue;
+  $('count').textContent = `${found.size} / ${TREASURES.length} found`;
+}
+
+/* ---------- digging ---------- */
+function dig(b){
+  if(b.classList.contains('dug')) return;
+  const c = +b.dataset.c, r = +b.dataset.r, key = c+','+r;
+  const t = treasureAt(c,r);
+  // the key stays locked until everything else is found
+  if(t === TREASURES.length-1 && found.size < TREASURES.length-1){
+    b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake');
+    blip(140);
+    say('Something golden is stuck in there, but it won\'t budge yet. Find the other treasures first.', true);
+    return;
+  }
+  hits[key] = (hits[key]||0)+1;
+  b.dataset.hits = hits[key];
+  b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake');
+  if(hits[key] < 2){ blip(220); return; }
+
+  b.classList.add('dug'); dug.add(key); blip(330);
+  b.setAttribute('aria-label', `Dug out, column ${c+1}, ${r+1} down`);
+
+  if(t >= 0 && !found.has(t)){
+    found.add(t); misses = 0;
+    b.innerHTML = `<span class="found">${ART[TREASURES[t].art]}</span>`;
+    b.classList.add('glint');
+    chime();
+    const s = inv.children[t];
+    s.innerHTML = ART[TREASURES[t].art]; s.classList.add('full'); s.disabled = false;
+    s.setAttribute('aria-label', TREASURES[t].title);
+    setTimeout(()=>showReveal(t,false), 450);
+    updateClue();
+    say(found.size === TREASURES.length ? 'You found everything!' : 'Treasure found! Read the next clue.', true);
+  } else {
+    hint(c,r);
+  }
+}
+
+function hint(c,r){
+  const i = nextIndex(); if(i<0) return;
+  const t = TREASURES[i]; misses++;
+  const lines = ['Just sand and a confused crab.','Only a few pebbles in here.','Nothing but bubbles.','A shell, but not the treasure.'];
+  let dir = [];
+  if(t.col < c) dir.push('further left'); else if(t.col > c) dir.push('further right');
+  if(t.row > r) dir.push('deeper'); else if(t.row < r) dir.push('closer to the surface');
+  const dist = Math.abs(t.col-c)+Math.abs(t.row-r);
+  const heat = dist<=1 ? 'So warm!' : dist<=3 ? 'Getting warmer.' : 'Pretty cold.';
+  say(`${lines[misses%lines.length]} ${heat} Try ${dir.join(' and ')}.`, dist<=1);
+  if(misses >= 3){
+    grid.querySelectorAll(`.tile[data-c="${t.col}"]:not(.dug)`).forEach(e=>e.classList.add('col-hint'));
+  }
+}
+
+function say(msg, hot){ const s=$('status'); s.textContent = msg; s.classList.toggle('hot', !!hot); }
+
+/* ---------- reveal ---------- */
+let revealFinal = false;
+function showReveal(i, replay){
+  const t = TREASURES[i];
+  $('revealIcon').innerHTML = ART[t.art];
+  $('revealKind').textContent = t.kind.toUpperCase();
+  $('revealTitle').textContent = t.title;
+  $('revealText').textContent = t.text;
+  revealFinal = !!t.final;
+  $('revealBtn').textContent = t.final ? 'Open the chest' : (replay ? 'Close' : 'Keep digging');
+  $('reveal').hidden = false;
+  $('revealBtn').focus();
+}
+$('revealBtn').addEventListener('click', ()=>{
+  $('reveal').hidden = true;
+  if(revealFinal) openFinale();
+});
+
+/* ---------- finale ---------- */
+let confettiRun = false;
+function openFinale(){
+  $('finale').hidden = false; $('finale').scrollTop = 0;
+  fanfare();
+  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches) startConfetti();
+}
+function startConfetti(){
+  const cv = $('confetti'), g = cv.getContext('2d');
+  const fit = ()=>{ cv.width = innerWidth; cv.height = innerHeight; }; fit();
+  addEventListener('resize', fit);
+  const cols = ['#ff3d6e','#ffd23f','#3fcf6e','#6fc3ff','#ffffff','#e879f9'];
+  const parts = Array.from({length:140},()=>({x:Math.random()*cv.width,y:Math.random()*-cv.height,s:6+Math.random()*8,v:1.2+Math.random()*2.5,d:(Math.random()-.5)*1.2,c:cols[Math.floor(Math.random()*cols.length)]}));
+  confettiRun = true;
+  (function tick(){
+    if(!confettiRun) { g.clearRect(0,0,cv.width,cv.height); return; }
+    g.clearRect(0,0,cv.width,cv.height);
+    parts.forEach(p=>{ p.y+=p.v; p.x+=p.d; if(p.y>cv.height){p.y=-20;p.x=Math.random()*cv.width;} g.fillStyle=p.c; g.fillRect(Math.round(p.x),Math.round(p.y),p.s,p.s); });
+    requestAnimationFrame(tick);
+  })();
+}
+$('againBtn').addEventListener('click', ()=>{
+  confettiRun = false; $('finale').hidden = true;
+  found = new Set(); hits = {}; dug = new Set(); misses = 0;
+  build(); say('Tap a block twice to dig it out.');
+  window.scrollTo(0,0);
+});
+
+/* ---------- sound ---------- */
+let actx = null;
+function ac(){ if(muted) return null; try{ actx = actx || new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return null; } return actx; }
+function tone(f, d, type='square', when=0, vol=.06){
+  const a = ac(); if(!a) return;
+  const o = a.createOscillator(), g = a.createGain();
+  o.type = type; o.frequency.value = f; g.gain.value = vol;
+  o.connect(g); g.connect(a.destination);
+  const t = a.currentTime + when;
+  o.start(t); g.gain.exponentialRampToValueAtTime(.0001, t+d); o.stop(t+d);
+}
+function blip(f){ tone(f,.08,'square',0,.04); }
+function chime(){ [523,659,784,1047].forEach((f,i)=>tone(f,.18,'triangle',i*.08,.07)); }
+function fanfare(){ [392,392,440,392,523,494].forEach((f,i)=>tone(f,.28,'square',i*.22,.05)); }
+$('muteBtn').addEventListener('click', e=>{
+  muted = !muted;
+  e.currentTarget.textContent = muted ? 'Sound off' : 'Sound on';
+  e.currentTarget.setAttribute('aria-pressed', muted);
+});
+
+/* ---------- intro & bubbles ---------- */
+$('startBtn').addEventListener('click', ()=>{ $('intro').hidden = true; blip(440); grid.querySelector('.tile').focus(); });
+(function(){
+  const box = $('bubbles');
+  for(let i=0;i<16;i++){
+    const s = document.createElement('span');
+    const size = 6 + Math.random()*12;
+    s.style.left = Math.random()*100+'%';
+    s.style.width = s.style.height = size+'px';
+    s.style.animationDuration = 8+Math.random()*10+'s';
+    s.style.animationDelay = -Math.random()*14+'s';
+    box.appendChild(s);
+  }
+})();
+
+build();
+</script>
+
+</body></html>
