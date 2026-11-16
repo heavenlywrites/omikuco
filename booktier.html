@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2E4649">
+<title>Booktier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#FFFFFF; --mist:#F2F6F6; --mist2:#E5ECEC; --line:#D9E2E2;
+  --gt:#5B8183; --gt-l:#9DBBBC; --gt-d:#3E5C5F; --deep:#22363A; --acc:#2E4649; --on-acc:#fff; --side:#2E4649; --side-fg:#EEF4F4; --side-h:rgba(255,255,255,.07); --side-on:rgba(255,255,255,.12);
+  --ink:#152220; --soft:#4A5D5F; --muted:#86999B; --red:#A24F4F; --amber:#A27A2E;
+  --body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--white);color:var(--ink);font-family:var(--body);font-size:15px;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+input,textarea,select{font:inherit;color:var(--ink)}
+svg{display:block}
+a{color:var(--gt-d)}
+.app{display:flex;height:100vh;height:100dvh}
+.hidden{display:none!important}
+
+/* sidebar */
+aside{width:262px;flex:none;border-right:1px solid rgba(0,0,0,.06);background:var(--side);color:var(--side-fg);transition:background .3s,color .3s;display:flex;flex-direction:column;height:100%}
+.logo{display:flex;align-items:center;gap:10px;padding:18px 20px 14px}
+.logo svg{width:22px;height:22px}
+.logo .sig{stroke:var(--side-fg);opacity:.85}
+.logo b{font-weight:500;font-size:16px}
+.side-scroll{flex:1;overflow-y:auto;padding:0 10px 10px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.15) transparent}
+.navitem{display:flex;align-items:center;gap:11px;padding:8px 10px;width:100%;text-align:left;font-size:14px;color:var(--side-fg);opacity:.86;border-radius:6px}
+.navitem svg{width:17px;height:17px;stroke:var(--side-fg);opacity:.75;flex:none}
+.navitem:hover{background:var(--side-h)}
+.navitem.on{background:var(--side-on);opacity:1}
+.navitem .badge{margin-left:auto;background:var(--side-fg);color:var(--side);font-size:11px;font-weight:600;border-radius:999px;padding:1px 7px}
+.sec{color:var(--side-fg);opacity:.55;padding:18px 10px 6px;font-size:10.5px;letter-spacing:.8px;text-transform:uppercase}
+.bk{display:flex;align-items:center;gap:10px;padding:5px 10px;width:100%;text-align:left;border-radius:6px}
+.bk:hover{background:var(--side-h)}.bk.on{background:var(--side-on)}
+.bk .thumb{width:22px;height:33px;flex:none;overflow:hidden;background:var(--side-on);border-radius:2px}
+.bk .thumb img{width:100%;height:100%;object-fit:cover}
+.bk .bt{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;color:var(--side-fg)}
+.bk .pc{font-family:var(--mono);font-size:10px;color:var(--side-fg);opacity:.65}
+.clubdot{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
+.side-foot{border-top:1px solid var(--side-on);padding:10px}
+.me{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;width:100%;text-align:left}
+.me:hover{background:var(--side-h)}
+.me .nm{font-size:13.5px;color:var(--side-fg);line-height:1.2}.me .un{font-size:12px;color:var(--side-fg);opacity:.65}
+.av{width:32px;height:32px;border-radius:50%;background:var(--gt);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:600;flex:none}
+button.me .av{background:var(--side-fg)!important;color:var(--side)!important}
+.av.lg{width:72px;height:72px;font-size:28px}
+.av{position:relative}
+.av .st{position:absolute;right:-3px;bottom:-3px;width:15px;height:15px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--white);box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.av .st svg{width:9px;height:9px}
+.av .st.sun{background:#F4C04E}.av .st.moon{background:#3B4A72}
+.av.lg .st{width:28px;height:28px;right:-2px;bottom:-2px;border-width:3px}.av.lg .st svg{width:15px;height:15px}
+.av.sm .st{width:12px;height:12px;right:-3px;bottom:-3px;border-width:1.5px}.av.sm .st svg{width:7px;height:7px}
+.st[data-tap]{cursor:pointer;transition:transform .15s}.st[data-tap]:hover{transform:scale(1.12)}
+aside .av .st{border-color:var(--side)}
+.gm{display:flex;justify-content:center;gap:8px;margin-top:16px}
+.gm button{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13.5px;background:var(--white)}
+.gm button:hover{background:var(--mist)}
+.gm button.on{border-color:var(--gt);background:var(--mist);font-weight:500}
+.gm svg{width:15px;height:15px}
+.av.sm{width:26px;height:26px;font-size:11px}
+
+/* main */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;height:100%}
+.topbar{height:56px;flex:none;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid var(--mist2)}
+.topbar .ttl{flex:1;font-size:14px;font-weight:500;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ib{width:36px;height:36px;display:grid;place-items:center;flex:none;border-radius:6px}
+.ib:hover{background:var(--mist)}
+.ib svg{width:19px;height:19px;stroke:var(--soft)}
+#menuBtn{display:none}
+.scroll{flex:1;overflow-y:auto}
+.col{max-width:760px;margin:0 auto;padding:0 22px 48px}
+.col.wide{max-width:1000px}
+.sig{stroke:var(--gt);fill:none;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
+.hair{height:1px;background:var(--mist2);margin:4px 0}
+.h2{font-weight:300;font-size:28px;letter-spacing:-.5px;margin:26px 0 6px}
+.lead{color:var(--muted);margin:0 0 18px}
+.label{color:var(--muted);font-size:12px;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.empty{color:var(--muted);text-align:center;padding:44px 10px}
+.empty svg{width:80px;height:80px;margin:0 auto 12px;opacity:.45}
+
+/* home */
+.hero{padding:9vh 0 6px;text-align:center}
+.hero h1{font-weight:300;font-size:34px;letter-spacing:-.5px;margin:0}
+.hero p{color:var(--soft);margin:10px 0 0;font-size:14px}
+.hero p b{color:var(--gt-d);font-weight:500}
+.shelfrow{display:flex;gap:18px;overflow-x:auto;padding:28px 2px 10px;scrollbar-width:none}
+.cbook{flex:none;width:118px;text-align:left}
+.cover{position:relative;width:100%;aspect-ratio:2/3;overflow:hidden;background:var(--deep);border-radius:3px;box-shadow:0 6px 16px -10px rgba(20,40,42,.5)}
+.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s}
+.cover img.ok{opacity:1}
+.cover .fb{position:absolute;inset:0;padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;color:#D7E6E6}
+.cover .fb svg{width:50%;opacity:.8}.cover .fb .sig{stroke:#BFD6D6}
+.cover .fb b{font-weight:500;font-size:11px;line-height:1.25}
+.cbook .t{font-size:13px;margin-top:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cbook .p{color:var(--muted);margin-top:4px;font-family:var(--mono);font-size:10.5px}
+.prog{height:2px;background:var(--mist2);margin-top:8px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--gt)}
+.suggest{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
+.sg{border:1px solid var(--line);padding:13px 14px;text-align:left;background:var(--white);border-radius:8px}
+.sg:hover{background:var(--mist)}
+.sg b{display:block;font-weight:500;font-size:14px}
+.sg span{font-size:13px;color:var(--muted)}
+
+/* entries */
+.bhead{display:flex;gap:22px;align-items:flex-end;padding:24px 0 18px}
+.bhead h1{font-weight:400;font-size:26px;letter-spacing:-.3px;line-height:1.15;margin:0}
+.bhead .au{color:var(--soft);margin-top:5px}
+.kicker{font-size:12px;color:var(--gt)}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.pill{border:1px solid var(--line);padding:6px 12px;font-size:12.5px;display:inline-flex;align-items:center;gap:6px;background:var(--white);border-radius:999px}
+.pill:hover{background:var(--mist)}
+.pill.gt{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.pill svg{width:14px;height:14px;stroke:currentColor}
+.entry{padding:22px 0 6px}
+.pm{color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:11.5px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--c);display:inline-block;flex:none}
+blockquote{margin:0;padding-left:16px;border-left:1px solid var(--mist2);font-weight:300;font-size:20px;line-height:1.5}
+.spoil blockquote{filter:blur(6px);cursor:pointer;user-select:none;transition:filter .2s}
+.spoil.show blockquote{filter:none;user-select:auto}
+.spoil .pm::after{content:"· spoiler, tap to show";color:var(--gt)}
+.spoil.show .pm::after{content:"· spoiler"}
+.mine{display:flex;justify-content:flex-end;margin-top:14px}
+.mine div{background:var(--mist);padding:10px 15px;max-width:80%;font-size:14.5px;line-height:1.5;border-radius:8px}
+.acts{display:flex;gap:2px;margin-top:8px}
+.acts button{height:30px;min-width:30px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;gap:5px;border-radius:6px;font-size:12px;color:var(--muted)}
+.acts button:hover{background:var(--mist)}
+.acts svg{width:15px;height:15px;stroke:var(--muted)}
+.acts .on svg{stroke:var(--gt);fill:var(--gt)}
+.from{font-size:13px;color:var(--soft);margin:8px 0 0 17px}
+
+/* lists, chips */
+.search{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--white);padding:0 12px;border-radius:8px}
+.search:focus-within{border-color:var(--gt)}
+.search svg{width:17px;height:17px;stroke:var(--gt)}
+.search input{flex:1;border:0;background:none;outline:none;padding:11px 0}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:12px 0 4px;scrollbar-width:none}
+.chip{white-space:nowrap;border:1px solid var(--line);padding:6px 12px;font-size:12.5px;display:inline-flex;align-items:center;gap:7px;border-radius:999px}
+.chip.on{background:var(--acc);color:var(--on-acc);border-color:var(--acc)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--mist2);margin:4px 0 0;overflow-x:auto;scrollbar-width:none}
+.tabs button{padding:10px 12px;font-size:14px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs button.on{color:var(--ink);border-color:var(--gt)}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--mist);color:var(--soft);white-space:nowrap}
+.tag.gt{background:var(--acc);color:var(--on-acc)}
+.tag.red{background:#F5E4E4;color:var(--red)}
+.tag.amber{background:#F6EEDC;color:var(--amber)}
+.tag.green{background:#E2EFEA;color:#2F6B55}
+.row{display:flex;align-items:center;gap:10px}
+.card{border:1px solid var(--line);border-radius:10px;padding:16px;background:var(--white)}
+.card+.card{margin-top:12px}
+
+/* clubs */
+.clubs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:8px}
+.club{border:1px solid var(--line);border-radius:10px;overflow:hidden;text-align:left;background:var(--white);display:flex;flex-direction:column}
+.club:hover{border-color:var(--gt-l)}
+.club .band{height:92px;background:var(--c);display:grid;place-items:center;position:relative}
+.club .band svg{width:70px;height:70px}.club .band .sig{stroke:rgba(255,255,255,.8);stroke-width:1.3}
+.club .body{padding:14px}
+.club b{font-weight:500;font-size:16px}
+.club p{font-size:13px;color:var(--muted);margin:4px 0 10px;line-height:1.45}
+.clubhead{display:flex;gap:18px;align-items:center;padding:24px 0 14px}
+.clubhead .badge{width:70px;height:70px;border-radius:14px;background:var(--c);display:grid;place-items:center;flex:none}
+.clubhead .badge svg{width:52px;height:52px}.clubhead .badge .sig{stroke:#fff;stroke-width:1.4}
+.clubhead h1{font-weight:400;font-size:26px;margin:0;letter-spacing:-.3px}
+.nowreading{display:flex;gap:14px;align-items:center;background:var(--mist);border-radius:10px;padding:12px;margin:16px 0 4px}
+.nowreading .cover{width:52px;flex:none}
+.post{padding:16px 0;border-bottom:1px solid var(--mist2)}
+.post .who{display:flex;align-items:center;gap:10px}
+.post .who b{font-weight:500;font-size:14px}
+.post .who span{font-size:12px;color:var(--muted)}
+.post .txt{margin:10px 0 0 36px;font-size:15px;line-height:1.55;white-space:pre-wrap;word-wrap:break-word}
+.post .acts{margin-left:30px}
+.postbox{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:16px}
+.postbox textarea{width:100%;border:0;outline:none;resize:none;min-height:60px;font-size:15px}
+.chatwrap{display:flex;flex-direction:column;gap:2px;padding:16px 0}
+.msg{display:flex;gap:10px;padding:6px 0}
+.msg .bub b{font-weight:500;font-size:13.5px}.msg .bub span{font-size:11px;color:var(--muted);margin-left:6px}
+.msg .bub div{font-size:15px;line-height:1.5;margin-top:2px;white-space:pre-wrap;word-wrap:break-word}
+.msg.me{flex-direction:row-reverse}
+.msg.me .bub{text-align:right}
+.msg.me .bub div{background:var(--acc);color:var(--on-acc);border-radius:12px 12px 2px 12px;padding:8px 12px;display:inline-block;text-align:left}
+.msg:not(.me) .bub div{background:var(--mist);border-radius:12px 12px 12px 2px;padding:8px 12px;display:inline-block}
+
+/* manage */
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.mstat{border:1px solid var(--line);border-radius:10px;padding:14px}
+.mstat .n{font-weight:300;font-size:28px}.mstat .l{font-size:12px;color:var(--muted);margin-top:4px}
+.app-q{margin-top:12px}
+.app-q .q{font-size:12px;color:var(--muted)}
+.app-q .a{font-size:14.5px;line-height:1.5;margin-top:3px;white-space:pre-wrap}
+.hist{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;font-size:13px;color:var(--soft)}
+.urow{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--mist2)}
+.urow .info{flex:1;min-width:0}
+.urow .info b{font-weight:500;font-size:14px;display:block}
+.urow .info span{font-size:12.5px;color:var(--muted)}
+.urow .b{flex:none;white-space:nowrap}
+.urow select{border:1px solid var(--line);border-radius:6px;padding:6px 8px;background:var(--white);font-size:13px}
+table.roles{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px}
+table.roles td{padding:6px 0;border-bottom:1px solid var(--mist2)}
+table.roles td:last-child{text-align:right}
+
+/* bookshelf — wooden bookcase */
+:root{--w-edge:#4a321f;--w-frame:#5e412a;--w-hi:#7a5638;--w-dark:#3d2918;--w-b1:#3c2917;--w-b2:#402c1a;--w-b3:#382514;--w-t1:#a0764c;--w-t2:#8a6240;--w-t3:#6b4a2f}
+.woods{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+.wood{border:1px solid var(--line);border-radius:8px;padding:8px;text-align:left;font-size:12.5px}
+.wood.on{border-color:var(--gt);box-shadow:0 0 0 1px var(--gt)}
+.wood i{display:block;height:34px;border-radius:4px;margin-bottom:7px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+@media(max-width:560px){.woods{grid-template-columns:repeat(2,1fr)}}
+.case{margin:18px auto 0;background:linear-gradient(90deg,var(--w-edge),var(--w-frame) 6%,var(--w-frame) 94%,var(--w-edge));padding:14px;border-radius:6px 6px 3px 3px;box-shadow:0 24px 40px -22px rgba(30,18,8,.6),inset 0 1px 0 rgba(255,255,255,.12)}
+.case .crown{height:14px;margin:-14px -14px 10px;background:linear-gradient(var(--w-hi),var(--w-frame));border-radius:6px 6px 0 0;box-shadow:0 2px 0 var(--w-dark)}
+.bay{position:relative;height:236px;display:flex;align-items:flex-end;padding:0 14px;overflow:hidden;
+  background:
+   linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,0) 38px),
+   linear-gradient(90deg,rgba(0,0,0,.35),rgba(0,0,0,0) 22px,rgba(0,0,0,0) calc(100% - 22px),rgba(0,0,0,.35)),
+   repeating-linear-gradient(90deg,var(--w-b1) 0 3px,var(--w-b2) 3px 9px,var(--w-b3) 9px 11px,var(--w-b2) 11px 19px),var(--w-b1)}
+.board{height:16px;background:linear-gradient(var(--w-t1),var(--w-t2) 40%,var(--w-t3));margin:0 -14px;box-shadow:0 5px 7px -2px rgba(0,0,0,.5);position:relative;z-index:2}
+.board .plate{position:absolute;left:50%;top:3px;transform:translateX(-50%);background:linear-gradient(#e6d3a3,#b99a5c);color:#3b2a14;font-size:9.5px;letter-spacing:.8px;text-transform:uppercase;padding:1px 9px;border-radius:2px;box-shadow:0 1px 1px rgba(0,0,0,.4);white-space:nowrap}
+.case .base{height:20px;margin:0 -14px -14px;background:linear-gradient(var(--w-frame),var(--w-dark));border-radius:0 0 3px 3px}
+.spine{position:relative;flex:none;margin-right:2px;border-radius:2px 2px 1px 1px;overflow:hidden;background-color:#2b3b3d;background-repeat:no-repeat;background-size:1800% 100%;background-position:7% 50%;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:12px 0 9px;transition:transform .18s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25),2px 0 3px rgba(0,0,0,.35)}
+.spine::before{content:"";position:absolute;left:0;right:0;top:9px;height:2px;background:rgba(255,255,255,.22);box-shadow:0 5px 0 rgba(255,255,255,.12)}
+.spine::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.42),rgba(255,255,255,.16) 22%,rgba(255,255,255,0) 45%,rgba(0,0,0,.1) 75%,rgba(0,0,0,.4));pointer-events:none}
+.spine:hover{transform:translateY(-10px)}
+.spine .st{writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:600;letter-spacing:.3px;text-shadow:0 1px 3px rgba(0,0,0,.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:76%;position:relative;z-index:1;margin-top:8px}
+.spine .sa{writing-mode:vertical-rl;transform:rotate(180deg);font-size:9.5px;opacity:.9;text-shadow:0 1px 3px rgba(0,0,0,.75);white-space:nowrap;overflow:hidden;max-height:20%;position:relative;z-index:1}
+.spine.lean{transform-origin:bottom left;transform:rotate(-9deg);margin-left:30px}
+.spine.lean:hover{transform:rotate(-9deg) translateY(-8px)}
+.bookend{flex:none;width:12px;height:92px;margin-left:6px;background:linear-gradient(90deg,#1e1e1e,#4a4a4a 40%,#2a2a2a);border-radius:2px 2px 0 0;box-shadow:2px 0 4px rgba(0,0,0,.4);position:relative}
+.bookend::after{content:"";position:absolute;bottom:0;left:-26px;width:38px;height:5px;background:#2a2a2a;border-radius:2px 0 0 0}
+.decor{flex:none;margin-left:auto;margin-right:6px;display:flex;align-items:flex-end;gap:8px;opacity:.95}
+.plant{width:46px;height:46px;position:relative}
+.plant .pot{position:absolute;bottom:0;left:9px;width:28px;height:22px;background:linear-gradient(90deg,#b9b2a6,#e2ddd3 40%,#a59e92);border-radius:2px 2px 6px 6px}
+.plant svg{position:absolute;bottom:18px;left:3px;width:40px;height:40px}
+.stack{display:flex;flex-direction:column;align-items:flex-start}
+.stack i{display:block;height:11px;border-radius:1px;box-shadow:inset 0 -1px 0 rgba(0,0,0,.3),0 1px 1px rgba(0,0,0,.3)}
+/* stats */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.kpi{padding:18px 16px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.kpi:nth-child(3n){border-right:0}.kpi:nth-last-child(-n+3){border-bottom:0}
+.kpi .n{font-weight:300;font-size:28px;line-height:1}.kpi .l{color:var(--muted);margin-top:8px;font-size:12px}
+.box{border:1px solid var(--line);border-radius:10px;padding:18px;margin-top:14px}
+.bigbar{height:4px;background:var(--mist2);margin-top:12px;overflow:hidden;border-radius:4px}
+.bigbar i{display:block;height:100%;background:var(--gt)}
+.week{display:flex;align-items:flex-end;gap:10px;height:110px}
+.week .c{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.week .c i{width:100%;max-width:24px;background:var(--gt-l);min-height:2px;border-radius:2px}
+.week .c.today i{background:var(--gt-d)}
+
+/* composer */
+.composer{flex:none;padding:10px 16px 14px;background:linear-gradient(to top,#fff 70%,rgba(255,255,255,0))}
+.cbox{max-width:760px;margin:0 auto;background:var(--white);border:1px solid var(--line);border-radius:14px;padding:10px 10px 8px 16px;box-shadow:0 4px 18px -12px rgba(34,54,58,.3)}
+.cbox textarea{width:100%;border:0;outline:none;background:none;resize:none;font-weight:300;font-size:17px;line-height:1.45;max-height:180px;padding:4px 0}
+.cbox textarea::placeholder{color:#A2B3B4}
+.ctl{display:flex;align-items:center;gap:6px;margin-top:4px}
+.ctl .sel{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);padding:5px 10px;font-size:12.5px;color:var(--soft);max-width:170px;position:relative;border-radius:6px}
+.ctl .sel span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctl .sel select{position:absolute;inset:0;opacity:0;cursor:pointer}
+.ctl input.pg{width:60px;border:1px solid var(--line);padding:5px 9px;font-family:var(--mono);font-size:11px;background:none;outline:none;border-radius:6px}
+.ctl .tg{width:30px;height:30px;display:grid;place-items:center;border-radius:6px}
+.ctl .tg:hover{background:var(--mist)}
+.ctl .tg svg{width:17px;height:17px;stroke:var(--muted)}
+.ctl .tg.on svg{stroke:var(--gt)}
+.send{margin-left:auto;width:34px;height:34px;background:var(--acc);display:grid;place-items:center;flex:none;border-radius:50%}
+.send:hover{filter:brightness(.93)}
+.send:disabled{opacity:.3;cursor:default}
+.send svg{width:17px;height:17px;stroke:var(--on-acc)}
+.skip{font-size:12px;color:var(--gt);padding:4px 8px}
+.tagpop{position:absolute;bottom:100%;left:0;margin-bottom:8px;background:var(--white);border:1px solid var(--line);padding:6px;box-shadow:0 14px 30px -12px rgba(20,40,42,.35);min-width:200px;z-index:5;border-radius:8px}
+.tagpop button{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;font-size:14px;text-align:left;border-radius:6px}
+.tagpop button:hover,.tagpop button.on{background:var(--mist)}
+
+/* modal + forms */
+.scrim{position:fixed;inset:0;background:rgba(18,32,34,.45);backdrop-filter:blur(3px);z-index:40;display:none;align-items:center;justify-content:center;padding:14px}
+.scrim.on{display:flex}
+.modal{background:var(--white);width:100%;max-width:560px;max-height:90vh;overflow-y:auto;padding:24px;box-shadow:0 30px 60px -20px rgba(0,0,0,.4);position:relative;border-radius:12px}
+.modal h3{font-weight:400;font-size:21px;letter-spacing:-.2px;margin:0 0 4px}
+.modal .sub{color:var(--muted);font-size:13.5px;margin-bottom:14px;line-height:1.45}
+.x{position:absolute;right:12px;top:12px}
+.f label{display:block;margin:14px 0 6px;color:var(--soft);font-size:13px}
+.f input,.f textarea,.f select{width:100%;border:1px solid var(--line);padding:10px 12px;background:var(--white);outline:none;border-radius:8px}
+.f input:focus,.f textarea:focus,.f select:focus{border-color:var(--gt)}
+.f textarea{min-height:90px;resize:vertical;line-height:1.5}
+.f .help{font-size:12px;color:var(--muted);margin-top:5px}
+.f .err{font-size:12.5px;color:var(--red);margin-top:8px;min-height:1px}
+.btns{display:flex;gap:8px;margin-top:20px;align-items:center;flex-wrap:wrap}
+.b{padding:10px 16px;font-weight:500;font-size:13.5px;border:1px solid var(--line);background:var(--white);border-radius:8px}
+.b:hover{background:var(--mist)}
+.b.pri{background:var(--acc);color:var(--on-acc);border-color:var(--acc)}
+.b.pri:hover{filter:brightness(.93)}
+.b.danger{color:var(--red)}
+.b.sm{padding:7px 12px;font-size:12.5px}
+.b:disabled{opacity:.45;cursor:default}
+.right{margin-left:auto}
+.rules{list-style:none;padding:0;margin:8px 0 0;font-size:12.5px;color:var(--muted);display:grid;grid-template-columns:1fr 1fr;gap:3px 10px}
+.rules li::before{content:"○ ";color:var(--line)}
+.rules li.ok{color:#2F6B55}.rules li.ok::before{content:"● ";color:#2F6B55}
+.inbox{border:1px dashed var(--gt-l);background:var(--mist);border-radius:10px;padding:14px;margin-top:14px;font-size:13.5px}
+.inbox .code{font-family:var(--mono);font-size:22px;letter-spacing:4px;color:var(--gt-d);margin-top:6px}
+.swatches{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.sw{width:36px;height:36px;border-radius:50%;background:var(--c);border:2px solid #fff;box-shadow:0 0 0 1px #C9D2D2}
+.sw.on{box-shadow:0 0 0 2px var(--ink)}
+.rowh{display:flex;align-items:center;justify-content:space-between;margin:18px 0 8px;font-size:12px;color:var(--soft)}
+.carousel{display:flex;gap:14px;overflow-x:auto;padding:6px 4px 12px;scrollbar-width:thin}
+.pick{flex:none;width:108px;text-align:left}
+.pick .cover{outline:2px solid transparent;outline-offset:3px}
+.pick.sel .cover{outline-color:var(--gt)}
+.pick b{display:block;font-size:12.5px;font-weight:500;margin-top:9px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pick span{display:block;font-size:11.5px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skel{flex:none;width:108px;aspect-ratio:2/3;border-radius:3px;background:linear-gradient(100deg,var(--mist) 30%,var(--mist2) 50%,var(--mist) 70%);background-size:300% 100%;animation:sh 1.2s infinite}
+@keyframes sh{from{background-position:100% 0}to{background-position:0 0}}
+.chosen{display:flex;gap:16px;align-items:center;padding:14px;background:var(--mist);margin-top:8px;border-radius:8px}
+.chosen .cover{width:64px;flex:none}
+.seg{display:flex;border:1px solid var(--line);padding:3px;gap:3px;margin-top:10px;border-radius:8px}
+.seg button{flex:1;padding:7px 4px;font-size:12.5px;color:var(--soft);border-radius:6px}
+.seg button.on{background:var(--acc);color:var(--on-acc)}
+.stars{display:flex;gap:4px}
+.stars button svg{width:28px;height:28px;stroke:var(--gt-l)}
+.stars button.on svg{stroke:var(--gt);fill:var(--gt)}
+.timer{font-family:var(--mono);font-size:54px;text-align:center;margin:18px 0 6px;color:var(--gt-d)}
+.toast{position:fixed;left:50%;top:16px;transform:translate(-50%,-10px);background:var(--acc);color:var(--on-acc);box-shadow:0 8px 20px -10px rgba(0,0,0,.4);font-size:13px;padding:10px 14px;opacity:0;transition:.2s;z-index:60;pointer-events:none;border-radius:8px}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.shade{display:none}
+
+/* auth */
+.auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--mist)}
+.authcard{width:100%;max-width:420px;background:var(--white);border:1px solid var(--line);border-radius:14px;padding:30px}
+.authcard .lg{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.authcard .lg svg{width:30px;height:30px}
+.authcard .lg b{font-weight:500;font-size:20px}
+.authcard h2{font-weight:300;font-size:26px;margin:0 0 4px;letter-spacing:-.4px}
+.authcard .sub{color:var(--muted);font-size:14px;margin:0 0 6px}
+.linkbtn{color:var(--gt-d);font-size:13px}
+.demo{font-size:11.5px;color:var(--muted);margin-top:18px;line-height:1.5;border-top:1px solid var(--mist2);padding-top:12px}
+
+@media (max-width:860px){
+  aside{position:fixed;left:0;top:0;bottom:0;z-index:30;transform:translateX(-102%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.3)}
+  aside.open{transform:none}
+  .shade{display:block;position:fixed;inset:0;background:rgba(18,32,34,.35);z-index:29;opacity:0;pointer-events:none;transition:opacity .25s}
+  .shade.on{opacity:1;pointer-events:auto}
+  #menuBtn{display:grid}
+  .hero h1{font-size:30px}
+  .suggest{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .kpi:nth-child(3n){border-right:1px solid var(--line)}.kpi:nth-child(2n){border-right:0}
+  .kpi:nth-last-child(-n+3){border-bottom:1px solid var(--line)}.kpi:nth-last-child(-n+2){border-bottom:0}
+  .mgrid{grid-template-columns:1fr 1fr 1fr}
+  blockquote{font-size:19px}
+  .scrim{align-items:flex-end;padding:0}
+  .modal{max-height:92vh;border-radius:12px 12px 0 0}
+  .rules{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div class="scrim" id="scrim"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   BOOKTIER — front-end prototype.
+   All "server" data lives in the DB object below (saved in this
+   browser). To go live, swap the db* functions for real API calls.
+   ========================================================= */
+
+/* ---------- icons ---------- */
+const P=(d,w=1.5)=>`<svg viewBox="0 0 24 24" fill="none" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const I={
+  home:P('<path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/>'),
+  shelf:P('<path d="M3 20h18M5 20V6h3v14M10 20V4h3v16M15.5 20l-1.5-13 3-.4 1.6 13.2"/>'),
+  quote:P('<path d="M4 6h16M4 12h10M4 18h13"/>'),
+  stats:P('<path d="M5 20V12M12 20V4M19 20v-5"/>'),
+  clubs:P('<circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9.5" r="2.4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.6c3 0 6 1.9 6 5.4"/>'),
+  people:P('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'),
+  shield:P('<path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/>'),
+  crown:P('<path d="m3 8 4.5 4L12 5l4.5 7L21 8l-2 11H5z"/>'),
+  gear:P('<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>'),
+  plus:P('<path d="M12 5v14M5 12h14"/>',1.7),
+  menu:P('<path d="M4 7h16M4 12h10M4 17h16"/>',1.6),
+  x:P('<path d="M6 6l12 12M18 6 6 18"/>',1.6),
+  heart:P('<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/>'),
+  copy:P('<path d="M8 8h12v12H8z"/><path d="M16 8V4H4v12h4"/>'),
+  edit:P('<path d="M4 20h4L19 9l-4-4L4 16v4Z"/>'),
+  trash:P('<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>'),
+  clock:P('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M10 2h4"/>'),
+  page:P('<path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h5"/>'),
+  star:'<svg viewBox="0 0 24 24" stroke-width="1.4" stroke-linejoin="round" fill="none"><path d="M12 2l2.4 7.6H22l-6.2 4.6 2.4 7.8L12 17.2 5.8 22l2.4-7.8L2 9.6h7.6z"/></svg>',
+  dots:P('<path d="M5 12h.01M12 12h.01M19 12h.01"/>',2),
+  img:P('<path d="M4 4h16v16H4z"/><path d="m4 16 5-5 4 4 3-3 4 4"/>'),
+  eye:P('<path d="M3 3l18 18M10.6 6.1A9.8 9.8 0 0 1 12 6c5 0 9 6 9 6a17 17 0 0 1-3 3.4M6.6 6.6C4.3 8.1 3 12 3 12s4 6 9 6c1.6 0 3-.4 4.3-1.1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>'),
+  up:P('<path d="M12 19V5M6 11l6-6 6 6"/>',2),
+  msg:P('<path d="M4 5h16v11H9l-5 4z"/>'),
+  up2:P('<path d="M7 11v9H4v-9zM7 11l4-8c1.5 0 2.5 1 2.2 2.6L12.6 9H19a2 2 0 0 1 2 2.3l-1.2 7A2 2 0 0 1 17.8 20H7"/>'),
+  down2:P('<path d="M7 13V4H4v9zM7 13l4 8c1.5 0 2.5-1 2.2-2.6L12.6 15H19a2 2 0 0 0 2-2.3l-1.2-7A2 2 0 0 0 17.8 4H7"/>'),
+  user:P('<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>'),
+  block:P('<circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/>'),
+  out:P('<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/>')
+};
+
+/* ---------- sigils ---------- */
+function rng(s){let h=1779033703^s.length;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}
+  return()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);return((h^=h>>>16)>>>0)/4294967296}}
+function sigilPath(seed){const r=rng(seed||'x'),f=n=>n.toFixed(1);let d='M50 4 L50 96';const cy=30+r()*40;
+  d+=` M50 ${f(cy-10)} L57 ${f(cy)} L50 ${f(cy+10)} L43 ${f(cy)} Z`;const n=4+Math.floor(r()*3);
+  for(let i=0;i<n;i++){const y=10+r()*80,dx=14+r()*32,dy=(r()-.5)*44,bend=(r()-.5)*30,ex=50+dx,ey=y+dy;
+    d+=` M50 ${f(y)} Q${f(50+dx*.45)} ${f(y+bend)} ${f(ex)} ${f(ey)}`;
+    d+=` M${f(50+dx*(.45+r()*.3))} ${f(y+dy*.5+bend*.3)} l${f(3+r()*7)} ${f(-(4+r()*9))}`;
+    if(r()>.5)d+=` M${f(ex)} ${f(ey)} l${f(-2-r()*5)} ${f(5+r()*6)}`}return d}
+const sigil=seed=>{const d=sigilPath(seed);return `<svg viewBox="0 0 100 100"><g class="sig"><path d="${d}"/><path d="${d}" transform="translate(100 0) scale(-1 1)"/></g></svg>`};
+
+/* ---------- constants ---------- */
+const TABS=[
+  {id:'fav',name:'Favorite',c:'#3E5C5F'},{id:'feel',name:'Made me feel',c:'#8C7FAE'},
+  {id:'lol',name:'Funny',c:'#B9A86A'},{id:'love',name:'Romance',c:'#C29A9F'},
+  {id:'twist',name:'Plot twist',c:'#5FA3A0'},{id:'theme',name:'Theme',c:'#6E8FB3'},
+  {id:'word',name:'New word',c:'#9A8C7A'},{id:'fore',name:'Foreshadowing',c:'#7FA287'}];
+const STATUS={reading:'Reading',tbr:'Up next',done:'Finished',dnf:'Set aside'};
+const CLUBS=[
+  {id:'romance',name:'Romance',c:'#B07C86',desc:'Slow burns, second chances, and endings worth the wait.'},
+  {id:'thriller',name:'Thriller',c:'#4F6475',desc:'Twists, unreliable narrators, and books you finish at 3am.'},
+  {id:'horror',name:'Horror',c:'#5A4A5E',desc:'Haunted houses, creeping dread, and things in the dark.'},
+  {id:'mystery',name:'Mystery',c:'#6C7A5A',desc:'Whodunits, cozy crimes, and detectives worth following.'},
+  {id:'manga',name:'Manga',c:'#B0675A',desc:'Series, one-shots, and panels we can’t stop talking about.'},
+  {id:'adventure',name:'Adventure',c:'#4D8079',desc:'Quests, maps, survival, and journeys to far-off places.'}];
+const QUESTIONS=c=>[
+  {q:'How old are you?',type:'age'},
+  {q:`Name three ${c.name.toLowerCase()} books you’ve loved and tell us what made each one stick with you.`,min:80},
+  {q:`Why do you want to join the ${c.name} club, and what are you hoping to get out of it?`,min:60},
+  {q:'How many books do you read in a typical month, and how often could you take part in chats and discussions?',min:40},
+  {q:'Tell us about a book that let you down. What happened, and what would you have changed?',min:60}];
+const ACCENTS=['#2E4649','#5B8183','#C9DCDC','#F6C9D6','#E9DDC9','#D9D2EE','#4F6F86','#6D6A8C','#8A5A66','#1F1F1F','#FFFFFF'];
+
+const WOODS=[
+  {id:'walnut',name:'Walnut Hearth',v:['#4a321f','#5e412a','#7a5638','#3d2918','#3c2917','#402c1a','#382514','#a0764c','#8a6240','#6b4a2f']},
+  {id:'charcoal',name:'Midnight Charcoal',v:['#1c1c1d','#29292b','#3a3a3d','#121213','#1d1d1f','#222224','#19191a','#4a4a4e','#3a3a3d','#262628']},
+  {id:'acacia',name:'Acacia Honey',v:['#7a4e22','#94622d','#b47c3e','#5e3a17','#6b4520','#744b23','#62401c','#d9a15c','#c08744','#9a6630']},
+  {id:'cherry',name:'Cherry Ember',v:['#5a2219','#702d21','#8e3f2e','#431912','#4c1e16','#55231a','#461b14','#b4573f','#9a4532','#76321f']},
+  {id:'birch',name:'Nordic Birch',v:['#b89a72','#cdb08a','#e2ccaa','#a08460','#c9ae88','#d1b893','#c2a67f','#efdcbf','#dfc6a1','#c4a77f']},
+  {id:'white',name:'Whitewashed Pine',v:['#d9d4cb','#e8e4dc','#f6f3ee','#c8c2b7','#ebe7e0','#f1eee8','#e4dfd6','#fbf9f5','#efebe4','#d8d2c7']}];
+const WOODVARS=['--w-edge','--w-frame','--w-hi','--w-dark','--w-b1','--w-b2','--w-b3','--w-t1','--w-t2','--w-t3'];
+function applyWood(id){const w=WOODS.find(x=>x.id===id)||WOODS[0];const r=document.documentElement.style;WOODVARS.forEach((k,i)=>r.setProperty(k,w.v[i]))}
+/* Discord invite for the Help tab: paste your server's invite link here */
+const DISCORD_URL='https://discord.gg/YOUR-INVITE';
+/* ---------- tiny utils ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-3);
+const iso=d=>d.toISOString().slice(0,10);
+const today=()=>iso(new Date());
+const ago=n=>{const d=new Date();d.setDate(d.getDate()-n);return iso(d)};
+const fmtD=t=>new Date(t).toLocaleDateString(undefined,{month:'short',day:'numeric',year:new Date(t).getFullYear()!==new Date().getFullYear()?'numeric':undefined});
+const fmtT=t=>{const d=new Date(t),n=Date.now()-t;if(n<6e4)return'just now';if(n<36e5)return Math.floor(n/6e4)+'m';if(n<864e5)return Math.floor(n/36e5)+'h';return fmtD(t)};
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2000)}
+function hash(str){let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0;i<str.length;i++){const ch=str.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677)}
+  h1=Math.imul(h1^h1>>>16,2246822507)^Math.imul(h2^h2>>>13,3266489909);h2=Math.imul(h2^h2>>>16,2246822507)^Math.imul(h1^h1>>>13,3266489909);return(4294967296*(2097151&h2)+(h1>>>0)).toString(36)}
+const pwRules=p=>[{k:'At least 10 characters',ok:p.length>=10},{k:'One capital letter',ok:/[A-Z]/.test(p)},{k:'One number',ok:/\d/.test(p)},{k:'One special character',ok:/[^A-Za-z0-9]/.test(p)}];
+const pwOK=p=>pwRules(p).every(r=>r.ok);
+const emailOK=e=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+const mask=e=>e.replace(/^(.)(.*)(@.*)$/,(m,a,b,c)=>a+'•'.repeat(Math.min(6,b.length))+c);
+
+/* ---------- "server" (local) ---------- */
+let DB;
+function freshDB(){return {users:[],clubs:CLUBS.map(c=>({id:c.id,current:null,admins:[],mods:[],members:[],joined:{}})),apps:[],posts:[],msgs:[],lib:{},codes:{},friends:[],views:{},dms:[],dmHide:{},dmRead:{},blocks:[]}}
+function loadDB(){try{DB=JSON.parse(localStorage.getItem('booktier_db'))}catch(e){}if(!DB||!DB.users)DB=freshDB();DB.friends=DB.friends||[];DB.views=DB.views||{};DB.dms=DB.dms||[];DB.dmHide=DB.dmHide||{};DB.dmRead=DB.dmRead||{};DB.blocks=DB.blocks||[]}
+function save(){try{localStorage.setItem('booktier_db',JSON.stringify(DB,(k,v)=>k.startsWith('_')?undefined:v))}catch(e){toast('Storage is full or unavailable')}}
+loadDB();
+let me=null;
+function session(){try{const id=localStorage.getItem('booktier_session');me=DB.users.find(u=>u.id===id)||null}catch(e){me=null}}
+function setSession(id){try{id?localStorage.setItem('booktier_session',id):localStorage.removeItem('booktier_session')}catch(e){}session()}
+session();
+window.addEventListener('storage',e=>{if(e.key==='booktier_db'){loadDB();session();if(me)renderAll()}});
+
+const user=id=>DB.users.find(u=>u.id===id);
+const clubMeta=id=>CLUBS.find(c=>c.id===id);
+const club=id=>DB.clubs.find(c=>c.id===id);
+const isOwner=u=>u&&u.role==='owner';
+const isAdmin=(u,c)=>isOwner(u)||c.admins.includes(u.id);
+const isMod=(u,c)=>isAdmin(u,c)||c.mods.includes(u.id);
+const isMember=(u,c)=>c.members.includes(u.id)||isMod(u,c);
+const managed=u=>DB.clubs.filter(c=>isMod(u,c));
+const roleIn=(u,c)=>c.admins.includes(u.id)?'admin':c.mods.includes(u.id)?'mod':c.members.includes(u.id)?'member':'none';
+const L=()=>{DB.lib[me.id]=DB.lib[me.id]||{books:[],notes:[],log:{},minutes:{},goal:12};return DB.lib[me.id]};
+const book=id=>L().books.find(b=>b.id===id);
+const tab=id=>TABS.find(t=>t.id===id)||TABS[0];
+const pct=b=>b.pages?Math.min(100,Math.round(b.page/b.pages*100)):0;
+function streak(){const S=L();let n=0;const d=new Date();if(!S.log[today()])d.setDate(d.getDate()-1);while(S.log[iso(d)]){n++;d.setDate(d.getDate()-1)}return n}
+const SUN='<svg viewBox="0 0 24 24" fill="none" stroke="#7A5310" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="4.2" fill="#7A5310"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>';
+const MOON='<svg viewBox="0 0 24 24" fill="#F1E7B8" stroke="none"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>';
+const SUN_C='<svg viewBox="0 0 24 24" fill="none" stroke="#C99419" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>';
+const MOON_C='<svg viewBox="0 0 24 24" fill="#3B4A72"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>';
+/* sleep status: 'awake' (sun) or 'asleep' (moon) */
+function stBadge(u,mineClickable){if(!u||!u.status)return'';const sl=u.status==='asleep',tag='span';
+  return `<${tag} class="st ${sl?'moon':'sun'}" title="${sl?'Sleeping':'Awake'}${mineClickable?' · tap to switch':''}" ${mineClickable?`role="button" tabindex="0" data-tap="1" onclick="event.stopPropagation();setStatus('${sl?'awake':'asleep'}')"`:''}>${sl?MOON:SUN}</${tag}>`}
+const avatar=(u,cls='',click)=>`<span class="av ${cls}" style="background:${u?.accent||'var(--acc)'};color:${u?.accent&&lum(u.accent)>.36?'#222':'#fff'}">${esc((u?.display||'?').trim()[0]?.toUpperCase()||'?')}${stBadge(u,click&&u?.id===me?.id)}</span>`;
+function setStatus(v){me.status=v;me.statusAt=Date.now();save();shellBuilt=false;renderAll();toast(v==='asleep'?'Goodnight 🌙 You’re set to sleeping':'Good morning ☀️ You’re set to awake')}
+const statusLine=u=>u.status?`<span style="display:inline-flex;align-items:center;gap:5px"><span style="width:14px;height:14px;display:inline-block">${u.status==='asleep'?MOON_C:SUN_C}</span>${u.status==='asleep'?'Sleeping':'Awake'}${u.showStatusTime?` since ${new Date(u.statusAt).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}`:''}</span>`:'';
+
+/* ---------- accent color ---------- */
+function mix(a,b,t){const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));const A=p(a),B=p(b);return'#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('')}
+function lum(hex){const c=[1,3,5].map(i=>{let v=parseInt(hex.slice(i,i+2),16)/255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]}
+function applyAccent(hex){hex=(hex||'#2E4649').toUpperCase();const r=document.documentElement.style,light=lum(hex)>.36;
+  const fg=light?mix(hex,'#000000',.82):'#FFFFFF';
+  const ink=lum(hex)>.2?mix(hex,'#000000',light?.5:.25):hex; /* accent dark enough to read on white */
+  r.setProperty('--acc',hex);r.setProperty('--on-acc',fg);
+  r.setProperty('--side',hex);r.setProperty('--side-fg',fg);
+  r.setProperty('--side-h',light?'rgba(0,0,0,.06)':'rgba(255,255,255,.08)');r.setProperty('--side-on',light?'rgba(0,0,0,.09)':'rgba(255,255,255,.14)');
+  r.setProperty('--gt',ink);r.setProperty('--gt-d',mix(ink,'#000000',.25));r.setProperty('--gt-l',mix(ink,'#FFFFFF',.45));
+  if(hex==='#FFFFFF')r.setProperty('--side-on','rgba(0,0,0,.07)');
+  document.querySelector('meta[name=theme-color]')?.setAttribute('content',hex)}
+
+/* ---------- covers (Open Library + Google Books) ---------- */
+const norm=s=>(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+let netFail=false;
+async function olSearch(params,limit=16){
+  try{const r=await fetch(`https://openlibrary.org/search.json?${params}&fields=title,author_name,cover_i,number_of_pages_median,first_publish_year&limit=${limit}`);const j=await r.json();
+    return(j.docs||[]).filter(d=>d.cover_i).map(d=>({title:d.title,author:(d.author_name||['Unknown'])[0],pages:d.number_of_pages_median||0,year:d.first_publish_year||'',img:`https://covers.openlibrary.org/b/id/${d.cover_i}-L.jpg`,thumb:`https://covers.openlibrary.org/b/id/${d.cover_i}-M.jpg`}))}catch(e){netFail=true;return[]}}
+async function gbSearch(q,limit=20){
+  try{const r=await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&maxResults=${limit}&printType=books`);const j=await r.json();
+    return(j.items||[]).filter(it=>it.volumeInfo?.imageLinks?.thumbnail).map(it=>{const v=it.volumeInfo;const t=v.imageLinks.thumbnail.replace('http:','https:').replace('&edge=curl','');
+      return{title:v.title,author:(v.authors||['Unknown'])[0],pages:v.pageCount||0,year:(v.publishedDate||'').slice(0,4),img:t.replace('zoom=1','zoom=2'),thumb:t}})}catch(e){netFail=true;return[]}}
+function merge(...ls){const seen=new Set(),o=[];for(const l of ls)for(const x of l){const k=norm(x.title).slice(0,40)+'|'+norm(x.author).split(' ').pop();if(!seen.has(k)){seen.add(k);o.push(x)}}return o}
+const coverImg=src=>src?`<img src="${esc(src)}" alt="" loading="lazy" referrerpolicy="no-referrer" onload="if(this.naturalWidth<20)this.remove();else this.classList.add('ok')" onerror="this.remove()">`:'';
+const cover=b=>`<div class="cover"><div class="fb">${sigil((b.title||'')+(b.author||''))}<b>${esc(b.title)}</b></div>${coverImg(b.img)}</div>`;
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+const NOCAP='autocapitalize="none" autocorrect="off" spellcheck="false"';
+function renderAuth(mode='login',msg='',prefill=''){
+  applyAccent();
+  const logo=`<div class="lg">${sigil('BOOKTIER')}<b>Booktier</b></div>`;
+  if(mode==='signup'){
+    $('#root').innerHTML=`<div class="auth"><form class="authcard f" novalidate onsubmit="event.preventDefault();doSignup()">${logo}
+      <h2>Create your account</h2><p class="sub">Track your reading, save your favorite lines, and join book clubs.</p>
+      <label>Email</label><input id="su_e" type="email" inputmode="email" autocomplete="email" ${NOCAP} onblur="emailTaken(this.value)">
+      <label>Username</label><input id="su_u" autocomplete="off" ${NOCAP} placeholder="e.g. nightreader" oninput="userLive(this)"><div class="help" id="su_uh">Others find you by this. Letters, numbers, . and _ only.</div>
+      <label>Display name</label><input id="su_d" placeholder="Shown in chats, posts and your profile">
+      <label>Password</label><input id="su_p" type="password" autocomplete="new-password" oninput="pwLive(this.value,'#su_r')"><ul class="rules" id="su_r">${pwRules('').map(r=>`<li>${r.k}</li>`).join('')}</ul>
+      <label>Confirm password</label><input id="su_p2" type="password" autocomplete="new-password">
+      <div class="err" id="su_err">${esc(msg)}</div>
+      <div class="btns"><button class="b pri" style="width:100%">Create account</button></div>
+      <p class="sub" style="text-align:center;margin-top:14px">Already have an account? <button type="button" class="linkbtn" onclick="renderAuth('login')">Log in</button></p>
+      <div class="demo">Demo build: accounts are saved in this browser only.${DB.users.length?'':' The first account created becomes the site owner.'}</div></form></div>`;
+  }else{
+    $('#root').innerHTML=`<div class="auth"><form class="authcard f" novalidate onsubmit="event.preventDefault();doLogin()" id="loginForm">${logo}
+      <h2>Welcome back</h2><p class="sub">${prefill?'Enter your password to sign in.':'Log in with your email.'}</p>
+      <label>Email</label><input id="li_e" type="email" inputmode="email" autocomplete="email" ${NOCAP} value="${esc(prefill)}">
+      <label>Password</label><input id="li_p" type="password" autocomplete="current-password">
+      <div class="err" id="li_err">${esc(msg)}</div>
+      <div class="btns"><button class="b pri" style="width:100%">Log in</button></div>
+      <div style="display:flex;justify-content:space-between;margin-top:14px"><button type="button" class="linkbtn" onclick="forgotFlow()">Forgot password?</button><button type="button" class="linkbtn" onclick="renderAuth('signup')">Create account</button></div>
+      <div class="demo">Demo build: accounts are saved in this browser only.</div></form></div>`;
+    setTimeout(()=>(prefill?$('#li_p'):$('#li_e'))?.focus(),30);
+  }
+}
+const cleanUser=v=>v.toLowerCase().replace(/^@/,'').replace(/\s+/g,'').replace(/[^a-z0-9._]/g,'').slice(0,20);
+function userLive(el){const c=cleanUser(el.value);if(c!==el.value){const p=el.selectionStart-(el.value.length-c.length);el.value=c;try{el.setSelectionRange(p,p)}catch(e){}}
+  const h=$('#su_uh');if(!c){h.style.color='';h.textContent='Others find you by this. Letters, numbers, . and _ only.';return}
+  if(c.length<3){h.style.color='var(--muted)';h.textContent='At least 3 characters';return}
+  const taken=DB.users.some(x=>x.username===c);h.style.color=taken?'var(--red)':'#2F6B55';h.textContent=taken?`@${c} is already taken. Try another.`:`@${c} is available ✓`}
+function findAcct(v){v=(v||'').trim().toLowerCase();return DB.users.find(x=>x.email===v)}
+function emailTaken(v){const e=(v||'').trim().toLowerCase();const u=DB.users.find(x=>x.email===e);if(!u)return false;
+  modal(`<h3>You already have an account</h3><div class="sub">There’s already a Booktier account using <b style="font-weight:500;color:var(--ink)">${esc(e)}</b>. Each email can only have one account.</div>
+  <div class="row" style="padding:12px;background:var(--mist);border-radius:8px">${avatar(u)}<div><div style="font-weight:500">${esc(u.display)}</div><div style="font-size:13px;color:var(--muted)">@${esc(u.username)}</div></div></div>
+  <p style="font-size:14px;margin:16px 0 0">Would you like to sign in to it?</p>
+  <div class="btns"><button class="b" onclick="closeModal();$('#su_e').value='';$('#su_e').focus()">No, use a different email</button><button class="b pri right" onclick="closeModal();renderAuth('login','','${esc(u.email)}')">Yes, sign in</button></div>`);return true}
+function pwLive(v,sel){$(sel).innerHTML=pwRules(v).map(r=>`<li class="${r.ok?'ok':''}">${r.k}</li>`).join('')}
+function doSignup(){
+  const e=$('#su_e').value.trim().toLowerCase(),u=cleanUser($('#su_u').value),d=$('#su_d').value.trim(),p=$('#su_p').value,p2=$('#su_p2').value,err=$('#su_err');
+  if(!emailOK(e))return err.textContent='Enter a valid email.';
+  if(emailTaken(e))return err.textContent='';
+  if(u.length<3)return err.textContent='Choose a username with at least 3 characters.';
+  if(DB.users.some(x=>x.username===u))return err.textContent=`@${u} is already taken. Try another username.`;
+  if(!d)return err.textContent='Add a display name.';
+  if(!pwOK(p))return err.textContent='Your password doesn’t meet all the requirements.';
+  if(p!==p2)return err.textContent='Passwords don’t match.';
+  const salt=uid();const nu={id:uid(),email:e,username:u,display:d.slice(0,40),salt,pass:hash(salt+p),role:DB.users.length?'member':'owner',bio:'',accent:'#2E4649',created:Date.now(),twofa:false,public:false};
+  DB.users.push(nu);save();setSession(nu.id);view='home';renderAll();toast('Welcome to Booktier, '+nu.display);
+}
+function doLogin(){const id=$('#li_e').value,p=$('#li_p').value,err=$('#li_err');
+  if(!id.trim())return err.textContent='Enter your email.';
+  if(!emailOK(id.trim()))return err.textContent='Sign in with your email address, not your username.';
+  const u=findAcct(id);
+  if(!u)return err.textContent='No account uses that email.';
+  if(u.pass!==hash(u.salt+p))return err.textContent='That password isn’t right.';
+  if(u.twofa)return twoFAStep(u);
+  setSession(u.id);view='home';renderAll()}
+function twoFAStep(u){const code=sendCode(u.email);
+  $('#loginForm').innerHTML=`<div class="lg">${sigil('BOOKTIER')}<b>Booktier</b></div><h2>Check your email</h2><p class="sub">Two-step sign-in is on. We sent a 6-digit code to ${esc(mask(u.email))}.</p>
+  ${inboxHTML(u.email,code)}<label>Verification code</label><input id="tf_c" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="6-digit code"><div class="err" id="tf_err"></div>
+  <div class="btns"><button type="button" class="b pri" style="width:100%" onclick="checkTF('${u.id}')">Verify and sign in</button></div>
+  <div style="display:flex;justify-content:space-between;margin-top:14px"><button type="button" class="linkbtn" onclick="twoFAStep(user('${u.id}'))">Send a new code</button><button type="button" class="linkbtn" onclick="renderAuth('login')">Back</button></div>`;
+  $('#loginForm').onsubmit=e=>{e.preventDefault();checkTF(u.id)};setTimeout(()=>$('#tf_c').focus(),30)}
+function checkTF(id){const u=user(id),rec=DB.codes[u.email],c=$('#tf_c').value.trim();
+  if(!rec||rec.exp<Date.now())return $('#tf_err').textContent='That code expired. Send a new one.';
+  if(c!==rec.code)return $('#tf_err').textContent='That code isn’t right.';
+  delete DB.codes[u.email];save();setSession(u.id);view='home';renderAll()}
+function logout(){setSession(null);closeModal();renderAuth('login')}
+
+/* email code (simulated inbox — a real server would email this) */
+function sendCode(email){const code=String(Math.floor(100000+Math.random()*900000));DB.codes[email]={code,exp:Date.now()+10*60e3};save();return code}
+function inboxHTML(email,code){return `<div class="inbox"><div style="color:var(--muted);font-size:12px">Demo inbox for ${esc(email)}. The live site emails this instead.</div><div>Your Booktier verification code:</div><div class="code">${code}</div></div>`}
+function forgotFlow(){
+  modal(`<h3>Reset your password</h3><div class="sub">We’ll send a 6-digit code to your email.</div>
+  <div class="f"><label>Email</label><input id="fg_e" type="email" inputmode="email" ${NOCAP} value="${esc($('#li_e')?.value||'')}"><div class="err" id="fg_err"></div></div>
+  <div class="btns"><button class="b pri right" onclick="fgSend()">Send code</button></div><div id="fg_step"></div>`)}
+function fgSend(){const u=findAcct($('#fg_e').value);
+  if(!u)return $('#fg_err').textContent='No account uses that email.';
+  const e=u.email,code=sendCode(e);$('#fg_step').innerHTML=inboxHTML(e,code)+codeForm(e);}
+function codeForm(email){return `<div class="f"><label>Verification code</label><input id="cd_c" inputmode="numeric" maxlength="6" placeholder="6-digit code">
+  <label>New password</label><input id="cd_p" type="password" oninput="pwLive(this.value,'#cd_r')"><ul class="rules" id="cd_r">${pwRules('').map(r=>`<li>${r.k}</li>`).join('')}</ul>
+  <label>Confirm new password</label><input id="cd_p2" type="password"><div class="err" id="cd_err"></div></div>
+  <div class="btns"><button class="b pri right" onclick="applyCode('${esc(email)}')">Change password</button></div>`}
+function applyCode(email){const rec=DB.codes[email],c=$('#cd_c').value.trim(),p=$('#cd_p').value,err=$('#cd_err');
+  if(!rec||rec.exp<Date.now())return err.textContent='That code expired. Send a new one.';
+  if(c!==rec.code)return err.textContent='That code isn’t right.';
+  if(!pwOK(p))return err.textContent='Your new password doesn’t meet all the requirements.';
+  if(p!==$('#cd_p2').value)return err.textContent='Passwords don’t match.';
+  const u=DB.users.find(x=>x.email===email);u.salt=uid();u.pass=hash(u.salt+p);delete DB.codes[email];save();closeModal();toast('Password changed')}
+
+/* =========================================================
+   SHELL
+   ========================================================= */
+let view='home',noteFilter='all',noteQ='',peopleQ='',manageClub=null,manageTab='pending',ownerQ='';
+function go(v){if(v.startsWith('profile:')&&v!==view)profTab='posts';view=v;toggleSide(false);renderAll();const sc=$('#scroll');if(sc){sc.scrollTop=0;
+  if(v.startsWith('book:')||v.startsWith('dm:')||/:chat$/.test(v))setTimeout(()=>sc.scrollTop=sc.scrollHeight,30)}}
+function toggleSide(o){$('#side')?.classList.toggle('open',o);$('#shade')?.classList.toggle('on',o)}
+
+function renderShell(){
+  $('#root').innerHTML=`<div class="app">
+  <aside id="side"><div class="logo">${sigil('BOOKTIER')}<b>Booktier</b></div>
+    <div class="side-scroll" id="sideList"></div>
+    <div class="side-foot"><button class="me" onclick="go('profile:'+me.id)">${avatar(me,'',true)}<div style="min-width:0;flex:1"><div class="nm">${esc(me.display)}</div><div class="un">@${esc(me.username)}</div></div></button>
+      <div style="display:flex;gap:4px;margin-top:4px"><button class="navitem" onclick="openSettings()" style="flex:1">${I.gear}Settings</button><button class="navitem" onclick="logout()" style="width:auto" title="Log out">${I.out}</button></div></div></aside>
+  <div class="shade" id="shade" onclick="toggleSide(false)"></div>
+  <div class="main"><div class="topbar"><button class="ib" id="menuBtn" onclick="toggleSide(true)">${I.menu}</button><div class="ttl" id="ttl"></div><div id="topActs" style="display:flex"></div></div>
+    <div class="scroll" id="scroll"><div class="col" id="view"></div></div>
+    <div class="composer" id="composer"></div></div></div>`;
+  shellBuilt=true;
+}
+let shellBuilt=false;
+function renderAll(){
+  if(!me){shellBuilt=false;return renderAuth()}
+  applyAccent(me.accent);applyWood(me.wood);
+  if(!shellBuilt||!$('#side'))renderShell();
+  renderSide();renderView();renderComposer();
+}
+
+function renderSide(){
+  const S=L(),cur=view.split(':');
+  const nav=(v,ic,label,badge)=>`<button class="navitem ${view===v||cur[0]===v?'on':''}" onclick="go('${v}')">${ic}${label}${badge?`<span class="badge">${badge}</span>`:''}</button>`;
+  const pend=DB.apps.filter(a=>a.status==='pending'&&managed(me).some(c=>c.id===a.club)).length;
+  let h=nav('home',I.home,'Home')+nav('shelf',I.shelf,'Bookshelf')+nav('notes',I.quote,'Highlights')+nav('stats',I.stats,'Reading life')+nav('clubs',I.clubs,'Book clubs')+nav('messages',I.msg,'Messages',unreadTotal()||'')+nav('friends',I.heart,'Friends',incoming().length||'')+nav('people',I.people,'Find people');
+  if(managed(me).length)h+=nav('manage',I.shield,'Manage clubs',pend||'');
+  if(isOwner(me))h+=nav('owner',I.crown,'Owner tools');
+  const mine=DB.clubs.filter(c=>isMember(me,c));
+  if(mine.length)h+=`<div class="sec">My clubs</div>`+mine.map(c=>{const m=clubMeta(c.id);return`<button class="bk ${cur[0]==='club'&&cur[1]===c.id?'on':''}" onclick="go('club:${c.id}:timeline')"><span class="clubdot" style="--c:${m.c}"></span><span class="bt">${m.name}</span></button>`}).join('');
+  const rd=S.books.filter(b=>b.status==='reading');
+  h+=`<div class="sec">Reading</div>`+(rd.map(b=>`<button class="bk ${cur[0]==='book'&&cur[1]===b.id?'on':''}" onclick="go('book:${b.id}')"><div class="thumb">${b.img?`<img src="${esc(b.img)}" referrerpolicy="no-referrer" onerror="this.remove()">`:''}</div><span class="bt">${esc(b.title)}</span><span class="pc">${pct(b)}%</span></button>`).join(''))
+    +`<button class="bk" onclick="openAddBook()"><span class="bt" style="opacity:.7">+ Add a book</span></button>`;
+  $('#sideList').innerHTML=h;
+}
+
+function setTitle(t,acts=''){$('#ttl').textContent=t;$('#topActs').innerHTML=acts}
+function renderView(){
+  const [v,a,b]=view.split(':'),col=$('#view');col.className='col';
+  const map={messages:vMessages,friends:vFriends,home:vHome,shelf:vShelf,notes:vNotes,stats:vStats,clubs:vClubs,people:vPeople,manage:vManage,owner:vOwner};
+  if(map[v]){col.innerHTML=map[v]();if(v==='shelf'||v==='manage'||v==='owner'||v==='clubs')col.classList.add('wide');return}
+  if(v==='book'){const bk=book(a);if(!bk)return go('home');setTitle(bk.title,`<button class="ib" title="Edit book" onclick="openEditBook('${bk.id}')">${I.dots}</button>`);col.innerHTML=vBook(bk);return}
+  if(v==='club'){col.innerHTML=vClub(a,b||'timeline');return}
+  if(v==='profile'){col.innerHTML=vProfile(a);return}
+  if(v==='dm'){col.innerHTML=vDM(a);return}
+  go('home');
+}
+
+/* =========================================================
+   LIBRARY VIEWS
+   ========================================================= */
+function vHome(){setTitle('Home');const S=L();const asleep=me.status==='asleep';
+  const h=new Date().getHours(),g=asleep?'Sweet dreams':h<5?'Still up?':h<12?'Good morning':h<18?'Good afternoon':'Good evening';
+  const rd=S.books.filter(b=>b.status==='reading'),st=streak(),pt=S.log[today()]||0;
+  if(!S.books.length)return `<div class="hero"><h1>${g}, ${esc(me.display.split(' ')[0])}</h1><p>Your library is empty. Let’s set it up.</p><div class="gm"><button class="${me.status==='awake'?'on':''}" onclick="setStatus('awake')">${SUN_C}Good morning</button><button class="${me.status==='asleep'?'on':''}" onclick="setStatus('asleep')">${MOON_C}Goodnight</button></div></div>
+    <div class="suggest"><button class="sg" onclick="openAddBook()"><b>Add your first book</b><span>Search by title or author</span></button>
+    <button class="sg" onclick="go('clubs')"><b>Browse book clubs</b><span>Romance, thriller, horror and more</span></button>
+    <button class="sg" onclick="go('profile:'+me.id)"><b>Set up your profile</b><span>Add a short bio</span></button>
+    <button class="sg" onclick="openSettings()"><b>Pick your accent color</b><span>Make the site yours</span></button></div>`;
+  const pool=S.notes.filter(n=>n.fav&&!n.spoiler),q=pool[new Date().getDate()%Math.max(1,pool.length)];
+  return `<div class="hero"><h1>${g}, ${esc(me.display.split(' ')[0])}</h1><p>${st?`<b>${st}-day</b> reading streak`:'Log some pages to start a streak'}${pt?` · ${pt} pages today`:''}</p><div class="gm"><button class="${me.status==='awake'?'on':''}" onclick="setStatus('awake')">${SUN_C}Good morning</button><button class="${me.status==='asleep'?'on':''}" onclick="setStatus('asleep')">${MOON_C}Goodnight</button></div></div>
+  ${rd.length?`<div class="shelfrow">${rd.map(b=>`<button class="cbook" onclick="go('book:${b.id}')">${cover(b)}<div class="t">${esc(b.title)}</div><div class="prog"><i style="width:${pct(b)}%"></i></div><div class="p">p.${b.page} / ${b.pages}</div></button>`).join('')}</div>`:''}
+  <div class="suggest">
+    <button class="sg" onclick="openProgress()"><b>Log today’s pages</b><span>Keep your streak going</span></button>
+    <button class="sg" onclick="openTimer()"><b>Reading session</b><span>A quiet timer</span></button>
+    <button class="sg" onclick="openAddBook()"><b>Add a book</b><span>Search by title or author</span></button>
+    <button class="sg" onclick="go('shelf')"><b>View your bookshelf</b><span>Every book, spine out</span></button></div>
+  ${q?`<div style="margin-top:30px"><div class="hair"></div><div class="label" style="margin-top:16px">Line of the day</div>${entry(q,true)}</div>`:''}`}
+
+function entry(n,showBook){const t=tab(n.tab),b=book(n.book)||{};
+  return `<div class="entry ${n.spoiler?'spoil':''}" id="e-${n.id}">
+    <div class="pm"><span class="dot" style="--c:${t.c}"></span>${t.name}${n.page?` · p.${n.page}`:''}</div>
+    <blockquote onclick="this.parentElement.classList.toggle('show')">${esc(n.text)}</blockquote>
+    ${showBook?`<div class="from">— ${esc(b.author)}, <i>${esc(b.title)}</i></div>`:''}
+    ${n.thought?`<div class="mine"><div>${esc(n.thought)}</div></div>`:''}
+    <div class="acts"><button class="${n.fav?'on':''}" title="Love" onclick="fav('${n.id}')">${I.heart}</button>
+      <button title="Copy" onclick="copyNote('${n.id}')">${I.copy}</button>
+      <button title="Edit" onclick="openEditNote('${n.id}')">${I.edit}</button></div></div>`}
+
+function vBook(b){const notes=L().notes.filter(n=>n.book===b.id).sort((x,y)=>(x.page||0)-(y.page||0)||x.date.localeCompare(y.date));
+  return `<div class="bhead"><div style="flex:none;width:96px">${cover(b)}</div><div style="min-width:0">
+    <div class="kicker">${STATUS[b.status]}${b.rating?' · '+b.rating+'/5':''}</div><h1>${esc(b.title)}</h1><div class="au">${esc(b.author)}</div>
+    <div class="pills"><button class="pill gt" onclick="openProgress('${b.id}')">${I.page}p.${b.page} / ${b.pages} · ${pct(b)}%</button>
+      <button class="pill" onclick="openTimer('${b.id}')">${I.clock}Read</button>
+      <button class="pill" onclick="openRate('${b.id}')">${I.star}${b.rating?b.rating+'/5':'Rate'}</button>
+      <button class="pill" onclick="openCoverPicker('${b.id}')">${I.img}Cover</button></div></div></div><div class="hair"></div>
+  ${b.review?`<div class="entry"><div class="pm">Your review</div><div class="mine" style="justify-content:flex-start;margin:0"><div>${esc(b.review)}</div></div></div>`:''}
+  ${b.rating?`<div style="margin-bottom:6px">${voteBar(me.id,b)}</div>`:''}
+  ${notes.map(n=>entry(n)).join('')||`<div class="empty">${sigil(b.title)}No highlights yet. Write your first line below.</div>`}`}
+
+/* real-spine bookcase: each spine is cut from the left edge of the real cover */
+let shelfF='all';
+function spineDims(b){const r=rng(b.id);return{w:Math.max(24,Math.min(54,Math.round((b.pages||300)/11))),h:166+Math.round(r()*44)}}
+function spine(b,lean,ownerId){const{w,h}=spineDims(b),r=rng(b.id+'c');
+  const bg=b.img?`background-image:url('${esc(b.img)}');`:`background-color:${['#2b3b3d','#5a2e33','#2e3f5a','#4b5a2e','#5a4a2e','#3d2e5a'][Math.floor(r()*6)]};`;
+  return `<button class="spine ${lean?'lean':''}" title="${esc(b.title)} — ${esc(b.author)}${b.rating?' · '+b.rating+'/5':''}" onclick="${ownerId?`peekBook('${ownerId}','${b.id}')`:`go('book:${b.id}')`}" style="width:${w}px;height:${h}px;${bg}"><span class="st">${esc(b.title)}</span><span class="sa">${esc((b.author||'').split(' ').pop())}</span></button>`}
+const plant=`<div class="plant"><svg viewBox="0 0 40 40" fill="none" stroke="#6d8f5c" stroke-width="2" stroke-linecap="round"><path d="M20 38C20 28 14 22 6 20M20 38c0-10 6-17 14-18M20 38V14M20 22c-3-4-8-6-12-5M20 18c3-5 8-7 12-6M20 14c-2-4-1-8 0-11"/></svg><div class="pot"></div></div>`;
+const stack=`<div class="stack">${['#7a4b3a','#3f5a6b','#b9a47a'].map((c,i)=>`<i style="width:${58-i*6}px;background:${c};margin-left:${i*3}px"></i>`).join('')}</div>`;
+function bookcaseHTML(books,woodId,ownerId,plate){const sc=$('#scroll'),inner=Math.min(1000,(sc?sc.clientWidth:900)-44)-28-28-20;
+  const rows=[];let row=[],used=0;
+  for(const b of books){const w=spineDims(b).w+2;if(used+w>inner-70&&row.length){rows.push(row);row=[];used=0}row.push(b);used+=w}
+  if(row.length)rows.push(row);while(rows.length<3)rows.push([]);
+  const decor=[plant,stack,''];
+  const w=WOODS.find(x=>x.id===woodId)||WOODS[0],vars=WOODVARS.map((k,i)=>`${k}:${w.v[i]}`).join(';');
+  return `<div class="case" style="${vars}"><div class="crown"></div>${rows.map((r,i)=>{const full=r.reduce((a,b)=>a+spineDims(b).w+2,0)>inner-150;
+    return `<div class="bay">${r.map((b,j)=>spine(b,!full&&r.length>2&&j===r.length-1,ownerId)).join('')}${r.length&&!full?'<div class="bookend"></div>':''}${!full?`<div class="decor">${decor[i%3]}</div>`:''}</div><div class="board">${i===0&&plate?`<span class="plate">${esc(plate)}</span>`:''}</div>`}).join('')}<div class="base"></div></div>`}
+const SORD={reading:0,tbr:1,done:2,dnf:3};
+const sortShelf=l=>[...l].sort((a,b)=>SORD[a.status]-SORD[b.status]||a.title.localeCompare(b.title));
+function vShelf(){setTitle('Bookshelf');const S=L();
+  const bs=sortShelf(S.books.filter(b=>shelfF==='all'||b.status===shelfF));
+  return `<div class="h2">Your bookshelf</div><p class="lead">${S.books.length} book${S.books.length===1?'':'s'}. Tap a spine to open it. ${me.public?'Everyone':'Your friends'} can see this shelf on your profile.</p>
+  <div class="chips"><button class="chip ${shelfF==='all'?'on':''}" onclick="shelfF='all';renderView()">All ${S.books.length}</button>${Object.entries(STATUS).map(([k,v])=>`<button class="chip ${shelfF===k?'on':''}" onclick="shelfF='${k}';renderView()">${v} ${S.books.filter(b=>b.status===k).length}</button>`).join('')}</div>
+  ${bookcaseHTML(bs,me.wood,null,shelfF!=='all'?STATUS[shelfF]:'')}
+  ${bs.length?'':`<div class="empty" style="padding-top:22px">${S.books.length?'No books on this shelf yet.':'Your shelves are waiting.'}<div class="btns" style="justify-content:center"><button class="b pri" onclick="openAddBook()">Add a book</button></div></div>`}`}
+function peekBook(uid_,bid){const b=(DB.lib[uid_]?.books||[]).find(x=>x.id===bid);if(!b)return;const u=user(uid_);
+  modal(`<div style="display:flex;gap:18px;align-items:flex-end"><div style="width:110px;flex:none">${cover(b)}</div><div><div class="kicker">${STATUS[b.status]}</div><h3 style="margin-top:4px">${esc(b.title)}</h3><div class="sub" style="margin:0">${esc(b.author)}</div>
+  ${b.status==='reading'?`<div class="prog" style="margin-top:10px;width:160px"><i style="width:${pct(b)}%"></i></div><div style="font-size:12px;color:var(--muted);margin-top:4px">${pct(b)}% read</div>`:''}
+  </div></div>
+  <div class="label" style="margin-top:20px">${esc(u.display)}’s rating</div>
+  <div class="row"><span style="font-size:22px;letter-spacing:2px;color:var(--gt)">${'★'.repeat(b.rating||0)}<span style="color:var(--line)">${'★'.repeat(5-(b.rating||0))}</span></span><span style="font-size:14px;color:var(--soft)">${b.rating?b.rating+' out of 5':'Not rated'}</span></div>
+  ${b.review?`<div class="label" style="margin-top:16px">Review</div><div style="font-size:15px;line-height:1.55;background:var(--mist);padding:12px 14px;border-radius:8px;white-space:pre-wrap">${esc(b.review)}</div>`:''}
+  ${voteBar(uid_,b)}
+  <div class="btns"><button class="b right" onclick="addFromFriend('${uid_}','${bid}')">Add to my shelf</button></div>`)}
+function voteCounts(b){const v=Object.values(b.votes||{});return{up:v.filter(x=>x===1).length,down:v.filter(x=>x===-1).length}}
+function voteBar(uid_,b){const c=voteCounts(b),mine=(b.votes||{})[me.id]||0,own=uid_===me.id;
+  const btn=(val,ic,n,label)=>`<button class="pill" ${own?'disabled style="cursor:default"':`onclick="vote('${uid_}','${b.id}',${val})"`} title="${label}" style="${mine===val?'background:var(--acc);color:var(--on-acc);border-color:var(--acc)':''}">${ic}${n}</button>`;
+  return `<div class="row" style="margin-top:14px;gap:8px"><span style="font-size:12.5px;color:var(--muted)">${own?'What readers think of your':'Agree with this'} ${b.review?'review':'rating'}?</span>${btn(1,I.up2,c.up,'Thumbs up')}${btn(-1,I.down2,c.down,'Thumbs down')}</div>`}
+function vote(uid_,bid,val){const b=DB.lib[uid_].books.find(x=>x.id===bid);b.votes=b.votes||{};b.votes[me.id]===val?delete b.votes[me.id]:b.votes[me.id]=val;save();peekBook(uid_,bid)}
+function addFromFriend(uid_,bid){const b=DB.lib[uid_].books.find(x=>x.id===bid),S=L();
+  if(S.books.some(x=>norm(x.title)===norm(b.title)))return toast('Already on your shelf');
+  addTarget=null;chosen={title:b.title,author:b.author,pages:b.pages,img:b.img};
+  modal(`<h3>Add to your shelf</h3><div class="sub">Rate it to add it. A review is optional.</div><div id="pickArea">${addForm()}</div>`)}
+let _rz;window.addEventListener('resize',()=>{clearTimeout(_rz);_rz=setTimeout(()=>{if(me&&view==='shelf')renderView()},150)});
+
+function vNotes(){setTitle('Highlights');const S=L();
+  let l=[...S.notes].sort((a,b)=>b.date.localeCompare(a.date));
+  if(noteFilter==='fav')l=l.filter(n=>n.fav);else if(noteFilter!=='all')l=l.filter(n=>n.tab===noteFilter);
+  if(noteQ){const q=noteQ.toLowerCase();l=l.filter(n=>(n.text+' '+n.thought+' '+(book(n.book)?.title||'')).toLowerCase().includes(q))}
+  return `<div class="h2">Highlights</div>
+  <div class="search">${I.people}<input id="nq" placeholder="Search your highlights" value="${esc(noteQ)}" data-live="noteQ"></div>
+  <div class="chips"><button class="chip ${noteFilter==='all'?'on':''}" onclick="noteFilter='all';renderView()">All ${S.notes.length}</button><button class="chip ${noteFilter==='fav'?'on':''}" onclick="noteFilter='fav';renderView()">Loved</button>
+  ${TABS.map(t=>`<button class="chip ${noteFilter===t.id?'on':''}" onclick="noteFilter='${t.id}';renderView()"><span class="dot" style="--c:${t.c}"></span>${t.name}</button>`).join('')}</div>
+  ${l.map(n=>entry(n,true)).join('')||`<div class="empty">${S.notes.length?'Nothing found.':'Highlights you save from your books show up here.'}</div>`}`}
+/* live search inputs keep focus */
+document.addEventListener('input',e=>{const k=e.target.dataset?.live;if(!k)return;window[k]=e.target.value;const p=e.target.selectionStart,id=e.target.id;renderView();const i=document.getElementById(id);if(i){i.focus();i.setSelectionRange(p,p)}});
+
+function vStats(){setTitle('Reading life');const S=L(),yr=String(new Date().getFullYear());
+  const done=S.books.filter(b=>b.status==='done'&&(b.finished||'').startsWith(yr));
+  const pages=Object.entries(S.log).filter(([d])=>d.startsWith(yr)).reduce((a,[,v])=>a+v,0);
+  const mins=Object.values(S.minutes).reduce((a,v)=>a+v,0);
+  const rated=S.books.filter(b=>b.rating),avg=rated.length?(rated.reduce((a,b)=>a+b.rating,0)/rated.length).toFixed(1):'—';
+  const wk=[...Array(7)].map((_,i)=>{const d=ago(6-i);return{v:S.log[d]||0,l:new Date(d+'T12:00').toLocaleDateString(undefined,{weekday:'short'}).slice(0,2)}}),mx=Math.max(10,...wk.map(x=>x.v));
+  return `<div class="h2">Reading life</div><p class="lead">Your numbers for ${yr}.</p>
+  <div class="kpis"><div class="kpi"><div class="n">${streak()}</div><div class="l">Day streak</div></div><div class="kpi"><div class="n">${done.length}</div><div class="l">Books finished</div></div>
+  <div class="kpi"><div class="n">${pages.toLocaleString()}</div><div class="l">Pages read</div></div><div class="kpi"><div class="n">${(mins/60).toFixed(1)}</div><div class="l">Hours logged</div></div>
+  <div class="kpi"><div class="n">${S.notes.length}</div><div class="l">Highlights</div></div><div class="kpi"><div class="n">${avg}</div><div class="l">Average rating</div></div></div>
+  <div class="box"><div class="row"><div><div class="label" style="margin:0 0 4px">${yr} goal</div><div style="font-size:20px">${done.length} of ${S.goal} books</div></div><button class="pill right" onclick="openGoal()">Edit</button></div><div class="bigbar"><i style="width:${Math.min(100,done.length/S.goal*100)}%"></i></div></div>
+  <div class="box"><div class="label">Pages this week</div><div class="week">${wk.map((x,i)=>`<div class="c ${i===6?'today':''}">${x.v||''}<i style="height:${x.v/mx*70}%"></i>${x.l}</div>`).join('')}</div></div>`}
+
+/* =========================================================
+   CLUBS
+   ========================================================= */
+const myApps=cid=>DB.apps.filter(a=>a.club===cid&&a.user===me.id).sort((a,b)=>b.date-a.date);
+function clubStatus(c){if(isMember(me,c))return'member';const a=myApps(c.id)[0];return a?a.status:'none'}
+function vClubs(){setTitle('Book clubs');
+  return `<div class="h2">Book clubs</div><p class="lead">Six clubs, each run by its own admins and mods. Apply to join the ones that fit you.</p>
+  <div class="clubs">${CLUBS.map(m=>{const c=club(m.id),st=clubStatus(c);
+    return `<button class="club" style="--c:${m.c}" onclick="go('club:${m.id}:${st==='member'?'timeline':'about'}')"><div class="band">${sigil('club-'+m.id)}</div><div class="body"><b>${m.name}</b><p>${m.desc}</p>
+    <div class="row"><span class="tag">${c.members.length} member${c.members.length===1?'':'s'}</span>${st==='member'?'<span class="tag green">Joined</span>':st==='pending'?'<span class="tag amber">Applied</span>':''}</div></div></button>`}).join('')}</div>`}
+
+function vClub(cid,t){const m=clubMeta(cid),c=club(cid);if(!m)return redirect('clubs');
+  const mem=isMember(me,c),mod=isMod(me,c),st=clubStatus(c);
+  setTitle(m.name+' club',mod?`<button class="ib" title="Manage" onclick="manageClub='${cid}';go('manage')">${I.shield}</button>`:'');
+  const head=`<div class="clubhead" style="--c:${m.c}"><div class="badge">${sigil('club-'+cid)}</div><div><h1>${m.name}</h1><div style="color:var(--muted);font-size:14px;margin-top:4px">${c.members.length} member${c.members.length===1?'':'s'}${roleIn(me,c)!=='none'&&roleIn(me,c)!=='member'?` · you’re ${roleIn(me,c)==='admin'?'an admin':'a mod'}`:''}</div></div></div>`;
+  const now=c.current?`<div class="nowreading">${cover(c.current)}<div><div class="kicker">Now reading</div><div style="font-weight:500">${esc(c.current.title)}</div><div style="font-size:13px;color:var(--soft)">${esc(c.current.author)}</div></div></div>`:'';
+  if(!mem){
+    const last=myApps(cid)[0];
+    let cta;
+    if(st==='pending')cta=`<div class="card"><b style="font-weight:500">Application sent</b><p style="color:var(--muted);margin:6px 0 0;font-size:14px">Submitted ${fmtD(last.date)}. The club’s admins and mods will review it soon.</p></div>`;
+    else if(st==='declined')cta=`<div class="card"><b style="font-weight:500">Your last application wasn’t accepted</b><p style="color:var(--muted);margin:6px 0 12px;font-size:14px">You’re welcome to apply again.</p><button class="b pri" onclick="openApply('${cid}')">Apply again</button></div>`;
+    else cta=`<div class="btns"><button class="b pri" onclick="openApply('${cid}')">Apply to join</button><span style="color:var(--muted);font-size:13px">5 questions · takes about 5 minutes</span></div>`;
+    return head+`<p style="font-size:15px;line-height:1.6;color:var(--soft)">${m.desc}</p>${now}<div style="margin-top:18px">${cta}</div>`;
+  }
+  const tabs=`<div class="tabs">${[['timeline','Timeline'],['chat','Chat'],['members','Members'],['about','About']].map(([k,v])=>`<button class="${t===k?'on':''}" onclick="go('club:${cid}:${k}')">${v}</button>`).join('')}</div>`;
+  let body='';
+  if(t==='timeline'){const ps=DB.posts.filter(p=>p.club===cid&&!hidden(p.user)).sort((a,b)=>b.date-a.date);
+    body=`<div class="postbox"><textarea id="pb" placeholder="Share a thought, a quote, or a question with the club…"></textarea><div class="row"><button class="b pri sm right" onclick="addPost('${cid}')">Post</button></div></div>`
+      +(ps.map(p=>postHTML(p,mod)).join('')||'<div class="empty">No posts yet. Start the conversation.</div>')}
+  else if(t==='chat'){const ms=DB.msgs.filter(x=>x.club===cid&&!hidden(x.user)).sort((a,b)=>a.date-b.date);
+    body=`<div class="chatwrap">${ms.map(x=>{const u=user(x.user)||{display:'Deleted user'},mine=x.user===me.id;
+      return `<div class="msg ${mine?'me':''}"><span style="cursor:pointer" onclick="go('profile:${u.id}')">${avatar(u,'sm')}</span><div class="bub"><b style="cursor:pointer" onclick="go('profile:${u.id}')">${esc(u.display)}</b><span>${fmtT(x.date)}</span>${mod&&!mine?` <button style="font-size:11px;color:var(--red);margin-left:6px" onclick="delMsg('${x.id}')">remove</button>`:''}<br><div>${esc(x.text)}</div></div></div>`}).join('')||'<div class="empty">No messages yet. Say hi below.</div>'}</div>`}
+  else if(t==='members'){const ids=[...new Set([...c.admins,...c.mods,...c.members])].filter(x=>!hidden(x));
+    body=ids.map(id=>{const u=user(id);if(!u)return'';const r=roleIn(u,c);return `<div class="urow" onclick="go('profile:${u.id}')" style="cursor:pointer">${avatar(u)}<div class="info"><b>${esc(u.display)}</b><span>@${esc(u.username)}</span></div>${r==='admin'?'<span class="tag gt">Admin</span>':r==='mod'?'<span class="tag">Mod</span>':''}${frBtn(u.id,true)}</div>`}).join('')}
+  else body=`<p style="font-size:15px;line-height:1.6;color:var(--soft);margin-top:18px">${m.desc}</p>${now}<div class="btns"><button class="b danger" onclick="leaveClub('${cid}')">Leave club</button></div>`;
+  return head+now.replace('margin:16px 0 4px','margin:0 0 8px')+tabs+body}
+
+function postHTML(p,canMod){const u=user(p.user)||{display:'Deleted user',username:'—'},liked=p.likes.includes(me.id);
+  return `<div class="post" id="p-${p.id}"><div class="who" onclick="go('profile:${u.id}')" style="cursor:pointer">${avatar(u,'sm')}<b>${esc(u.display)}</b><span>@${esc(u.username)} · ${fmtT(p.date)}</span></div>
+  <div class="txt">${esc(p.text)}</div><div class="acts"><button class="${liked?'on':''}" onclick="likePost('${p.id}')">${I.heart}${p.likes.length||''}</button>
+  ${p.user===me.id||canMod?`<button onclick="delPost('${p.id}')" title="Delete">${I.trash}</button>`:''}</div></div>`}
+function addPost(cid){const t=$('#pb').value.trim();if(!t)return;DB.posts.push({id:uid(),club:cid,user:me.id,text:t.slice(0,2000),date:Date.now(),likes:[]});save();renderView()}
+function likePost(id){const p=DB.posts.find(x=>x.id===id);const i=p.likes.indexOf(me.id);i<0?p.likes.push(me.id):p.likes.splice(i,1);save();renderView()}
+function delPost(id){if(!sure('p'+id))return;DB.posts=DB.posts.filter(x=>x.id!==id);save();renderView()}
+function delMsg(id){if(!sure('m'+id))return;DB.msgs=DB.msgs.filter(x=>x.id!==id);save();renderView()}
+function leaveClub(cid){if(!sure('leave'+cid))return;const c=club(cid);['members','mods','admins'].forEach(k=>c[k]=c[k].filter(x=>x!==me.id));save();go('clubs');toast('You left the club')}
+
+/* application — note: age requirement is intentionally not shown to applicants */
+function openApply(cid){const m=clubMeta(cid),qs=QUESTIONS(m);
+  modal(`<h3>Apply to the ${m.name} club</h3><div class="sub">Answer all five questions in detail. The club’s admins and mods read every application.</div>
+  <div class="f">${qs.map((q,i)=>`<label>${i+1}. ${q.q}</label>${q.type==='age'?`<input id="aq${i}" inputmode="numeric" maxlength="3" style="max-width:120px">`:`<textarea id="aq${i}" oninput="this.nextElementSibling.textContent=this.value.trim().length+' / ${q.min}+ characters'"></textarea><div class="help">0 / ${q.min}+ characters</div>`}`).join('')}
+  <div class="err" id="ap_err"></div></div><div class="btns"><button class="b" onclick="closeModal()">Cancel</button><button class="b pri right" onclick="submitApp('${cid}')">Submit application</button></div>`)}
+function submitApp(cid){const qs=QUESTIONS(clubMeta(cid)),ans=[],err=$('#ap_err');
+  for(let i=0;i<qs.length;i++){const v=$('#aq'+i).value.trim();
+    if(qs[i].type==='age'){const n=parseInt(v,10);if(!(n>=5&&n<=120))return err.textContent='Please enter your age as a number.';ans.push(String(n))}
+    else{if(v.length<qs[i].min)return err.textContent=`Question ${i+1} needs a bit more detail (at least ${qs[i].min} characters).`;ans.push(v)}}
+  DB.apps.push({id:uid(),club:cid,user:me.id,answers:ans,status:'pending',date:Date.now(),reviewer:null,reviewed:null,note:''});save();closeModal();renderAll();toast('Application sent')}
+
+
+
+/* =========================================================
+   DIRECT MESSAGES (friends only)
+   - deleting a chat hides it for you only (your friend keeps it)
+   - single messages can't be deleted, only edited
+   - unfriending erases the chat for both people
+   ========================================================= */
+const pair=(a,b)=>[a,b].sort().join('|');
+const hideAt=fid=>(DB.dmHide[me.id]||{})[fid]||0;
+const thread=fid=>DB.dms.filter(m=>m.k===pair(me.id,fid)&&m.date>hideAt(fid)).sort((a,b)=>a.date-b.date);
+const unreadFrom=fid=>thread(fid).filter(m=>m.from===fid&&m.date>((DB.dmRead[me.id]||{})[fid]||0)).length;
+const unreadTotal=()=>friendsOf(me.id).reduce((a,f)=>a+unreadFrom(f),0);
+function vMessages(){setTitle('Messages');const fr=friendsOf(me.id);
+  const convos=fr.map(f=>({f,t:thread(f)})).filter(x=>x.t.length).sort((a,b)=>b.t.at(-1).date-a.t.at(-1).date);
+  const rest=fr.filter(f=>!convos.some(c=>c.f===f));
+  const row=(f,last)=>{const u=user(f);if(!u)return'';const n=unreadFrom(f);
+    return `<div class="urow" onclick="go('dm:${f}')" style="cursor:pointer">${avatar(u)}<div class="info"><b>${esc(u.display)}</b><span style="${n?'color:var(--ink);font-weight:500':''}">${last?`${last.from===me.id?'You: ':''}${esc(last.text.slice(0,70))}${last.text.length>70?'…':''} · ${fmtT(last.date)}`:'@'+esc(u.username)}</span></div>${n?`<span class="tag gt">${n}</span>`:''}</div>`};
+  return `<div class="h2">Messages</div><p class="lead">Message your friends. Deleting a chat only removes it for you.</p>
+  ${convos.map(c=>row(c.f,c.t.at(-1))).join('')}
+  ${rest.length?`<div class="label" style="margin-top:22px">Start a chat</div>${rest.map(f=>row(f)).join('')}`:''}
+  ${fr.length?'':`<div class="empty">Add friends to start messaging.<div class="btns" style="justify-content:center"><button class="b pri" onclick="go('people')">Find people</button></div></div>`}`}
+let editingMsg=null;
+function vDM(fid){const u=user(fid);if(!u||hidden(fid))return redirect('messages');
+  if(frStatus(fid)!=='friends'){setTitle(u.display);return `<div class="empty" style="padding-top:80px">${sigil(u.username)}You can only message friends.<div class="btns" style="justify-content:center">${frBtn(fid)}</div></div>`}
+  DB.dmRead[me.id]=DB.dmRead[me.id]||{};DB.dmRead[me.id][fid]=Date.now();save();
+  setTitle(u.display,`<button class="ib" title="View profile" onclick="go('profile:${fid}')">${I.user}</button><button class="ib" title="Delete chat" onclick="deleteChat('${fid}')">${I.trash}</button><button class="ib" title="Block" onclick="openBlock('${fid}')">${I.block}</button>`);
+  setTimeout(renderSide,0);
+  const ms=thread(fid);
+  return `<div class="row" style="padding:22px 0 6px;cursor:pointer" onclick="go('profile:${fid}')">${avatar(u)}<div><div style="font-weight:500">${esc(u.display)}</div><div style="font-size:12.5px;color:var(--muted)">@${esc(u.username)} · friends</div></div></div>
+  <div class="chatwrap">${ms.map(m=>{const mine=m.from===me.id,who=mine?me:u;
+    if(editingMsg===m.id)return `<div class="msg me"><div class="bub" style="width:80%"><div style="background:none;padding:0;display:block"><textarea id="edm" style="width:100%;border:1px solid var(--gt);border-radius:10px;padding:8px 10px;font:inherit;min-height:60px">${esc(m.text)}</textarea></div>
+      <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="b sm" onclick="editingMsg=null;renderView();renderComposer()">Cancel</button><button class="b sm pri" onclick="saveEdit('${m.id}')">Save</button></div></div></div>`;
+    return `<div class="msg ${mine?'me':''}">${avatar(who,'sm')}<div class="bub"><span>${fmtT(m.date)}${m.edited?' · edited':''}</span>${mine?` <button style="font-size:11px;color:var(--gt);margin-left:6px" onclick="editingMsg='${m.id}';renderView();renderComposer();setTimeout(()=>$('#edm')?.focus(),20)">edit</button>`:''}<br><div>${esc(m.text)}</div></div></div>`}).join('')||`<div class="empty">Say hi to ${esc(u.display)}.</div>`}${ms.length?receipt(fid,ms):''}</div>`}
+/* read receipts: only shown when BOTH people have them on */
+const rrOn=u=>u&&u.readReceipts!==false;
+function receipt(fid,ms){const f=user(fid);if(!rrOn(me)||!rrOn(f))return'';const mine=ms.filter(m=>m.from===me.id);if(!mine.length||ms.at(-1).from!==me.id)return'';
+  const seen=(DB.dmRead[fid]||{})[me.id]||0,last=mine.at(-1);
+  return `<div style="text-align:right;font-size:11.5px;color:var(--muted);margin:-2px 40px 0 0">${seen>=last.date?`Read ${fmtT(seen)==='just now'?'just now':fmtT(seen)+' ago'}`:'Delivered'}</div>`}
+function sendDM(fid){const t=$('#q').value.trim();if(!t||frStatus(fid)!=='friends')return;
+  DB.dms.push({id:uid(),k:pair(me.id,fid),from:me.id,text:t.slice(0,2000),date:Date.now(),edited:false});save();renderView();renderComposer();$('#q').focus();$('#scroll').scrollTop=$('#scroll').scrollHeight}
+function saveEdit(id){const m=DB.dms.find(x=>x.id===id);const t=$('#edm').value.trim();if(!t)return toast('A message can’t be empty');
+  if(m&&m.from===me.id&&t!==m.text){m.text=t.slice(0,2000);m.edited=true;save()}editingMsg=null;renderView();renderComposer()}
+function deleteChat(fid){if(!sure('dc'+fid))return toast('Tap delete again to remove this chat for you');
+  DB.dmHide[me.id]=DB.dmHide[me.id]||{};DB.dmHide[me.id][fid]=Date.now();save();go('messages');toast('Chat deleted for you')}
+/* unfriending wipes everything between the two people */
+function wipeBetween(a,b){const k=pair(a,b);DB.dms=DB.dms.filter(m=>m.k!==k);
+  [a,b].forEach(x=>{const y=x===a?b:a;['dmHide','dmRead'].forEach(t=>{if(DB[t][x])delete DB[t][x][y]})});
+  DB.posts.forEach(p=>{if(!p.club&&(p.user===a||p.user===b))p.likes=p.likes.filter(l=>l!==(p.user===a?b:a))});
+  [a,b].forEach(x=>{const y=x===a?b:a;(DB.lib[x]?.books||[]).forEach(bk=>{if(bk.votes)delete bk.votes[y]})});
+  if(DB.views[a])DB.views[a].log=DB.views[a].log.filter(v=>v.by!==b);if(DB.views[b])DB.views[b].log=DB.views[b].log.filter(v=>v.by!==a)}
+
+/* =========================================================
+   BLOCKING — both people stop seeing each other everywhere.
+   The blocked person is never told.
+   ========================================================= */
+const iBlocked=id=>DB.blocks.some(x=>x.by===me.id&&x.who===id);
+const blockedMe=id=>DB.blocks.some(x=>x.by===id&&x.who===me.id);
+const hidden=id=>id!==me.id&&(iBlocked(id)||blockedMe(id));
+function openBlock(id){const u=user(id);
+  modal(`<h3>Block ${esc(u.display)}?</h3><div class="sub">@${esc(u.username)}</div>
+  <ul style="font-size:14px;color:var(--soft);line-height:1.6;padding-left:18px;margin:8px 0 0">
+  <li>They won’t be able to find you or see your profile, posts, bookshelf, or reviews.</li>
+  <li>You won’t see anything of theirs, including in book club chats and timelines.</li>
+  <li>You’ll be unfriended and your messages with them will be deleted.</li>
+  <li>They won’t be told you blocked them.</li></ul>
+  <div class="btns"><button class="b" onclick="closeModal()">Cancel</button><button class="b right" style="background:var(--red);color:#fff;border-color:var(--red)" onclick="doBlock('${id}')">Block</button></div>`)}
+function doBlock(id){if(iBlocked(id))return;DB.blocks.push({by:me.id,who:id,date:Date.now()});
+  DB.friends=DB.friends.filter(f=>!((f.from===me.id&&f.to===id)||(f.from===id&&f.to===me.id)));wipeBetween(me.id,id);
+  save();closeModal();go('home');toast(user(id).display+' is blocked')}
+function unblock(id){DB.blocks=DB.blocks.filter(x=>!(x.by===me.id&&x.who===id));save();toast(user(id).display+' is unblocked');
+  if($('#scrim').classList.contains('on'))openSettings('account');renderAll()}
+
+/* =========================================================
+   FRIENDS
+   ========================================================= */
+const frRec=(a,b)=>DB.friends.find(f=>(f.from===a&&f.to===b)||(f.from===b&&f.to===a));
+function frStatus(id){if(id===me.id)return'self';const f=frRec(me.id,id);if(!f)return'none';if(f.status==='accepted')return'friends';return f.from===me.id?'sent':'received'}
+const friendsOf=id=>DB.friends.filter(f=>f.status==='accepted'&&(f.from===id||f.to===id)).map(f=>f.from===id?f.to:f.from).filter(x=>!me||!hidden(x));
+const incoming=()=>DB.friends.filter(f=>f.status==='pending'&&f.to===me.id&&!hidden(f.from));
+function frBtn(id,sm){if(hidden(id))return'';const st=frStatus(id),c=`b ${sm?'sm':''}`,stop='event.stopPropagation();';
+  if(st==='self')return'';
+  if(st==='friends')return `<button class="${c}" onclick="${stop}unfriend('${id}')" title="Remove friend">Friends ✓</button>`;
+  if(st==='sent')return `<button class="${c}" onclick="${stop}cancelReq('${id}')">Requested · cancel</button>`;
+  if(st==='received')return `<span class="row" style="gap:6px"><button class="${c} pri" onclick="${stop}acceptReq('${id}')">Accept</button><button class="${c}" onclick="${stop}declineReq('${id}')">Decline</button></span>`;
+  return `<button class="${c} pri" onclick="${stop}sendReq('${id}')">Add friend</button>`}
+function sendReq(id){if(frRec(me.id,id)||hidden(id))return;DB.friends.push({id:uid(),from:me.id,to:id,status:'pending',date:Date.now()});save();renderAll();toast('Friend request sent to '+user(id).display)}
+function cancelReq(id){DB.friends=DB.friends.filter(f=>!(f.from===me.id&&f.to===id&&f.status==='pending'));save();renderAll();toast('Request cancelled')}
+function acceptReq(id){const f=frRec(me.id,id);if(f){f.status='accepted';f.since=Date.now()}save();renderAll();toast('You and '+user(id).display+' are now friends')}
+function declineReq(id){DB.friends=DB.friends.filter(f=>!(f.from===id&&f.to===me.id&&f.status==='pending'));save();renderAll();toast('Request declined')}
+function unfriend(id){if(!sure('uf'+id))return toast('Tap again: this also deletes your messages for good');const f=frRec(me.id,id);DB.friends=DB.friends.filter(x=>x!==f);wipeBetween(me.id,id);save();if(view==='dm:'+id)return go('messages');renderAll();toast('Removed from friends')}
+let frTab='friends';
+function vFriends(){setTitle('Friends');const inc=incoming(),sent=DB.friends.filter(f=>f.status==='pending'&&f.from===me.id),fr=friendsOf(me.id);
+  if(frTab==='friends'&&!fr.length&&inc.length)frTab='requests';
+  const urow=(id,extra='')=>{const u=user(id);if(!u)return'';return `<div class="urow" onclick="go('profile:${u.id}')" style="cursor:pointer">${avatar(u)}<div class="info"><b>${esc(u.display)}</b><span>@${esc(u.username)}${extra}</span></div>${frStatus(u.id)==='friends'?`<button class="b sm" onclick="event.stopPropagation();go('dm:${u.id}')">Message</button>`:''}${frBtn(u.id,true)}</div>`};
+  let body='';
+  if(frTab==='friends')body=fr.map(id=>{const lb=(DB.lib[id]?.books||[]).find(b=>b.status==='reading');return urow(id,lb?` · reading <i>${esc(lb.title)}</i>`:'')}).join('')||`<div class="empty">No friends yet. Find readers by username or in your book clubs.<div class="btns" style="justify-content:center"><button class="b pri" onclick="go('people')">Find people</button></div></div>`;
+  if(frTab==='requests')body=inc.map(f=>urow(f.from,' · '+fmtT(f.date))).join('')||'<div class="empty">No friend requests right now.</div>';
+  if(frTab==='sent')body=sent.map(f=>urow(f.to,' · sent '+fmtT(f.date))).join('')||'<div class="empty">No pending requests you’ve sent.</div>';
+  return `<div class="h2">Friends</div><p class="lead">Friends can see each other’s profile posts and bookshelves, even on private accounts.</p>
+  <div class="tabs">${[['friends',`Friends (${fr.length})`],['requests',`Requests${inc.length?` (${inc.length})`:''}`],['sent','Sent']].map(([k,v])=>`<button class="${frTab===k?'on':''}" onclick="frTab='${k}';renderView()">${v}</button>`).join('')}</div>${body}`}
+
+/* =========================================================
+   PROFILE + PEOPLE
+   ========================================================= */
+let profTab='posts';
+/* profile views: one view per visitor per day; your own visits don't count */
+function recordView(id){if(id===me.id)return;const v=DB.views[id]=DB.views[id]||{log:[]};const d=today();
+  if(v.log.some(x=>x.by===me.id&&x.d===d))return;v.log.push({by:me.id,d,t:Date.now()});save()}
+const viewCount=id=>(DB.views[id]?.log||[]).length;
+const viewsSince=(id,days)=>(DB.views[id]?.log||[]).filter(x=>x.d>=ago(days)).length;
+function vProfile(id){const u=user(id);if(!u)return redirect('home');
+  if(hidden(u.id)){setTitle('Profile');return iBlocked(u.id)?`<div class="empty" style="padding-top:80px">${I.block.replace('<svg','<svg style="width:60px;height:60px;margin:0 auto 12px;stroke:var(--muted)"')}You blocked @${esc(u.username)}.<div class="btns" style="justify-content:center"><button class="b" onclick="unblock('${u.id}')">Unblock</button></div></div>`
+    :`<div class="empty" style="padding-top:80px">This profile isn’t available.</div>`}
+  recordView(u.id);const own=u.id===me.id,st=frStatus(u.id),canSee=own||st==='friends'||!!u.public;setTitle(own?'Your profile':u.display);
+  const lib=DB.lib[u.id]||{books:[]},rd=lib.books.filter(b=>b.status==='reading'),fin=lib.books.filter(b=>b.status==='done').length;
+  const roles=DB.clubs.map(c=>({c,r:roleIn(u,c)})).filter(x=>x.r!=='none');
+  const ps=DB.posts.filter(p=>!p.club&&p.user===u.id).sort((a,b)=>b.date-a.date);const nf=friendsOf(u.id).length;
+  const head=`<div style="display:flex;gap:18px;align-items:center;padding:28px 0 10px;flex-wrap:wrap">${avatar(u,'lg',true)}<div style="min-width:0;flex:1"><div style="font-size:24px;font-weight:400">${esc(u.display)}</div><div style="color:var(--muted)">@${esc(u.username)}</div>
+    <div class="row" style="margin-top:8px;flex-wrap:wrap">${isOwner(u)?'<span class="tag gt">Booktier owner</span>':''}<span class="tag">${u.public?'Public':'Private'}</span>${roles.map(x=>`<span class="tag ${x.r==='admin'?'gt':''}"><span class="clubdot" style="--c:${clubMeta(x.c.id).c}"></span>${clubMeta(x.c.id).name}${x.r==='admin'?' admin':x.r==='mod'?' mod':''}</span>`).join('')}</div></div>
+    ${own?`<button class="b sm" onclick="openSettings('profile')">Edit profile</button>`:`<span class="row" style="gap:6px">${st==='friends'?`<button class="b sm pri" onclick="go('dm:${u.id}')">${'Message'}</button>`:''}${frBtn(u.id)}<button class="ib" title="Block" onclick="openBlock('${u.id}')">${I.block}</button></span>`}</div>
+  ${u.bio?`<p style="font-size:15px;line-height:1.55;color:var(--soft);margin:6px 0 0">${esc(u.bio)}</p>`:''}
+  <div style="display:flex;gap:22px;margin:16px 0;font-size:14px;color:var(--soft);flex-wrap:wrap"><span><b style="font-weight:500;color:var(--ink)">${nf}</b> friend${nf===1?'':'s'}</span>${canSee?`<span><b style="font-weight:500;color:var(--ink)">${fin}</b> finished</span><span><b style="font-weight:500;color:var(--ink)">${lib.books.length}</b> on shelf</span>`:''}${!u.hideViews?`<span><b style="font-weight:500;color:var(--ink)">${viewCount(u.id).toLocaleString()}</b> profile view${viewCount(u.id)===1?'':'s'}</span>`:own?`<span style="color:var(--muted)">Profile views hidden · <button class="linkbtn" onclick="openSettings('profile')">${viewCount(u.id)} in settings</button></span>`:''}<span>Joined ${fmtD(u.created)}</span>${u.status?`<span>${statusLine(u)}</span>`:''}</div>
+  ${own&&!u.status?`<div style="font-size:13px;color:var(--muted);margin:-6px 0 12px">Set your status with <button class="linkbtn" onclick="setStatus('awake')">☀ Good morning</button> or <button class="linkbtn" onclick="setStatus('asleep')">☾ Goodnight</button>. Then tap the badge on your picture to switch.</div>`:''}`;
+  if(!canSee)return head+`<div class="card" style="text-align:center;padding:30px 20px;margin-top:10px"><div style="width:70px;margin:0 auto 10px;opacity:.5">${sigil(u.username)}</div>
+    <b style="font-weight:500">${st==='received'?`${esc(u.display)} sent you a friend request`:`Become friends with ${esc(u.display)}`}</b>
+    <p style="color:var(--muted);font-size:14px;margin:6px 0 16px">This account is private. Send a friend request to see ${esc(u.display)}’s bookshelf, ratings, and posts.</p><div style="display:flex;justify-content:center">${frBtn(u.id)}</div></div>`;
+  const tabs=`<div class="tabs">${[['posts','Posts'],['shelf','Bookshelf'],['friends','Friends']].map(([k,v])=>`<button class="${profTab===k?'on':''}" onclick="profTab='${k}';renderView()">${v}</button>`).join('')}</div>`;
+  let body='';
+  if(profTab==='posts')body=(own?`<div class="postbox"><textarea id="pb" placeholder="Post something to your profile…"></textarea><div class="row"><button class="b pri sm right" onclick="addProfilePost()">Post</button></div></div>`:'')
+    +(ps.map(p=>postHTML(p,isOwner(me))).join('')||`<div class="empty">${own?`Your posts will show here. ${me.public?'Your account is public, so anyone can see them.':'Only your friends can see them.'}`:'No posts yet.'}</div>`);
+  if(profTab==='shelf')body=bookcaseHTML(sortShelf(lib.books),u.wood,own?null:u.id)+(lib.books.length?'':`<div class="empty" style="padding-top:18px">${own?'Your shelf is empty.':esc(u.display)+' hasn’t added any books yet.'}</div>`);
+  if(profTab==='friends'){const fl=friendsOf(u.id);body=fl.map(fid=>{const f=user(fid);return f?`<div class="urow" onclick="go('profile:${f.id}')" style="cursor:pointer">${avatar(f)}<div class="info"><b>${esc(f.display)}</b><span>@${esc(f.username)}</span></div>${frBtn(f.id,true)}</div>`:''}).join('')||'<div class="empty">No friends yet.</div>'}
+  return head+(rd.length?`<div class="label">Currently reading</div><div class="shelfrow" style="padding-top:4px">${rd.map(b=>`<button class="cbook" onclick="${own?`go('book:${b.id}')`:`peekBook('${u.id}','${b.id}')`}">${cover(b)}<div class="t">${esc(b.title)}</div><div class="prog"><i style="width:${pct(b)}%"></i></div></button>`).join('')}</div>`:'')+tabs+body}
+function addProfilePost(){const t=$('#pb').value.trim();if(!t)return;DB.posts.push({id:uid(),club:null,user:me.id,text:t.slice(0,2000),date:Date.now(),likes:[]});save();renderView()}
+function saveProfile(){const d=$('#ep_d').value.trim(),u=cleanUser($('#ep_u').value);
+  if(!d)return $('#ep_err').textContent='Add a display name.';
+  if(!/^[a-z0-9._]{3,20}$/.test(u))return $('#ep_err').textContent='Username must be 3–20 letters, numbers, . or _';
+  if(DB.users.some(x=>x.username===u&&x.id!==me.id))return $('#ep_err').textContent='That username is taken.';
+  Object.assign(me,{display:d,username:u,bio:$('#ep_b').value.trim()});save();shellBuilt=false;renderAll();openSettings('profile');toast('Profile saved')}
+function vPeople(){setTitle('Find people');const q=peopleQ.trim().toLowerCase().replace(/^@/,'');
+  const l=q?DB.users.filter(u=>!hidden(u.id)&&(u.username.includes(q)||u.display.toLowerCase().includes(q))):[];
+  return `<div class="h2">Find people</div><p class="lead">Search by username or display name.</p>
+  <div class="search">${I.people}<input id="pq" placeholder="@username" value="${esc(peopleQ)}" data-live="peopleQ"></div>
+  <div style="margin-top:8px">${l.map(u=>`<div class="urow" onclick="go('profile:${u.id}')" style="cursor:pointer">${avatar(u)}<div class="info"><b>${esc(u.display)}</b><span>@${esc(u.username)}${u.id===me.id?' · you':''}</span></div>${frBtn(u.id,true)}</div>`).join('')||(q?'<div class="empty">No one found.</div>':'')}</div>`}
+
+/* =========================================================
+   MANAGE (mods + admins)
+   ========================================================= */
+function vManage(){const cs=managed(me);if(!cs.length)return redirect('home');setTitle('Manage clubs');
+  if(!cs.some(c=>c.id===manageClub))manageClub=cs[0].id;
+  const c=club(manageClub),m=clubMeta(c.id),admin=isAdmin(me,c);
+  const apps=DB.apps.filter(a=>a.club===c.id);const cnt=s=>apps.filter(a=>a.status===s).length;
+  const ids=[...new Set([...c.admins,...c.mods,...c.members])];
+  let body='';
+  if(['pending','accepted','declined'].includes(manageTab)){
+    const l=apps.filter(a=>a.status===manageTab).sort((a,b)=>manageTab==='pending'?a.date-b.date:b.reviewed-a.reviewed);
+    body=l.map(appCard).join('')||`<div class="empty">${manageTab==='pending'?'No applications waiting. Nice work.':'Nothing here yet.'}</div>`}
+  else if(manageTab==='members'){
+    body=ids.map(id=>{const u=user(id);if(!u)return'';const r=roleIn(u,c);return `<div class="urow">${avatar(u)}<div class="info"><b>${esc(u.display)}</b><span>@${esc(u.username)} · joined ${c.joined?.[u.id]?fmtD(c.joined[u.id]):'—'}</span></div>
+      ${r==='admin'?'<span class="tag gt">Admin</span>':r==='mod'?'<span class="tag">Mod</span>':''}
+      ${admin&&r==='member'?`<button class="b sm danger" onclick="removeMember('${c.id}','${u.id}')">Remove</button>`:''}</div>`}).join('')||'<div class="empty">No members yet.</div>'}
+  else if(manageTab==='club'&&admin){
+    body=`<div class="card" style="margin-top:16px"><div class="label">Current read</div>${c.current?`<div class="nowreading" style="margin:0 0 12px">${cover(c.current)}<div><div style="font-weight:500">${esc(c.current.title)}</div><div style="font-size:13px;color:var(--soft)">${esc(c.current.author)}</div></div></div>`:'<p style="color:var(--muted);font-size:14px;margin:0 0 12px">No book set.</p>'}
+      <div class="row"><button class="b pri sm" onclick="openAddBook('club:${c.id}')">${c.current?'Change book':'Choose a book'}</button>${c.current?`<button class="b sm" onclick="club('${c.id}').current=null;save();renderView()">Clear</button>`:''}</div></div>
+      <div class="card"><div class="label">Club team</div>${[...c.admins.map(id=>[id,'Admin']),...c.mods.map(id=>[id,'Mod'])].map(([id,r])=>{const u=user(id);return u?`<div class="row" style="padding:5px 0">${avatar(u,'sm')}<span style="flex:1">${esc(u.display)} <span style="color:var(--muted)">@${esc(u.username)}</span></span><span class="tag">${r}</span></div>`:''}).join('')||'<p style="color:var(--muted);font-size:14px;margin:0">No admins or mods assigned yet.</p>'}
+      <p style="font-size:12.5px;color:var(--muted);margin:10px 0 0">Only the site owner can add or remove admins and mods.</p></div>`}
+  return `<div class="h2">Manage clubs</div><p class="lead">Review applications and look after your ${cs.length>1?'clubs':'club'}. Clubs are for readers 18 and over; applicants aren’t told this, so check the age answer.</p>
+  <div class="chips">${cs.map(x=>{const mm=clubMeta(x.id),p=DB.apps.filter(a=>a.club===x.id&&a.status==='pending').length;return`<button class="chip ${x.id===c.id?'on':''}" onclick="manageClub='${x.id}';renderView()"><span class="clubdot" style="--c:${mm.c}"></span>${mm.name}${p?` · ${p}`:''}</button>`}).join('')}</div>
+  <div class="mgrid"><div class="mstat"><div class="n">${cnt('pending')}</div><div class="l">Waiting for review</div></div><div class="mstat"><div class="n">${ids.length}</div><div class="l">Members</div></div><div class="mstat"><div class="n">${cnt('declined')}</div><div class="l">Declined all time</div></div></div>
+  <div class="tabs">${[['pending',`Pending (${cnt('pending')})`],['accepted','Accepted'],['declined','Declined'],['members','Members'],...(admin?[['club','Club settings']]:[])].map(([k,v])=>`<button class="${manageTab===k?'on':''}" onclick="manageTab='${k}';renderView()">${v}</button>`).join('')}</div>
+  ${body}`}
+function appCard(a){const u=user(a.user)||{display:'Deleted user',username:'—'},qs=QUESTIONS(clubMeta(a.club)),age=parseInt(a.answers[0],10);
+  const prev=DB.apps.filter(x=>x.user===a.user&&x.club===a.club&&x.id!==a.id&&x.date<a.date).sort((x,y)=>y.date-x.date);
+  const prevDec=prev.filter(x=>x.status==='declined');const rev=a.reviewer&&user(a.reviewer);
+  return `<div class="card" style="margin-top:14px"><div class="row" style="flex-wrap:wrap">${avatar(u)}<div style="flex:1;min-width:140px"><b style="font-weight:500;cursor:pointer" onclick="go('profile:${u.id}')">${esc(u.display)}</b> <span style="color:var(--muted);font-size:13px">@${esc(u.username)}</span><div style="font-size:12.5px;color:var(--muted)">Applied ${fmtD(a.date)}</div></div>
+    ${age<18?`<span class="tag red">Age ${age} · under 18</span>`:`<span class="tag">Age ${age}</span>`}
+    ${prevDec.length?`<span class="tag amber">Declined before ×${prevDec.length}</span>`:''}
+    ${a.status!=='pending'?`<span class="tag ${a.status==='accepted'?'green':'red'}">${a.status==='accepted'?'Accepted':'Declined'}</span>`:''}</div>
+  ${qs.slice(1).map((q,i)=>`<div class="app-q"><div class="q">${i+2}. ${esc(q.q)}</div><div class="a">${esc(a.answers[i+1])}</div></div>`).join('')}
+  ${a.status!=='pending'?`<div class="hist">${a.status==='accepted'?'Accepted':'Declined'} by ${rev?esc(rev.display):'—'} on ${fmtD(a.reviewed)}${a.note?`. Note: “${esc(a.note)}”`:''}</div>`:''}
+  ${prev.length?`<details class="hist"><summary style="cursor:pointer">Previous applications (${prev.length})</summary>${prev.map(p=>`<div style="margin-top:10px"><span class="tag ${p.status==='declined'?'red':p.status==='accepted'?'green':''}">${p.status}</span> ${fmtD(p.date)}${p.reviewer&&user(p.reviewer)?` · by ${esc(user(p.reviewer).display)}`:''}${p.note?` · “${esc(p.note)}”`:''}
+    ${p.answers.slice(1).map((x,i)=>`<div class="app-q"><div class="q">${i+2}. ${esc(qs[i+1].q)}</div><div class="a">${esc(x)}</div></div>`).join('')}</div>`).join('')}</details>`:''}
+  ${a.status==='pending'?`<div class="f" style="margin-top:12px"><input id="note-${a.id}" placeholder="Private note for the team (optional)"></div><div class="btns" style="margin-top:10px"><button class="b pri" onclick="review('${a.id}','accepted')">Accept</button><button class="b danger" onclick="review('${a.id}','declined')">Decline</button></div>`:''}</div>`}
+function review(id,st){const a=DB.apps.find(x=>x.id===id),c=club(a.club);
+  if(st==='accepted'&&parseInt(a.answers[0],10)<18&&!sure('minor'+id))return toast('Applicant is under 18. Tap Accept again to confirm');
+  a.status=st;a.reviewer=me.id;a.reviewed=Date.now();a.note=$('#note-'+id)?.value.trim()||'';
+  if(st==='accepted'&&!c.members.includes(a.user)){c.members.push(a.user);c.joined=c.joined||{};c.joined[a.user]=Date.now()}
+  save();renderSide();renderView();toast(st==='accepted'?'Accepted':'Declined')}
+function removeMember(cid,id){if(!sure('rm'+id))return;const c=club(cid);c.members=c.members.filter(x=>x!==id);save();renderView();toast('Removed from club')}
+
+/* =========================================================
+   OWNER TOOLS — assign admins / mods to existing accounts
+   ========================================================= */
+function vOwner(){if(!isOwner(me))return redirect('home');setTitle('Owner tools');
+  const q=ownerQ.trim().toLowerCase().replace(/^@/,'');
+  const l=DB.users.filter(u=>!q||u.username.includes(q)||u.display.toLowerCase().includes(q)||u.email.includes(q));
+  return `<div class="h2">Owner tools</div><p class="lead">Give club roles to people who already have accounts. Admins run a club; mods help review applications.</p>
+  <div class="mgrid">${['admins','mods'].map(k=>`<div class="mstat"><div class="n">${new Set(DB.clubs.flatMap(c=>c[k])).size}</div><div class="l">${k==='admins'?'Club admins':'Club mods'}</div></div>`).join('')}<div class="mstat"><div class="n">${DB.users.length}</div><div class="l">Accounts</div></div></div>
+  <div class="search">${I.people}<input id="oq" placeholder="Search by username, name or email" value="${esc(ownerQ)}" data-live="ownerQ"></div>
+  ${l.map(u=>`<div class="card" style="margin-top:12px"><div class="row">${avatar(u)}<div style="flex:1;min-width:0"><b style="font-weight:500">${esc(u.display)}</b> <span style="color:var(--muted);font-size:13px">@${esc(u.username)}</span><div style="font-size:12.5px;color:var(--muted)">${esc(u.email)} · joined ${fmtD(u.created)}</div></div>${isOwner(u)?'<span class="tag gt">Owner</span>':''}</div>
+    ${isOwner(u)?'':`<table class="roles">${CLUBS.map(m=>{const r=roleIn(u,club(m.id));return `<tr><td><span class="row"><span class="clubdot" style="--c:${m.c}"></span>${m.name}</span></td><td><select onchange="setRole('${u.id}','${m.id}',this.value)">${[['none','Not in club'],['member','Member'],['mod','Mod'],['admin','Admin']].map(([k,v])=>`<option value="${k}" ${r===k?'selected':''}>${v}</option>`).join('')}</select></td></tr>`}).join('')}</table>`}</div>`).join('')}`}
+function setRole(uid_,cid,r){const c=club(cid);['members','mods','admins'].forEach(k=>c[k]=c[k].filter(x=>x!==uid_));
+  if(r!=='none'){c.members.push(uid_);c.joined=c.joined||{};c.joined[uid_]=c.joined[uid_]||Date.now()}
+  if(r==='mod')c.mods.push(uid_);if(r==='admin')c.admins.push(uid_);
+  save();renderSide();toast(`${user(uid_).display}: ${r==='none'?'removed from':r==='member'?'member of':r+' of'} ${clubMeta(cid).name}`)}
+
+/* =========================================================
+   COMPOSER (highlights) — home + book pages
+   ========================================================= */
+let cTab='fav',cSpoil=false,awaiting=null,cBook=null;
+function renderComposer(){const el=$('#composer'),v=view.split(':'),S=L();
+  const show=(v[0]==='dm'&&!hidden(v[1])&&frStatus(v[1])==='friends'&&!editingMsg)||v[0]==='book'||(v[0]==='club'&&v[2]==='chat'&&isMember(me,club(v[1])))||(v[0]==='home'&&S.books.length);
+  if(!show){el.innerHTML='';el.style.display='none';return}el.style.display='';
+  if(v[0]==='dm'){el.innerHTML=`<div class="cbox"><textarea id="q" rows="1" placeholder="Message ${esc(user(v[1]).display)}…"></textarea><div class="ctl"><button class="send" id="sendBtn" disabled>${I.up}</button></div></div>`;wireComposer(()=>sendDM(v[1]));return}
+  if(v[0]==='club'){el.innerHTML=`<div class="cbox"><textarea id="q" rows="1" placeholder="Message the ${clubMeta(v[1]).name} club…"></textarea><div class="ctl"><button class="send" id="sendBtn" disabled>${I.up}</button></div></div>`;wireComposer(()=>sendChat(v[1]));return}
+  if(v[0]==='book')cBook=v[1];if(!book(cBook))cBook=(S.books.find(b=>b.status==='reading')||S.books[0]||{}).id;
+  el.innerHTML=`<div class="cbox"><textarea id="q" rows="1" placeholder="${awaiting?'Your margin note on that line…':'Add a line worth keeping…'}"></textarea><div class="ctl">
+    ${awaiting?`<button class="skip" onclick="awaiting=null;renderComposer()">Skip</button>`:`
+    ${v[0]!=='book'?`<label class="sel"><span>${esc(book(cBook)?.title||'')}</span><select onchange="cBook=this.value;renderComposer()">${S.books.map(b=>`<option value="${b.id}" ${b.id===cBook?'selected':''}>${esc(b.title)}</option>`).join('')}</select></label>`:''}
+    <input class="pg" id="pg" inputmode="numeric" placeholder="p.">
+    <div style="position:relative"><button class="tg" id="tagBtn" title="Tab"><span class="dot" style="--c:${tab(cTab).c};width:10px;height:10px"></span></button><div class="tagpop" id="tagPop" hidden></div></div>
+    <button class="tg ${cSpoil?'on':''}" title="Spoiler" onclick="cSpoil=!cSpoil;renderComposer();toast(cSpoil?'Spoiler on':'Spoiler off')">${I.eye}</button>`}
+    <button class="send" id="sendBtn" disabled>${I.up}</button></div></div>`;
+  wireComposer(sendNote);
+  const tb=$('#tagBtn');if(tb)tb.onclick=e=>{e.stopPropagation();const p=$('#tagPop');p.hidden=!p.hidden;p.innerHTML=TABS.map(t=>`<button class="${t.id===cTab?'on':''}" onclick="cTab='${t.id}';renderComposer()"><span class="dot" style="--c:${t.c}"></span>${t.name}</button>`).join('')};
+}
+document.addEventListener('click',e=>{const p=$('#tagPop');if(p&&!e.target.closest('#tagPop,#tagBtn'))p.hidden=true});
+function wireComposer(fn){const ta=$('#q'),sb=$('#sendBtn');
+  ta.oninput=()=>{ta.style.height='auto';ta.style.height=Math.min(180,ta.scrollHeight)+'px';sb.disabled=!ta.value.trim()};
+  ta.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey&&matchMedia('(pointer:fine)').matches){e.preventDefault();fn()}};sb.onclick=fn}
+function sendChat(cid){const t=$('#q').value.trim();if(!t)return;DB.msgs.push({id:uid(),club:cid,user:me.id,text:t.slice(0,1500),date:Date.now()});save();renderView();renderComposer();$('#q').focus();$('#scroll').scrollTop=$('#scroll').scrollHeight}
+function sendNote(){const S=L(),t=$('#q').value.trim();if(!t)return;
+  if(awaiting){const n=S.notes.find(x=>x.id===awaiting);if(n)n.thought=t;awaiting=null}
+  else{if(!cBook)return openAddBook();const n={id:uid(),book:cBook,text:t,page:+($('#pg')?.value)||'',tab:cTab,thought:'',spoiler:cSpoil,date:today(),fav:false};S.notes.push(n);awaiting=n.id;cSpoil=false;if(!view.startsWith('book:'))view='book:'+cBook}
+  save();renderAll();setTimeout(()=>$('#scroll').scrollTo({top:$('#scroll').scrollHeight,behavior:'smooth'}),30);$('#q').focus()}
+
+/* =========================================================
+   MODALS: books, progress, timer, notes, settings
+   ========================================================= */
+function modal(h){$('#modal').innerHTML=`<button class="ib x" onclick="closeModal()">${I.x}</button>`+h;$('#scrim').classList.add('on');$('#modal').scrollTop=0}
+function closeModal(){$('#scrim').classList.remove('on');stopTimer()}
+$('#scrim').addEventListener('click',e=>{if(e.target.id==='scrim')closeModal()});
+let pend={};const sure=k=>{if(pend[k]){delete pend[k];return true}pend[k]=1;toast('Tap again to confirm');setTimeout(()=>delete pend[k],2500);return false};
+
+let found={matches:[],author:[]},chosen=null,searchId=0,addTarget=null;
+const skels=n=>Array(n).fill('<div class="skel"></div>').join('');
+const pickCard=(x,i,row)=>`<button class="pick" onclick="choose('${row}',${i},this)"><div class="cover"><div class="fb">${sigil(x.title+x.author)}</div>${coverImg(x.thumb)}</div><b>${esc(x.title)}</b><span>${esc(x.author)}${x.year?' · '+x.year:''}</span></button>`;
+function openAddBook(target){toggleSide(false);chosen=null;addTarget=target||null;
+  modal(`<h3>${addTarget?'Choose the club’s book':'Add a book'}</h3><div class="sub">Type a title or an author. Scroll the covers and tap the right one.</div>
+  <div class="search">${I.people}<input id="olq" placeholder="Title or author" autocomplete="off"></div><div id="res"></div><div id="pickArea"></div>`);
+  setTimeout(()=>$('#olq').focus(),50);let t;
+  $('#olq').oninput=e=>{clearTimeout(t);const q=e.target.value.trim();if(q.length<2){$('#res').innerHTML='';return}
+    $('#res').innerHTML=`<div class="rowh">Searching…</div><div class="carousel">${skels(5)}</div>`;t=setTimeout(()=>runSearch(q),380)}}
+async function runSearch(q){const my=++searchId;netFail=false;found={matches:[],author:[],authorDone:false};
+  const [ol,gb]=await Promise.all([olSearch('q='+encodeURIComponent(q),20),gbSearch(q,24)]);if(my!==searchId)return;
+  found.matches=merge(ol,gb).slice(0,24);
+  const counts={};found.matches.forEach(x=>counts[x.author]=(counts[x.author]||0)+1);const qa=norm(q);
+  const top=Object.keys(counts).find(a=>a!=='Unknown'&&qa.includes(norm(a).split(' ').pop()))||Object.entries(counts).sort((a,b)=>b[1]-a[1])[0]?.[0];
+  drawResults(top);
+  if(top&&top!=='Unknown'){const [oa,ga]=await Promise.all([olSearch('author='+encodeURIComponent(top)+'&sort=editions',24),gbSearch('inauthor:"'+top+'"',30)]);if(my!==searchId)return;
+    const have=new Set(found.matches.map(x=>norm(x.title)));found.author=merge(oa,ga).filter(x=>!have.has(norm(x.title))).slice(0,24);found.authorDone=true;drawResults(top)}}
+function drawResults(top){const m=found.matches,a=found.author;
+  $('#res').innerHTML=(m.length?`<div class="rowh"><span>Closest matches</span><span style="color:var(--muted)">${m.length} found →</span></div><div class="carousel">${m.map((x,i)=>pickCard(x,i,'matches')).join('')}</div>`
+    :`<div class="sub" style="margin-top:16px;color:var(--soft)">${netFail?'Search is blocked in this preview. Open Booktier in Safari or Chrome and every real book will come up with its cover.':'No covers found. Try another spelling.'}</div>`)
+  +(m.length&&top&&top!=='Unknown'?`<div class="rowh"><span>More by ${esc(top)}</span>${a.length?`<span style="color:var(--muted)">${a.length} →</span>`:''}</div><div class="carousel">${a.length?a.map((x,i)=>pickCard(x,i,'author')).join(''):found.authorDone?'<div class="sub">Nothing else found.</div>':skels(4)}</div>`:'')}
+function choose(row,i,el){chosen=found[row][i];document.querySelectorAll('.pick').forEach(p=>p.classList.remove('sel'));el.classList.add('sel');
+  $('#pickArea').innerHTML=addForm();$('#pickArea').scrollIntoView({behavior:'smooth',block:'nearest'})}
+let newRating=0;
+function starPick(){return `<div class="stars" id="newStars">${[1,2,3,4,5].map(i=>`<button type="button" class="${i<=newRating?'on':''}" onclick="newRating=${i};document.querySelectorAll('#newStars button').forEach((b,j)=>b.classList.toggle('on',j<${i}));$('#rateLbl').textContent=['','Didn’t like it','It was okay','Liked it','Really liked it','Loved it'][${i}];$('#addBtn').disabled=false">${I.star}</button>`).join('')}<span id="rateLbl" style="align-self:center;margin-left:8px;font-size:13px;color:var(--soft)">${newRating?['','Didn’t like it','It was okay','Liked it','Really liked it','Loved it'][newRating]:''}</span></div>`}
+function addForm(){newRating=0;return `<div class="chosen"><div class="cover"><div class="fb">${sigil(chosen.title)}</div>${coverImg(chosen.img)}</div><div><b style="font-weight:500;font-size:16px;display:block">${esc(chosen.title)}</b><span style="color:var(--soft);font-size:13px">${esc(chosen.author)}${chosen.year?' · '+chosen.year:''}${chosen.pages?' · '+chosen.pages+' pages':''}</span></div></div>
+  ${addTarget?'':`<div class="f"><label>Shelf</label></div><div class="seg" id="addseg" style="margin-top:0">${Object.entries(STATUS).map(([k,v],j)=>`<button data-k="${k}" class="${j===0?'on':''}" onclick="document.querySelectorAll('#addseg button').forEach(x=>x.classList.remove('on'));this.classList.add('on')">${v}</button>`).join('')}</div>
+  <div class="f"><label>Your rating <span style="color:var(--red)">*</span></label>${starPick()}<label>Review <span style="color:var(--muted)">(optional)</span></label><textarea id="newReview" placeholder="What did you think? Friends and visitors will see this on your shelf."></textarea></div>`}
+  <div class="btns"><button class="b pri right" id="addBtn" ${addTarget?'':'disabled'} onclick="confirmAdd()">${addTarget?'Set as current read':'Add to shelf'}</button></div>`}
+function confirmAdd(){const c=chosen;
+  if(addTarget){const cl=club(addTarget.split(':')[1]);cl.current={title:c.title,author:c.author,img:c.img};save();closeModal();renderView();toast('Current read updated');return}
+  if(!newRating)return toast('Rate the book out of 5 to add it');
+  const st=$('#addseg .on').dataset.k,S=L();
+  const b={id:uid(),title:c.title,author:c.author,pages:c.pages||300,page:st==='done'?(c.pages||300):0,status:st,rating:newRating,img:c.img,added:today(),finished:st==='done'?today():null,review:($('#newReview')?.value||'').trim().slice(0,2000)};
+  S.books.unshift(b);save();closeModal();go('book:'+b.id);toast('Added to '+STATUS[st])}
+async function openCoverPicker(id){const b=book(id);
+  modal(`<h3>Choose a cover</h3><div class="sub">Editions of <i>${esc(b.title)}</i>. Tap one to use it.</div><div class="carousel" id="cvs">${skels(5)}</div>`);
+  const [ol,gb]=await Promise.all([olSearch(`title=${encodeURIComponent(b.title)}&author=${encodeURIComponent(b.author)}`,10),gbSearch(`intitle:${b.title} inauthor:${b.author}`,30)]);
+  window._cv=[...ol,...gb].filter((x,i,a)=>a.findIndex(y=>y.img===x.img)===i);
+  $('#cvs').innerHTML=_cv.map((x,i)=>`<button class="pick ${x.img===b.img?'sel':''}" onclick="book('${id}').img=_cv[${i}].img;save();closeModal();renderAll();toast('Cover updated')"><div class="cover"><div class="fb">${sigil(x.title)}</div>${coverImg(x.thumb)}</div><span>${esc(x.year||'')}</span></button>`).join('')||`<div class="sub">${netFail?'Covers can’t load in this preview. Open Booktier in a browser.':'No other covers found.'}</div>`}
+function openEditBook(id){const b=book(id);
+  modal(`<h3>Edit book</h3><div class="sub">${esc(b.title)} · ${esc(b.author)}</div>
+  <div class="seg" id="seg">${Object.entries(STATUS).map(([k,v])=>`<button data-k="${k}" class="${b.status===k?'on':''}" onclick="document.querySelectorAll('#seg button').forEach(x=>x.classList.remove('on'));this.classList.add('on')">${v}</button>`).join('')}</div>
+  <div class="f"><label>Total pages</label><input id="ep" inputmode="numeric" value="${b.pages}"><label>Review</label><textarea id="er" placeholder="Final thoughts…">${esc(b.review)}</textarea></div>
+  <div class="btns"><button class="b" onclick="openCoverPicker('${id}')">Change cover</button><button class="b danger" onclick="delBook('${id}')">Delete</button><button class="b pri right" onclick="saveBook('${id}')">Save</button></div>`)}
+function saveBook(id){const b=book(id),st=$('#seg .on').dataset.k;if(st==='done'&&b.status!=='done'){b.finished=today();b.page=+$('#ep').value||b.pages}
+  Object.assign(b,{status:st,pages:+$('#ep').value||b.pages,review:$('#er').value.trim()});save();closeModal();renderAll();toast('Saved')}
+function delBook(id){if(!sure('b'+id))return;const S=L();S.books=S.books.filter(b=>b.id!==id);S.notes=S.notes.filter(n=>n.book!==id);save();closeModal();go('home')}
+function openRate(id){const b=book(id);
+  modal(`<h3>Rate it</h3><div class="sub">${esc(b.title)}</div><div class="stars">${[1,2,3,4,5].map(i=>`<button class="${i<=b.rating?'on':''}" onclick="book('${id}').rating=${i};save();openRate('${id}');renderAll()">${I.star}</button>`).join('')}</div>
+  <div class="f"><label>Review</label><textarea id="rr" placeholder="A sentence or two for future you">${esc(b.review)}</textarea></div>
+  <div class="btns"><button class="b pri right" onclick="book('${id}').review=$('#rr').value.trim();save();closeModal();renderAll()">Done</button></div>`)}
+function openProgress(id){const S=L();id=id||(S.books.find(b=>b.status==='reading')||{}).id;if(!id)return openAddBook();const b=book(id);
+  modal(`<h3>Update progress</h3><div class="f"><select onchange="openProgress(this.value)">${S.books.filter(x=>x.status!=='done').map(x=>`<option value="${x.id}" ${x.id===id?'selected':''}>${esc(x.title)}</option>`).join('')}</select>
+  <label>Page (of ${b.pages})</label><input id="pp" inputmode="numeric" value="${b.page}"><input type="range" id="pr" min="0" max="${b.pages}" value="${b.page}" style="padding:0;border:0;margin-top:14px;accent-color:var(--gt)"></div>
+  <div class="btns"><button class="b" onclick="closeModal()">Cancel</button><button class="b pri right" onclick="saveProgress('${id}',$('#pp').value)">Save</button></div>`);
+  $('#pr').oninput=e=>$('#pp').value=e.target.value;$('#pp').oninput=e=>$('#pr').value=e.target.value}
+function saveProgress(id,val){const S=L(),b=book(id),p=Math.max(0,Math.min(b.pages,+val||0)),d=p-b.page;
+  if(d>0)S.log[today()]=(S.log[today()]||0)+d;b.page=p;if(b.status==='tbr')b.status='reading';
+  if(p>=b.pages&&b.status!=='done'){b.status='done';b.finished=today();save();closeModal();renderAll();return openRate(id)}
+  save();closeModal();renderAll();toast(d>0?`${d} pages logged`:'Progress saved')}
+let tInt=null,tAcc=0,tStart=0,tBook=null;
+function openTimer(id){const S=L();tBook=id||(S.books.find(b=>b.status==='reading')||{}).id;if(!tBook)return openAddBook();tAcc=0;
+  modal(`<h3 style="text-align:center">Reading session</h3><div class="f"><select onchange="tBook=this.value">${S.books.filter(b=>b.status!=='done').map(b=>`<option value="${b.id}" ${b.id===tBook?'selected':''}>${esc(b.title)}</option>`).join('')}</select></div>
+  <div class="timer" id="tm">00:00</div><div class="sub" style="text-align:center">Phone face down.</div>
+  <div class="btns" style="justify-content:center"><button class="b pri" id="tgo" onclick="toggleTimer()" style="min-width:140px">Start</button></div>
+  <div id="tend" hidden class="f"><label>Stopped on page</label><input id="tp" inputmode="numeric"><div class="btns"><button class="b pri right" onclick="endTimer()">Save session</button></div></div>`)}
+function toggleTimer(){if(tInt){tAcc+=Date.now()-tStart;stopTimer();$('#tgo').textContent='Resume';$('#tend').hidden=false;$('#tp').value=book(tBook).page;return}
+  tStart=Date.now();$('#tgo').textContent='Pause';$('#tend').hidden=true;
+  tInt=setInterval(()=>{const s=Math.floor((tAcc+Date.now()-tStart)/1000);$('#tm').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')},250)}
+function stopTimer(){clearInterval(tInt);tInt=null}
+function endTimer(){const m=Math.max(1,Math.round(tAcc/60000)),S=L();S.minutes[today()]=(S.minutes[today()]||0)+m;saveProgress(tBook,$('#tp').value);toast(`${m} min logged`)}
+function openEditNote(id){const n=L().notes.find(x=>x.id===id);
+  modal(`<h3>Edit highlight</h3><div class="f"><label>Line</label><textarea id="xt">${esc(n.text)}</textarea><label>Your note</label><textarea id="xn">${esc(n.thought)}</textarea>
+  <div style="display:flex;gap:10px"><div style="flex:1"><label>Page</label><input id="xp" inputmode="numeric" value="${n.page}"></div><div style="flex:2"><label>Tab</label><select id="xg">${TABS.map(t=>`<option value="${t.id}" ${t.id===n.tab?'selected':''}>${t.name}</option>`).join('')}</select></div></div>
+  <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="xs" ${n.spoiler?'checked':''} style="width:auto;accent-color:var(--gt)"> Hide as spoiler</label></div>
+  <div class="btns"><button class="b danger" onclick="delNote('${id}')">Delete</button><button class="b pri right" onclick="saveNote('${id}')">Save</button></div>`)}
+function saveNote(id){const n=L().notes.find(x=>x.id===id);Object.assign(n,{text:$('#xt').value.trim()||n.text,thought:$('#xn').value.trim(),page:+$('#xp').value||'',tab:$('#xg').value,spoiler:$('#xs').checked});save();closeModal();renderAll()}
+function delNote(id){if(!sure('n'+id))return;const S=L();S.notes=S.notes.filter(n=>n.id!==id);if(awaiting===id)awaiting=null;save();closeModal();renderAll()}
+function fav(id){const n=L().notes.find(x=>x.id===id);n.fav=!n.fav;save();renderView()}
+function copyNote(id){const n=L().notes.find(x=>x.id===id),b=book(n.book);(navigator.clipboard?navigator.clipboard.writeText(`“${n.text}”\n— ${b.author}, ${b.title}`):Promise.reject()).then(()=>toast('Copied'),()=>toast('Copy isn’t available here'))}
+function openGoal(){modal(`<h3>Yearly goal</h3><div class="f"><label>Books this year</label><input id="gg" inputmode="numeric" value="${L().goal}"></div><div class="btns"><button class="b pri right" onclick="L().goal=Math.max(1,+$('#gg').value||1);save();closeModal();renderAll()">Save</button></div>`)}
+
+/* settings: Profile tab (how you appear) + Account tab (email, password, sign-in) */
+let setTab='profile';
+const segRow=(on,a,b,fa,fb)=>`<div class="seg" style="margin-top:0"><button class="${on?'':'on'}" onclick="${fa}">${a}</button><button class="${on?'on':''}" onclick="${fb}">${b}</button></div>`;
+const note=t=>`<div style="font-size:12.5px;color:var(--muted);margin-top:6px">${t}</div>`;
+const sh=t=>`<div class="label" style="margin-top:22px">${t}</div>`;
+function openSettings(tab){toggleSide(false);if(tab)setTab=tab;
+  const tabs=`<div class="tabs" style="margin:6px 0 4px">${[['profile','Profile'],['account','Account'],['help','Help']].map(([k,v])=>`<button class="${setTab===k?'on':''}" onclick="openSettings('${k}')">${v}</button>`).join('')}</div>`;
+  let body='';
+  if(setTab==='profile'){const vc=viewCount(me.id);
+    body=`<div class="f"><label>Display name</label><input id="ep_d" value="${esc(me.display)}" maxlength="40">
+      <label>Username</label><input id="ep_u" value="${esc(me.username)}" ${NOCAP} oninput="this.value=cleanUser(this.value)"><div class="help">Others find you by @username. It must be unique.</div>
+      <label>Bio</label><textarea id="ep_b" maxlength="300" placeholder="What do you love to read?">${esc(me.bio)}</textarea><div class="err" id="ep_err"></div>
+      <div class="btns" style="margin-top:10px"><button class="b pri" onclick="saveProfile()">Save profile</button><button class="b" onclick="closeModal();go('profile:'+me.id)">View my profile</button></div></div>
+    ${sh('Profile views')}
+    <div class="row" style="background:var(--mist);border-radius:8px;padding:12px 14px;gap:22px;flex-wrap:wrap"><div><div style="font-size:24px;font-weight:300">${vc.toLocaleString()}</div><div style="font-size:12px;color:var(--muted)">All time</div></div><div><div style="font-size:24px;font-weight:300">${viewsSince(me.id,7)}</div><div style="font-size:12px;color:var(--muted)">Last 7 days</div></div><div><div style="font-size:24px;font-weight:300">${viewsSince(me.id,30)}</div><div style="font-size:12px;color:var(--muted)">Last 30 days</div></div></div>
+    <div style="margin-top:10px">${segRow(!me.hideViews,'Hidden on my profile','Shown on my profile','setHideViews(true)','setHideViews(false)')}</div>
+    ${note(me.hideViews?'Visitors can’t see your view count. You can always see it here.':'Everyone who can see your profile sees your view count.')}
+    ${sh('Sleep status')}${segRow(!!me.showStatusTime,'Just sleeping or awake','Also show the time','setPref(\'showStatusTime\',false)','setPref(\'showStatusTime\',true)')}
+    ${note(me.showStatusTime?'Your profile shows when you went to sleep or woke up, like “Sleeping since 11:02 PM”.':'Your profile only shows “Sleeping” or “Awake”, not the time.')}
+    ${sh('Read receipts')}${segRow(rrOn(me),'Off','On','setPref(\'readReceipts\',false)','setPref(\'readReceipts\',true)')}
+    ${note(rrOn(me)?'Friends can see when you’ve read their messages, and you can see when they’ve read yours (if theirs are on too).':'Friends won’t see when you’ve read their messages. To keep it fair, you won’t see their read receipts either.')}
+    ${sh('Who can see your profile')}${segRow(me.public,'Private · friends only','Public · everyone','setPublic(false)','setPublic(true)')}
+    ${note(me.public?'Anyone on Booktier can see your profile posts, bookshelf, ratings and reviews.':'Only friends can see your profile posts, bookshelf, ratings and reviews.')}
+    ${sh('Accent color')}<div class="swatches">${ACCENTS.map(c=>`<button class="sw ${me.accent===c?'on':''}" style="--c:${c}" onclick="setAccent('${c}')"></button>`).join('')}
+      <label class="sw" style="--c:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);background:var(--c);position:relative;cursor:pointer" title="Custom"><input type="color" value="${me.accent}" onchange="setAccent(this.value)" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label></div>
+    ${sh('Bookshelf wood')}<div class="woods">${WOODS.map(w=>`<button class="wood ${(me.wood||'walnut')===w.id?'on':''}" onclick="setWood('${w.id}')"><i style="background:repeating-linear-gradient(90deg,${w.v[4]} 0 3px,${w.v[5]} 3px 9px,${w.v[6]} 9px 11px,${w.v[5]} 11px 19px);border-bottom:7px solid ${w.v[8]}"></i>${w.name}</button>`).join('')}</div>`;
+  }else if(setTab==='help'){
+    body=`<div style="text-align:center;padding:26px 6px 6px">
+      <div style="width:56px;height:56px;border-radius:14px;background:#5865F2;display:grid;place-items:center;margin:0 auto 14px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7.5c3-1.3 7-1.3 10 0M7 16.5c3 1.3 7 1.3 10 0M6.2 7.8C4.7 10 4 12.6 4.2 15.6c1.3 1 2.6 1.7 4 2.1l.9-1.6M17.8 7.8c1.5 2.2 2.2 4.8 2 7.8-1.3 1-2.6 1.7-4 2.1l-.9-1.6"/><circle cx="9.3" cy="12.6" r="1.1"/><circle cx="14.7" cy="12.6" r="1.1"/></svg></div>
+      <div style="font-size:19px;font-weight:400">Need help?</div>
+      <p style="font-size:14.5px;color:var(--soft);line-height:1.55;margin:8px auto 18px;max-width:380px">Join the Booktier Discord server to get help. Ask a question, report a bug, or reach the team and club admins.</p>
+      <a class="b pri" href="${DISCORD_URL}" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none">Join the Discord server</a>
+      <div style="font-size:12px;color:var(--muted);margin-top:12px;word-break:break-all">${esc(DISCORD_URL)}</div></div>`;
+  }else{
+    body=`${sh('Email')}<div class="row" style="background:var(--mist);border-radius:8px;padding:12px 14px"><div style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis">${esc(me.email)}</div><button class="b sm" onclick="emailStart()">Change</button></div><div id="emArea"></div>
+    ${sh('Password')}<div id="pwArea"><p style="font-size:14px;color:var(--soft);margin:0 0 12px">To change your password we’ll email a code to ${esc(mask(me.email))}.</p><button class="b pri" onclick="pwSend()">Send code</button></div>
+    ${sh('Two-step sign-in')}${segRow(me.twofa,'Off','On · email code','setTwoFA(false)','setTwoFA(true)')}
+    ${note(me.twofa?'Every time you sign in, we’ll email you a code to enter after your password.':'You sign in once with your email and password, and stay signed in on this device.')}
+    ${sh('Blocked accounts')}${DB.blocks.filter(x=>x.by===me.id).map(x=>{const u=user(x.who);return u?`<div class="urow">${avatar(u,'sm')}<div class="info"><b>${esc(u.display)}</b><span>@${esc(u.username)} · blocked ${fmtD(x.date)}</span></div><button class="b sm" onclick="unblock('${u.id}')">Unblock</button></div>`:''}).join('')||note('You haven’t blocked anyone.')}
+    ${sh('Session')}<button class="b" onclick="logout()">Log out</button>`;
+  }
+  modal(`<h3>Settings</h3><div class="sub" style="margin-bottom:0">@${esc(me.username)}</div>${tabs}${body}`)}
+function setPref(k,v){me[k]=v;save();openSettings('profile');renderView()}
+function setHideViews(v){me.hideViews=v;save();openSettings('profile');if(view.startsWith('profile:'))renderView()}
+/* change email: verify with a code sent to the CURRENT email, then set the new one */
+function emailStart(){const code=sendCode(me.email);
+  $('#emArea').innerHTML=`<p style="font-size:14px;color:var(--soft);margin:12px 0 0">To change your email, enter the code we sent to your current email, ${esc(mask(me.email))}.</p>${inboxHTML(me.email,code)}
+  <div class="f"><label>Code from your current email</label><input id="oe_c" inputmode="numeric" maxlength="6" autocomplete="one-time-code"><div class="err" id="oe_err"></div></div>
+  <div class="btns" style="margin-top:10px"><button class="b pri" onclick="emailCheckOld()">Verify</button><button class="b" onclick="emailStart()">Send a new code</button><button class="b" onclick="$('#emArea').innerHTML=''">Cancel</button></div>`;$('#oe_c').focus()}
+function emailCheckOld(){const rec=DB.codes[me.email],c=$('#oe_c').value.trim();
+  if(!rec||rec.exp<Date.now())return $('#oe_err').textContent='That code expired. Send a new one.';
+  if(c!==rec.code)return $('#oe_err').textContent='That code isn’t right.';
+  delete DB.codes[me.email];save();
+  $('#emArea').innerHTML=`<p style="font-size:14px;color:#2F6B55;margin:12px 0 0">Verified ✓ Now enter your new email.</p>
+  <div class="f"><label>New email</label><input id="ne" type="email" inputmode="email" ${NOCAP}><div class="err" id="ne_err"></div></div>
+  <div class="btns" style="margin-top:10px"><button class="b pri" onclick="emailSave()">Save new email</button><button class="b" onclick="$('#emArea').innerHTML=''">Cancel</button></div>`;$('#ne').focus()}
+function emailSave(){const e=$('#ne').value.trim().toLowerCase(),err=$('#ne_err');
+  if(!emailOK(e))return err.textContent='Enter a valid email.';
+  if(e===me.email)return err.textContent='That’s already your email.';
+  if(DB.users.some(x=>x.email===e))return err.textContent='Another account already uses that email.';
+  me.email=e;save();openSettings('account');toast('Email updated. Use '+e+' to sign in')}
+function setTwoFA(v){me.twofa=v;save();openSettings('account');toast(v?'Two-step sign-in is on':'Two-step sign-in is off')}
+function setPublic(v){me.public=v;save();openSettings('profile');if(view.startsWith('profile:'))renderView();toast(v?'Your account is public':'Your account is private')}
+function setWood(id){me.wood=id;save();applyWood(id);openSettings('profile');if(view==='shelf')renderView()}
+function setAccent(c){me.accent=c;save();applyAccent(c);renderAll();openSettings('profile')}
+function pwSend(){const code=sendCode(me.email);$('#pwArea').innerHTML=inboxHTML(me.email,code)+codeForm(me.email)}
+
+function redirect(v){setTimeout(()=>go(v));return''}
+/* boot */
+if(me)renderAll();else renderAuth(DB.users.length?'login':'signup');
+</script>
+</body>
+</html>
